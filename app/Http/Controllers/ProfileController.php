@@ -6,7 +6,9 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -14,9 +16,10 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profile.index', [
             'user' => $request->user(),
         ]);
     }
@@ -26,7 +29,25 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+
+        //dump($request->validated());
+
         $request->user()->fill($request->validated());
+        //$request->validated();
+        //dump($request->profileImage);
+
+        $user = Auth::user();
+        if ($user instanceof \App\Models\User) {
+            if ($request->hasFile('profileImage')) {
+                if ($user->profileImage) {
+                    FacadesStorage::disk('Photo_profil')->delete($user->profileImage);
+                }
+                $imageName = $request->file('profileImage')->getClientOriginalName();
+                $imagePath = $request->file('profileImage')->storeAs('Photo_profil', $imageName, 'public');
+                $user->profileImage = $imagePath;
+                $user->save();
+            }
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -34,7 +55,23 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.edit')->with('success', 'Profil mis à jour avec succès.');
+    }
+
+    public function deleteImage()
+    {
+        $user = Auth::user();
+        if ($user instanceof \App\Models\User) {
+            if ($user->profileImage) {
+                FacadesStorage::disk('Photo_profil')->delete($user->profileImage);
+                $user->profileImage = null;
+                $user->save();
+
+                return response()->json(['success' => true]);
+            }
+        }
+
+        return response()->json(['success' => false], 400);
     }
 
     /**
