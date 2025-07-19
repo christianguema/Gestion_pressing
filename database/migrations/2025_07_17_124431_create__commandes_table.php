@@ -1,0 +1,79 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('commandes', function (Blueprint $table) {
+            
+            $table->id('commande_id');
+
+            $table->integer('client_id');
+
+            $table->integer('personnel_id');
+
+            $table->integer('type_prestation_id');
+
+            $table->integer('type_facturation_id');
+
+            //$table->integer('paiement_id');
+
+            $table->integer('pressing_id');
+
+            $table->date('date_reception');
+
+            $table->date('date_livraison');
+
+            $table->string('etat');
+
+            $table->float('montant_total');
+
+            $table->timestamps();
+
+            $table->foreign('client_id')
+                  ->references('client_id')
+                  ->on('clients')
+                  ->onDelete('cascade');
+
+            $table->foreign('personnel_id')
+                  ->references('personnel_id')
+                  ->on('personnels')
+                  ->onDelete('cascade');
+
+            $table->foreign('type_prestation_id')
+                  ->references('type_prestation_id')
+                  ->on('type_prestations')
+                  ->onDelete('cascade');
+
+            $table->foreign('type_facturation_id')
+                  ->references('type_facturation_id')
+                  ->on('type_facturations')
+                  ->onDelete('cascade');
+
+            // $table->foreign('paiement_id')
+            //       ->references('paiement_id')
+            //       ->on('paiements')
+            //       ->onDelete('cascade');
+
+            $table->foreign('pressing_id')
+                  ->references('pressing_id')
+                  ->on('pressings')
+                  ->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('commandes');
+    }
+};
