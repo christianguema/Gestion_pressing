@@ -1,0 +1,67 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Client;
+use App\Models\Gestionnaire;
+use App\Models\Personnel;
+use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+class UserSeeder extends Seeder
+{
+    public function run(): void
+    {
+        DB::table('users')->delete();
+
+
+        // Création d’un client
+        $client = User::create([
+            'name' => 'Client User',
+            'email' => 'client@example.com',
+            'password' => Hash::make('password'),
+            'adresse' => '456 Client Avenue',
+        ]);
+
+        Client::create([
+            'client_id' => $client->id
+        ]);
+
+          // Création d’un personnel
+        $personnel = User::create([
+            'name' => 'Personnel User',
+            'email' => 'personnel@example.com',
+            'password' => Hash::make('password'),
+            'adresse' => '789 Personnel Road',
+        ]);
+
+        Personnel::create([
+            'personnel_id' => $personnel->id,
+            'poste' => 'blanchisseur',
+            'date_embauche' => '12/03/2022',
+
+        ]);
+
+        // Création d’un gestionnaire
+        $gestionnaire = User::create([
+            'name' => 'Gestionnaire User',
+            'email' => 'gestionnaire@example.com',
+            'password' => Hash::make('password'),
+            'adresse' => '101 Gestionnaire Blvd',
+        ]);
+
+        Gestionnaire::create([
+            'gestionnaire_id' => $gestionnaire->id
+        ]);
+
+
+         // Assignation des rôles
+        
+        $client->assignRole('client');
+        $personnel->assignRole('personnel');
+        $gestionnaire->assignRole('gestionnaire');
+    }
+}
