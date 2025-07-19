@@ -13,7 +13,6 @@ class Personnel extends Model
 
     protected $fillable = [
         'personnel_id',
-        
         'poste',
         'date_embauche',
     ];
@@ -28,5 +27,10 @@ class Personnel extends Model
     public function commandes(): HasMany
     {
         return $this->hasMany(Commande::class);
+    }
+
+    public function pressings(): HasMany
+    {
+        return $this->hasMany(Pressing::class);
     }
 }

@@ -15,7 +15,7 @@ class RapportsPerformance extends Model
         'periode',
         'revenus',
         'nombre_commande',
-        'satisfaction_client',
+        // 'satisfaction_client',
     ];
 
     protected $primaryKey = 'rapports_performance_id';
@@ -24,4 +24,11 @@ class RapportsPerformance extends Model
     {
         return $this->belongsTo(Gestionnaire::class);
     }
+
+
+    public function pressing(): BelongsTo
+    {
+        return $this->belongsTo(Pressing::class);
+    }
+
 }

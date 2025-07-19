@@ -23,13 +23,20 @@ return new class extends Migration
 
             $table->integer('nombre_commande');
 
-            $table->string('satisfaction_client');
-            
+            // $table->string('satisfaction_client');
+
+            $table->integer('pressing_id');
+
             $table->timestamps();
 
             $table->foreign('gestionnaire_id')
                   ->references('gestionnaire_id')
                   ->on('gestionnaires')
+                  ->onDelete('cascade');
+
+            $table->foreign('pressing_id')
+                  ->references('pressing_id')
+                  ->on('pressings')
                   ->onDelete('cascade');
         });
     }
