@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
         $client = User::create([
             'name' => 'Client User',
             'email' => 'client@example.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'adresse' => '456 Client Avenue',
         ]);
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
         $personnel = User::create([
             'name' => 'Personnel User',
             'email' => 'personnel@example.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'adresse' => '789 Personnel Road',
         ]);
@@ -49,6 +51,7 @@ class UserSeeder extends Seeder
         $gestionnaire = User::create([
             'name' => 'Gestionnaire User',
             'email' => 'gestionnaire@example.com',
+            'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'adresse' => '101 Gestionnaire Blvd',
         ]);
@@ -59,7 +62,7 @@ class UserSeeder extends Seeder
 
 
          // Assignation des rôles
-        
+
         $client->assignRole('client');
         $personnel->assignRole('personnel');
         $gestionnaire->assignRole('gestionnaire');

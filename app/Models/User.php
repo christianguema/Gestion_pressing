@@ -23,6 +23,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'lastname',
+        'profilImage',
+        'telephone',
+        'adresse',
         'email',
         'password',
         'adresse',
@@ -55,19 +59,19 @@ class User extends Authenticatable
 
 
     public function client(): HasOne{
-    
+
         return $this->hasOne(Client::class, 'user_id');
     }
 
     public function personnel(): HasOne{
-    
+
         return $this->hasOne(Client::class, 'user_id');
     }
 
     public function gestionnaire(): HasOne{
-    
+
         return $this->hasOne(Client::class, 'user_id');
     }
 
-    
+
 }

@@ -10936,11 +10936,7 @@ button.close:focus {
 .app-nav .submenu-toggle[aria-expanded="true"] .submenu-arrow {
     color: #252930;
 }
-.app-nav .submenu-toggle[aria-expanded="true"] .submenu-arrow svg {
-    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-}
+
 .app-nav .submenu-item {
     margin-bottom: 0;
 }
