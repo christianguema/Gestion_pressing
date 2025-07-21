@@ -24,12 +24,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'lastname',
-        'profilImage',
-        'telephone',
-        'adresse',
+        'birthday',
+        'contact',
         'email',
+        'profilImage',
         'password',
-        'adresse',
+        'address',
     ];
 
      protected $primaryKey = 'id';

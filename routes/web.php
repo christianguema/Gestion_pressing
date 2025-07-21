@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Personnel;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,7 +13,7 @@ Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//route de gestion des profils
+// route de gestion des profils
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -19,15 +21,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//route des cas d'utilisation du gestionnaire
+// route des cas d'utilisation du gestionnaire
 
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+    Route::resource("personnel", PersonnelController::class);
+});
 
+// route des cas d'utilisation du personnel
 
-
-
-
-//route des cas d'utilisation du personnel
-
-
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
