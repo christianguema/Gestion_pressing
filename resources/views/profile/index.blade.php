@@ -34,24 +34,6 @@
                             @if (auth()->user()->profession)
                                 <h3>{{ auth()->user()->profession }}</h3>
                             @endif
-                            {{-- <div class="mt-2 social-links">
-                                @if (auth()->user()->lien_tweeter)
-                                    <a href="{{ auth()->user()->lien_tweeter }}" class="twitter"><i
-                                            class="bi bi-twitter-x""></i></a>
-                                @endif
-                                @if (auth()->user()->lien_facebook)
-                                    <a href="{{ auth()->user()->lien_facebook }}" class="facebook"><i
-                                            class="bi bi-facebook"></i></a>
-                                @endif
-                                @if (auth()->user()->lien_instagram)
-                                    <a href="{{ auth()->user()->lien_instagram }}" class="instagram"><i
-                                            class="bi bi-instagram"></i></a>
-                                @endif
-                                @if (auth()->user()->lien_linkdin)
-                                    <a href="{{ auth()->user()->lien_linkdin }}" class="linkedin"><i
-                                            class="bi bi-linkedin"></i></a>
-                                @endif
-                            </div> --}}
                         </div>
                     </div>
 
@@ -73,10 +55,12 @@
                                         Profile</button>
                                 </li>
 
+                                @role('gestionnaire')
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Supprimer
                                         Compte</button>
                                 </li>
+                                @endrole
 
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab"
@@ -223,7 +207,7 @@
                                             </div>
                                         </div>
 
-                                        
+
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary">Sauvegarder</button>
                                         </div>

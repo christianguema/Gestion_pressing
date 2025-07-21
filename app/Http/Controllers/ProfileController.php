@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\profilRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +28,10 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(profilRequest $request): RedirectResponse
     {
 
-        //dump($request->validated());
+        dd($request->validated());
 
         $request->user()->fill($request->validated());
         //$request->validated();
@@ -39,8 +40,8 @@ class ProfileController extends Controller
         $user = Auth::user();
         if ($user instanceof \App\Models\User) {
             if ($request->hasFile('profileImage')) {
-                if ($user->profileImage) {
-                    FacadesStorage::disk('Photo_profil')->delete($user->profileImage);
+                if ($user->profilImage) {
+                    FacadesStorage::disk('Photo_profil')->delete($user->profilImage);
                 }
                 $imageName = $request->file('profileImage')->getClientOriginalName();
                 $imagePath = $request->file('profileImage')->storeAs('Photo_profil', $imageName, 'public');
