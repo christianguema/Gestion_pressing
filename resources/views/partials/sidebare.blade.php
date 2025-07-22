@@ -129,12 +129,12 @@
 
     @role('gestionnaire')
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#compte-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('personnel.*') ? '' : 'collapsed' }}" data-bs-target="#compte-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-user-2-fill"></i><span>COMPTES</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="compte-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="compte-nav" class="nav-content collapse {{ request()->routeIs('personnel.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="#">
+                <a href="{{ route('personnel.index') }}">
                     <i class="bi bi-circle"></i><span>Liste des personnels</span>
                 </a>
             </li>

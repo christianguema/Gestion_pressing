@@ -12,32 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rapports_performances', function (Blueprint $table) {
-            
+
             $table->id('rapport_performance_id');
-
-            $table->integer('gestionnaire_id');
-
+            $table->unsignedBigInteger('gestionnaire_id');
             $table->date('periode');
-
-            $table->float('revenus');
-
+            $table->decimal('revenus', 10, 2);
             $table->integer('nombre_commande');
-
             // $table->string('satisfaction_client');
-
-            $table->integer('pressing_id');
-
-            $table->timestamps();
-
+            $table->unsignedBigInteger('pressing_id');
             $table->foreign('gestionnaire_id')
                   ->references('gestionnaire_id')
                   ->on('gestionnaires')
-                  ->onDelete('cascade');
-
+                  ->cascadeOnDelete();
             $table->foreign('pressing_id')
                   ->references('pressing_id')
                   ->on('pressings')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

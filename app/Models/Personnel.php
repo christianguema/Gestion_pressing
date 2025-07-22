@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Personnel extends Model
 {
@@ -21,16 +22,16 @@ class Personnel extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'personnel_id', 'id');
     }
 
-    public function commandes(): HasMany
+    public function commande(): HasMany
     {
         return $this->hasMany(Commande::class);
     }
 
-    public function pressings(): HasMany
+    public function pressing(): BelongsTo
     {
-        return $this->hasMany(Pressing::class);
+        return $this->belongsTo(Pressing::class, 'pressing_id', 'pressing_id');
     }
 }

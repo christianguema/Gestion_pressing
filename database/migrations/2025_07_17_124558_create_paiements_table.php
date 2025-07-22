@@ -14,18 +14,14 @@ return new class extends Migration
         Schema::create('paiements', function (Blueprint $table) {
             $table->id('paiement_id');
             $table->integer('commande_id');
-            $table->float('montant');
+            $table->decimal('montant', 10, 2);
             $table->string('mode_paiement');
-            $table->string('statut');
+            $table->enum('statut', ['En attente', 'Effectué', 'Annulé']);
             $table->date('date_paiement');
             $table->string('reference_transaction');
             $table->string('facture');
+            $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('commande_id')
-                  ->references('commande_id')
-                  ->on('commandes')
-                  ->onDelete('cascade');
         });
     }
 

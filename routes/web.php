@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Personnel;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
 // route des cas d'utilisation du gestionnaire
 
-Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(function () {
     Route::resource("personnel", PersonnelController::class);
 });
 

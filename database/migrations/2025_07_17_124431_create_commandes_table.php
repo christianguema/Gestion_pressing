@@ -12,60 +12,51 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('commandes', function (Blueprint $table) {
-            
             $table->id('commande_id');
-
-            $table->integer('client_id');
-
-            $table->integer('personnel_id');
-
-            $table->integer('type_prestation_id');
-
-            $table->integer('type_facturation_id');
-
-            //$table->integer('paiement_id');
-
-            $table->integer('pressing_id');
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('personnel_id');
+            $table->unsignedBigInteger('type_prestation_id');
+            $table->unsignedBigInteger('type_facturation_id');
+            $table->unsignedBigInteger('pressing_id');
+            $table->unsignedBigInteger('paiement_id');
 
             $table->date('date_reception');
-
             $table->date('date_livraison');
+            $table->enum('etat',['En attente', 'En cours', 'Terminé', 'Annulé']);
+            $table->decimal('montant_total', 10, 2);
 
-            $table->string('etat');
-
-            $table->float('montant_total');
-
-            $table->timestamps();
 
             $table->foreign('client_id')
                   ->references('client_id')
                   ->on('clients')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
 
             $table->foreign('personnel_id')
                   ->references('personnel_id')
                   ->on('personnels')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
 
             $table->foreign('type_prestation_id')
                   ->references('type_prestation_id')
                   ->on('type_prestations')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
 
             $table->foreign('type_facturation_id')
                   ->references('type_facturation_id')
                   ->on('type_facturations')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
 
-            // $table->foreign('paiement_id')
-            //       ->references('paiement_id')
-            //       ->on('paiements')
-            //       ->onDelete('cascade');
+            $table->foreign('paiement_id')
+                  ->references('paiement_id')
+                  ->on('paiements')
+                  ->cascadeOnDelete();
 
             $table->foreign('pressing_id')
                   ->references('pressing_id')
                   ->on('pressings')
-                  ->onDelete('cascade');
+                  ->cascadeOnDelete();
+
+            $table->timestamps();
         });
     }
 
@@ -74,6 +65,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commandes');
+        //Schema::dropIfExists('commandes');
     }
 };

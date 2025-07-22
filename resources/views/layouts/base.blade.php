@@ -20,6 +20,7 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.cs') }}s" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
@@ -45,9 +46,12 @@
         @yield('content')
     </main>
 
-    <footer id="footer" class="footer">
-        @include('partials.footer')
-    </footer>
+    {{-- afficher le pied de page seulement sur le dashboard --}}
+    @if (request()->is('dashboard'))
+        <footer id="footer" class="footer">
+            @include('partials.footer')
+        </footer>
+    @endif
 </body>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>

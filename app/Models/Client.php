@@ -13,18 +13,18 @@ class Client extends Model
 
     protected $fillable = [
         'client_id',
-        
+        'genre',
     ];
 
     protected $primaryKey = 'client_id';
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,"client_id","id");
     }
 
     public function commandes(): HasMany
     {
-        return $this->hasMany(Commande::class);
+        return $this->hasMany(Commande::class,"client_id","client_id");
     }
-}
+};

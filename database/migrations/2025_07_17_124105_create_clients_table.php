@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gestionnaires', function (Blueprint $table) {
-            
-            $table->id('gestionnaire_id');
-
-            
+        Schema::create('clients', function (Blueprint $table) {
+            $table->unsignedBigInteger('client_id')->primary();
+            $table->foreign('client_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->enum("genre", ['Homme', 'Femme']);
             $table->timestamps();
-
-            $table->foreign('gestionnaire_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
         });
     }
 
@@ -30,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gestionnaires');
+        Schema::dropIfExists('clients');
     }
 };

@@ -23,7 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'lastname',
+        'last_name',
         'birthday',
         'contact',
         'email',
@@ -63,14 +63,15 @@ class User extends Authenticatable
         return $this->hasOne(Client::class, 'user_id');
     }
 
-    public function personnel(): HasOne{
+    public function personnel(): HasOne
+    {
 
-        return $this->hasOne(Client::class, 'user_id');
+        return $this->hasOne(Personnel::class, 'personnel_id', 'id');
     }
 
     public function gestionnaire(): HasOne{
 
-        return $this->hasOne(Client::class, 'user_id');
+        return $this->hasOne(Gestionnaire::class, 'gestionnaire_id', 'id');
     }
 
 

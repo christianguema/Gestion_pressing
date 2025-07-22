@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
                             <?php
-                            $prenom = auth()->user()->lastname;
+                            $prenom = auth()->user()->last_name;
                             $nom = auth()->user()->name;
                             $contact = auth()->user()->contact;
                             $profession = auth()->user()->profession;

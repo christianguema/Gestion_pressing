@@ -164,9 +164,9 @@
             @auth
                 <?php $user = Auth::user(); ?>
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="{{$user->profileImage ? asset('storage/' . $user->profileImage) : asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+                    <img src="{{$user->profilImage ? asset('storage/' . $user->profileImage) : asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
                     <?php
-                    $prenom = auth()->user()->lastname;
+                    $prenom = auth()->user()->last_name;
                     $nom = auth()->user()->name;
                     $initialeNom = substr($nom, 0, 1); // Récupère la première lettre du nom
                     ?>
