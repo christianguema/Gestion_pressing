@@ -42,13 +42,13 @@
         </a>
         <ul id="pressing-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="#">
+                <a href="{{route('pressings.index') }}">
                     <i class="bi bi-circle"></i><span>Liste des pressings</span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <i class="bi bi-circle"></i><span>Affecter un employer</span>
+                <a href="{{route('pressings.create') }}">
+                    <i class="bi bi-circle"></i><span>Enregistrer un pressing</span>
                 </a>
             </li>
             <li>
@@ -139,7 +139,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{route('personnels.create') }}">
                     <i class="bi bi-circle"></i><span>Ajouter un compte</span>
                 </a>
             </li>

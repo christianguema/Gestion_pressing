@@ -13,8 +13,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-    use HasRoles;
+    use HasFactory, Notifiable, HasRoles;
+    
 
     /**
      * The attributes that are mass assignable.
@@ -27,9 +27,9 @@ class User extends Authenticatable
         'birthday',
         'contact',
         'email',
-        'profilImage',
+        // 'profilImage',
         'password',
-        'address',
+        'adresse',
     ];
 
      protected $primaryKey = 'id';
@@ -65,12 +65,12 @@ class User extends Authenticatable
 
     public function personnel(): HasOne{
 
-        return $this->hasOne(Client::class, 'user_id');
+        return $this->hasOne(Personnel::class, 'user_id');
     }
 
     public function gestionnaire(): HasOne{
 
-        return $this->hasOne(Client::class, 'user_id');
+        return $this->hasOne(Gestionnaire::class, 'user_id');
     }
 
 

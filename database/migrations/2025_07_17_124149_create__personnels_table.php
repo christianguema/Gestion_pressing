@@ -19,7 +19,11 @@ return new class extends Migration
 
             $table->date('date_embauche')->nullable();
 
-            $table->integer('pressing_id')->nullable(); 
+            $table->string('profilImage')->nullable();
+
+            $table->unsignedBigInteger('user_id');
+
+            $table->unsignedBigInteger('pressing_id')->nullable(); 
 
             // $table->integer('gestionnaire_id');
 
@@ -36,7 +40,7 @@ return new class extends Migration
             //       ->on('gestionnaires')
             //       ->onDelete('cascade');
 
-             $table->foreign('personnel_id')
+             $table->foreign('user_id')
                   ->references('id')
                   ->on('users')
                   ->onDelete('cascade');

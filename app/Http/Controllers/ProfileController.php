@@ -63,8 +63,8 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         if ($user instanceof \App\Models\User) {
-            if ($user->profileImage) {
-                FacadesStorage::disk('Photo_profil')->delete($user->profileImage);
+            if ($user->profilImage) {
+                FacadesStorage::disk('Photo_profil')->delete($user->profilImage);
                 $user->profileImage = null;
                 $user->save();
 

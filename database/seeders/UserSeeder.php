@@ -15,6 +15,9 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        DB::table('clients')->delete();
+        DB::table('personnels')->delete();
+        DB::table('gestionnaires')->delete();
         DB::table('users')->delete();
 
 
@@ -41,9 +44,11 @@ class UserSeeder extends Seeder
         ]);
 
         Personnel::create([
-            'personnel_id' => $personnel->id,
+            'user_id' => $personnel->id,
             'poste' => 'blanchisseur',
-            'date_embauche' => '12/03/2022',
+            'date_embauche' => '2022-03-12',
+            'profilImage' => null,
+            
 
         ]);
 
@@ -63,8 +68,12 @@ class UserSeeder extends Seeder
 
          // Assignation des rôles
 
-        $client->assignRole('client');
-        $personnel->assignRole('personnel');
-        $gestionnaire->assignRole('gestionnaire');
+        // $client->assignRole('client');
+        // $personnel->assignRole('personnel');
+        // $gestionnaire->assignRole('gestionnaire');
+
+        $client->syncRoles('client');           // ✅ Remplace tous les rôles par 'client'
+        $personnel->syncRoles('personnel');     // ✅ Meilleur que assignRole()
+        $gestionnaire->syncRoles('gestionnaire');
     }
 }

@@ -46,7 +46,8 @@ class PersonnelSeeder extends Seeder
 
         foreach ($personnelUserIds as $userId) {
             $personnels[] = [
-                'personnel_id' => $userId, // personnel_id = user.id
+                // 'personnel_id' => $userId, // personnel_id = user.id
+                'user_id' => $userId, 
                 'poste' => $this->randomPoste(),
                 'date_embauche' => now()->subMonths(rand(6, 48))->toDateString(),
                 'pressing_id' => $pressingIds->random(), // assignation aléatoire
