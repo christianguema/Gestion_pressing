@@ -4,11 +4,7 @@ $(document).on('click', '.delete-btn', function () {
   $('#deletePersonnelForm').attr('action', '/gestionnaire/personnel/' + id);
 });
 
-var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-successModal.show();
 
-var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-errorModal.show();
 
 // Remplissage du modal personnel
 $(document).on('click', '.view-btn', function () {
@@ -20,3 +16,9 @@ $(document).on('click', '.view-btn', function () {
     $('#personnel-pressing').text($(this).data('pressing'));
     $('#personnel-birthday').text($(this).data('datenaissance'));
 });
+
+var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+successModal.show();
+
+var errorModal = new bootstrap.Moda(document.getElementById('errorModal'));
+errorModal.show();

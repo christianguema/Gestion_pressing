@@ -14,14 +14,12 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        
-        
+
+
         //création des rôles
         Role::create(['name' => 'client']);
         Role::create(['name' => 'personnel']);
         Role::create(['name' => 'gestionnaire']);
-
-
 
         //Permissions pour les commandes
         Permission::create(['name' => 'view-commande']);
@@ -44,7 +42,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
 
         //Récupère ou crée les rôles
-        $client = Role::where('name', 'client')->first() ?? Role::create(['name' => 'client']);        
+        $client = Role::where('name', 'client')->first() ?? Role::create(['name' => 'client']);
         $personnel = Role::where('name', 'personnel')->first() ?? Role::create(['name' => 'personnel']);
         $gestionnaire = Role::where('name', 'gestionnaire')->first() ?? Role::create(['name' => 'gestionnaire']);
 
@@ -91,7 +89,7 @@ class RolesAndPermissionsSeeder extends Seeder
             $viewCommande, $createCommande, $editCommande,$deleteCommande,
             $viewVetement, $createVetement, $editVetement,$deleteVetement,
             $viewPressing, $createPressing, $editPressing,$deletePressing,
-            $viewUser,$createUser,$editUser,$deleteUser 
+            $viewUser,$createUser,$editUser,$deleteUser
         ]);
 
     }

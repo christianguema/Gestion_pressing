@@ -61,15 +61,31 @@
     @endrole
 
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('commandes.*') ? '' : 'collapsed' }}" data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-shopping-cart-2-fill"></i><span>COMMANDES</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="commande-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="commande-nav" class="nav-content collapse {{ request()->routeIs('commandes.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+
+            @role('gestionnaire')
+                <li>
+                    <a href="{{ route('commandes.index') }}">
+                        <i class="bi bi-circle"></i><span>Toute Les commandes</span>
+                    </a>
+                </li>
+            @endrole
+
             <li>
-                <a href="#">
-                    <i class="bi bi-circle"></i><span>Liste des commandes</span>
+                <a href="{{ route('commandes.index') }}">
+                    <i class="bi bi-circle"></i><span>Commandes terminées</span>
                 </a>
             </li>
+
+            <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>Commandes en attentes</span>
+                </a>
+            </li>
+
             <li>
                 <a href="#">
                     <i class="bi bi-circle"></i><span>Enregistrer une commande</span>

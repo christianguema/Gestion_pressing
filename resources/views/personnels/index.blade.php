@@ -3,7 +3,6 @@
 @section('title', 'Liste des Personnels')
 
 @section('content')
-
 @if(session('success'))
     @include('components.alertModals.success')
 @endif

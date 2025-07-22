@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,8 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
 });
 
 // route des cas d'utilisation du personnel
+Route::middleware(['auth', 'role:personnel'])->prefix('personnel')->group(function () {
+    Route::resource("commandes", CommandeController::class);
+});
 
 require __DIR__.'/auth.php';
