@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('type_prestations', function (Blueprint $table) {
             $table->id('type_prestation_id');
             $table->string('intitule');
+            $table->integer('duree_moyenne')->nullable();
             $table->timestamps();
         });
     }

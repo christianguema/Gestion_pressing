@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('commande_vetement', function (Blueprint $table) {
             $table->id('commande_vetement_id');
 
-            $table->integer('commande_id');
+            $table->unsignedBigInteger('commande_id');
 
-            $table->integer('vetement_id');
+            $table->unsignedBigInteger('vetement_id');
 
-            $table->integer('quantite')->nullable();
+            $table->unsignedBigInteger('quantite')->nullable();
 
             $table->float('poids')->nullable();
 

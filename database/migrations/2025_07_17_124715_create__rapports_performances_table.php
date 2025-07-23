@@ -15,7 +15,7 @@ return new class extends Migration
             
             $table->id('rapport_performance_id');
 
-            $table->integer('gestionnaire_id');
+            $table->unsignedBigInteger('gestionnaire_id');
 
             $table->date('periode');
 
@@ -25,7 +25,7 @@ return new class extends Migration
 
             // $table->string('satisfaction_client');
 
-            $table->integer('pressing_id');
+            $table->unsignedBigInteger('pressing_id');
 
             $table->timestamps();
 

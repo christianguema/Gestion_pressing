@@ -77,12 +77,12 @@
             </li>
             @role('gestionnaire')
             <li>
-                <a href="#">
+                <a href="{{route('type_facturations.index') }}">
                     <i class="bi bi-circle"></i><span>Type facturation</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{route('type_prestations.index') }}">
                     <i class="bi bi-circle"></i><span>Type prestation</span>
                 </a>
             </li>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('vetement_id');
             $table->string('type');
             $table->float('prix_unitaire');
-            $table->integer('categorie_id');
+            $table->unsignedBigInteger('categorie_id');
             $table->timestamps();
 
             $table->foreign('categorie_id')

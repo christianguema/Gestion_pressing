@@ -3,6 +3,8 @@
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\PressingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TypeFacturationController;
+use App\Http\Controllers\TypePrestationController;
 use App\Models\Personnel;
 use Illuminate\Support\Facades\Route;
 
@@ -33,16 +35,37 @@ Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
 
 //Routes pour la gestion du pressing
 
-// Route::resource('pressings', PressingController::class);
-
-Route::prefix('pressings')->name('pressings.')->group(function () {
-    Route::get('/', [PressingController::class, 'index'])->name('index');
-    Route::get('/create', [PressingController::class, 'create'])->name('create');
-    Route::post('/', [PressingController::class, 'store'])->name('store');
-    Route::get('/{pressing}', [PressingController::class, 'show'])->name('show');
-    Route::get('/{pressing}/edit', [PressingController::class, 'edit'])->name('edit');
-    Route::put('/{pressing}', [PressingController::class, 'update'])->name('update');
-    Route::delete('/{pressing}', [PressingController::class, 'destroy'])->name('destroy');
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+    Route::resource('pressings', PressingController::class);
 });
+
+
+
+// Route::prefix('pressings')->name('pressings.')->group(function () {
+//     Route::get('/', [PressingController::class, 'index'])->name('index');
+//     Route::get('/create', [PressingController::class, 'create'])->name('create');
+//     Route::post('/', [PressingController::class, 'store'])->name('store');
+//     Route::get('/{pressing}', [PressingController::class, 'show'])->name('show');
+//     Route::get('/{pressing}/edit', [PressingController::class, 'edit'])->name('edit');
+//     Route::put('/{pressing}', [PressingController::class, 'update'])->name('update');
+//     Route::delete('/{pressing}', [PressingController::class, 'destroy'])->name('destroy');
+// });
+
+
+
+//Routes pour gérer le typeFacturation
+
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+    Route::resource('type_facturations', TypeFacturationController::class);
+});
+
+//Routes pour gérer le typePrestation
+
+
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+    Route::resource('type_prestations', TypePrestationController::class);
+});
+
+
 
 require __DIR__.'/auth.php';

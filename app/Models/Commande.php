@@ -30,6 +30,8 @@ class Commande extends Model
 
     protected $primaryKey = 'commande_id';
 
+    protected $dates = ['date_reception', 'date_livraison'];
+
     // Relations
 
     /**

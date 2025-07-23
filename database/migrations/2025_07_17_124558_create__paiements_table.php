@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('paiements', function (Blueprint $table) {
             $table->id('paiement_id');
-            $table->integer('commande_id');
+            $table->unsignedBigInteger('commande_id');
             $table->float('montant');
             $table->string('mode_paiement');
             $table->string('statut');

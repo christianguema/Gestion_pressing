@@ -15,17 +15,17 @@ return new class extends Migration
             
             $table->id('commande_id');
 
-            $table->integer('client_id');
+            $table->unsignedBigInteger('client_id');
 
-            $table->integer('personnel_id');
+            $table->unsignedBigInteger('personnel_id');
 
-            $table->integer('type_prestation_id');
+            $table->unsignedBigInteger('type_prestation_id');
 
-            $table->integer('type_facturation_id');
+            $table->unsignedBigInteger('type_facturation_id');
 
             //$table->integer('paiement_id');
 
-            $table->integer('pressing_id');
+            $table->unsignedBigInteger('pressing_id');
 
             $table->date('date_reception');
 
