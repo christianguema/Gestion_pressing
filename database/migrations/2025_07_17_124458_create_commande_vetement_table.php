@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('vetement_id');
             $table->integer('quantite')->nullable();
             $table->float('poids')->nullable();
+            $table->string('coleur_vetement')->nullable();
             $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->foreign('vetement_id')->references('vetement_id')->on('vetements')->cascadeOnDelete();
             $table->primary(['commande_id', 'vetement_id']);

@@ -10,11 +10,12 @@ class CommandeVetement extends Pivot
     use HasFactory;
 
     protected $fillable = [
+        'couleur_vetement',
         'quantite',
         'poids',
     ];
 
     protected $primaryKey = ['commande_id','vetement_id'];
 
-    
+
 }

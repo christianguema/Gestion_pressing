@@ -20,10 +20,11 @@ return new class extends Migration
             $table->unsignedBigInteger('pressing_id');
             $table->unsignedBigInteger('paiement_id');
 
+
             $table->date('date_reception');
             $table->date('date_livraison');
-            $table->enum('etat',['En attente', 'En cours', 'Terminé', 'Annulé']);
-            $table->decimal('montant_total', 10, 2);
+            $table->enum('etat',['En_attente', 'En_cours', 'Terminé', 'Annulé']);
+            $table->decimal('montant_total', 10, 2)->nullable();
 
 
             $table->foreign('client_id')

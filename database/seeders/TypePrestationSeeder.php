@@ -20,6 +20,8 @@ class TypePrestationSeeder extends Seeder
         $typePrestations = [
             ['intitule' => 'Nettoyage à sec'],
             ['intitule' => 'Repassage'],
+            ['intitule' => 'Repassage express'],
+            ['intitule' => 'Lavage express'],
             ['intitule' => 'Lavage'],
             ['intitule' => 'Détachage'],
             ['intitule' => 'Teinture'],

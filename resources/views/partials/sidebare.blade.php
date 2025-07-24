@@ -68,26 +68,33 @@
 
             @role('gestionnaire')
                 <li>
-                    <a href="{{ route('commandes.index') }}">
+                    <a href="#">
                         <i class="bi bi-circle"></i><span>Toute Les commandes</span>
                     </a>
                 </li>
             @endrole
 
             <li>
-                <a href="{{ route('commandes.index') }}">
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>Commandes livrées</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{{ route('commandes.endIndex') }}">
                     <i class="bi bi-circle"></i><span>Commandes terminées</span>
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{ route('commandes.pendingIndex') }}">
                     <i class="bi bi-circle"></i><span>Commandes en attentes</span>
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{ route('commandes.create') }}">
                     <i class="bi bi-circle"></i><span>Enregistrer une commande</span>
                 </a>
             </li>

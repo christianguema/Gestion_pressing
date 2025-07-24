@@ -24,11 +24,16 @@ Route::middleware('auth')->group(function () {
 // route des cas d'utilisation du gestionnaire
 
 Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(function () {
+
     Route::resource("personnel", PersonnelController::class);
 });
 
 // route des cas d'utilisation du personnel
-Route::middleware(['auth', 'role:personnel'])->prefix('personnel')->group(function () {
+Route::middleware(['auth'])->prefix('personnel')->group(function () {
+    Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
+
+    Route::get('/commandes/pending', [CommandeController::class, 'pendingIndex'])->name('commandes.pendingIndex');
+
     Route::resource("commandes", CommandeController::class);
 });
 

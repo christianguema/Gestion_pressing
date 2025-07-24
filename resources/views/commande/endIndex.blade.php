@@ -19,7 +19,7 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('commandes.index') }}">Commandes</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('commandes.endIndex') }}">Commandes</a></li>
             <li class="breadcrumb-item active">Listes</li>
         </ol>
     </nav>
@@ -28,7 +28,7 @@
 {{-- button section --}}
 
 <div class="mb-3 d-flex justify-content-between align-items-center">
-    <a href="#" class="btn btn-primary">
+    <a href="{{ route('commandes.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Enregistrer
     </a>
     <div class="dropdown">
@@ -36,12 +36,12 @@
             Filtrer par période
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ route('commandes.index', ['filter' => 'today']) }}">Aujourd'hui</a>
+            <li><a class="dropdown-item" href="{{ route('commandes.endIndex', ['filter' => 'today']) }}">Aujourd'hui</a>
             </li>
-            <li><a class="dropdown-item" href="{{ route('commandes.index', ['filter' => 'yesterday']) }}">Hier</a></li>
-            <li><a class="dropdown-item" href="{{ route('commandes.index', ['filter' => 'last_week']) }}">Semaine
+            <li><a class="dropdown-item" href="{{ route('commandes.endIndex', ['filter' => 'yesterday']) }}">Hier</a></li>
+            <li><a class="dropdown-item" href="{{ route('commandes.endIndex', ['filter' => 'last_week']) }}">Semaine
                     passée</a></li>
-            <li><a class="dropdown-item" href="{{ route('commandes.index', ['filter' => 'last_month']) }}">Mois
+            <li><a class="dropdown-item" href="{{ route('commandes.endIndex', ['filter' => 'last_month']) }}">Mois
                     passé</a></li>
         </ul>
     </div>

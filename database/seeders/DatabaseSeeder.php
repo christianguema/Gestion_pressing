@@ -16,11 +16,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             PressingSeeder::class,
+            CategorieSeeder::class,
+            VetementSeeder::class,
+            TypePrestationSeeder::class,
+            TypeFacturationSeeder::class,
             UserSeeder::class,
             //CategorieSeeder::class,
-            //VetementSeeder::class,
-            //TypePrestationSeeder::class,
-            //TypeFacturationSeeder::class,
+
             // PressingSeeder::class,
             //CommandeSeeder::class,
             //CommandeVetementSeeder::class,

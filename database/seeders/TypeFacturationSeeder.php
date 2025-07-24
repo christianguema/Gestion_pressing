@@ -18,11 +18,8 @@ class TypeFacturationSeeder extends Seeder
 
         // Définis les données à insérer
         $typeFacturations = [
-            ['libelle' => 'Heure'],
-            ['libelle' => 'Pièce'],
-            ['libelle' => 'Forfait'],
-            ['libelle' => 'Journée'],
-            ['libelle' => 'Mois'],
+            ['libelle' => 'par kilo'],
+            ['libelle' => 'par vetement'],
         ];
 
         // Ajoute les timestamps automatiquement
