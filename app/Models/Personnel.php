@@ -14,6 +14,7 @@ class Personnel extends Model
 
     protected $fillable = [
         'personnel_id',
+        'pressing_id',
         'poste',
         'date_embauche',
     ];
@@ -25,7 +26,7 @@ class Personnel extends Model
         return $this->belongsTo(User::class, 'personnel_id', 'id');
     }
 
-    public function commande(): HasMany
+    public function commandes(): HasMany
     {
         return $this->hasMany(Commande::class);
     }

@@ -3,6 +3,9 @@
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PressingController;
+use App\Http\Controllers\TypeFacturationController;
+use App\Http\Controllers\TypePrestationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,8 +27,10 @@ Route::middleware('auth')->group(function () {
 // route des cas d'utilisation du gestionnaire
 
 Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(function () {
-
-    Route::resource("personnel", PersonnelController::class);
+    Route::resource('pressings', PressingController::class);
+    Route::resource('type_prestations', TypePrestationController::class);
+    Route::resource('type_facturations', TypeFacturationController::class);
+    Route::resource("personnels", PersonnelController::class);
 });
 
 // route des cas d'utilisation du personnel

@@ -21,6 +21,7 @@
 
     <!-- Vendor CSS Files -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.cs') }}s" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">

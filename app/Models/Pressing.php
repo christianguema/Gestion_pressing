@@ -23,7 +23,7 @@ class Pressing extends Model
      * Relation avec les personnels :
      * Un pressing peut avoir plusieurs personnels.
      */
-    public function personnel(): HasMany
+    public function personnels(): HasMany
     {
         return $this->hasMany(Personnel::class, 'pressing_id', 'pressing_id');
     }
@@ -32,12 +32,12 @@ class Pressing extends Model
      * Relation avec les commandes :
      * Un pressing peut traiter plusieurs commandes.
      */
-    public function commande(): HasMany
+    public function commandes(): HasMany
     {
         return $this->hasMany(Commande::class, 'pressing_id', 'pressing_id');
     }
 
-    public function rapportPerformance(): HasMany
+    public function rapportPerformances(): HasMany
     {
         return $this->hasMany(RapportsPerformance::class, 'pressing_id', 'pressing_id');
     }

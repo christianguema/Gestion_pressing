@@ -50,7 +50,7 @@ class CommandeController extends Controller
 
         $commandes = $query->get();
 
-        return view('commande.endIndex', compact('commandes', 'filter'));
+        return view('commandes.endIndex', compact('commandes', 'filter'));
     }
 
     public function pendingIndex(Request $request)
@@ -88,7 +88,7 @@ class CommandeController extends Controller
 
         $commandes = $query->get();
 
-        return view('commande.pendingIndex', compact('commandes', 'filter'));
+        return view('commandes.pendingIndex', compact('commandes', 'filter'));
     }
 
 
@@ -100,6 +100,6 @@ class CommandeController extends Controller
         $typeFacturations = TypeFacturation::all();
         $typePrestations = TypePrestation::all();
         $vetements = Vetement::all();
-        return view('commande.create', compact('clients', 'pressings','vetements' ,'typeFacturations', 'typePrestations'));
+        return view('commandes.create', compact('clients', 'pressings','vetements' ,'typeFacturations', 'typePrestations'));
     }
 }

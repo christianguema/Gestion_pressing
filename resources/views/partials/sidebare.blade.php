@@ -37,18 +37,18 @@
     </li><!-- End vetement Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#pressing-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('pressings.*') ? '' : 'collapsed' }}" data-bs-target="#pressing-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-store-3-fill"></i><span>PRESSING</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="pressing-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="pressing-nav" class="nav-content collapse {{ request()->routeIs('pressings.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="#">
+                <a href="{{ route('pressings.index') }}">
                     <i class="bi bi-circle"></i><span>Liste des pressings</span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <i class="bi bi-circle"></i><span>Affecter un employer</span>
+                <a href="{{ route('pressings.create') }}">
+                    <i class="bi bi-circle"></i><span>Enregistrer un pressing</span>
                 </a>
             </li>
             <li>
@@ -100,12 +100,12 @@
             </li>
             @role('gestionnaire')
             <li>
-                <a href="#">
+                <a href="{{route('type_facturations.index') }}">
                     <i class="bi bi-circle"></i><span>Type facturation</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{route('type_prestations.index') }}">
                     <i class="bi bi-circle"></i><span>Type prestation</span>
                 </a>
             </li>
@@ -115,12 +115,12 @@
 
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#payement-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-cash-coin"></i><span>PAYEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
+            <i class="bi bi-cash-coin"></i><span>PAIEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="payement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
                 <a href="#">
-                    <i class="bi bi-circle"></i><span>Enregistrer un payement</span>
+                    <i class="bi bi-circle"></i><span>Enregistrer un paiement</span>
                 </a>
             </li>
 
@@ -152,17 +152,17 @@
 
     @role('gestionnaire')
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('personnel.*') ? '' : 'collapsed' }}" data-bs-target="#compte-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('personnels.*') ? '' : 'collapsed' }}" data-bs-target="#compte-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-user-2-fill"></i><span>COMPTES</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="compte-nav" class="nav-content collapse {{ request()->routeIs('personnel.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="compte-nav" class="nav-content collapse {{ request()->routeIs('personnels.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('personnel.index') }}">
+                <a href="{{ route('personnels.index') }}">
                     <i class="bi bi-circle"></i><span>Liste des personnels</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('personnels.create') }}">
                     <i class="bi bi-circle"></i><span>Ajouter un compte</span>
                 </a>
             </li>

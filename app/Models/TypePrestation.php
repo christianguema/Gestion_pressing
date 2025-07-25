@@ -12,6 +12,7 @@ class TypePrestation extends Model
 
     protected $fillable = [
         'intitule',
+        'duree_moyenne',
     ];
 
     protected $primaryKey = 'type_prestation_id';

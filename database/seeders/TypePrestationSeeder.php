@@ -18,13 +18,13 @@ class TypePrestationSeeder extends Seeder
 
         // Définis les données à insérer
         $typePrestations = [
-            ['intitule' => 'Nettoyage à sec'],
-            ['intitule' => 'Repassage'],
-            ['intitule' => 'Repassage express'],
-            ['intitule' => 'Lavage express'],
-            ['intitule' => 'Lavage'],
-            ['intitule' => 'Détachage'],
-            ['intitule' => 'Teinture'],
+            ['intitule' => 'Nettoyage à sec','duree_moyenne'=>4],
+            ['intitule' => 'Repassage','duree_moyenne'=>2],
+            ['intitule' => 'Repassage express','duree_moyenne'=>1],
+            ['intitule' => 'Lavage express','duree_moyenne'=>1],
+            ['intitule' => 'Lavage','duree_moyenne'=>3],
+            ['intitule' => 'Détachage','duree_moyenne'=>2],
+            ['intitule' => 'Teinture','duree_moyenne'=>3],
         ];
 
         // Ajoute les timestamps automatiquement
