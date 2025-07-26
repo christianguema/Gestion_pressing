@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/PressingController.php
+
 
 namespace App\Http\Controllers;
 
@@ -48,7 +48,7 @@ class PressingController extends Controller
      */
     public function show(Pressing $pressing){
         //compter le nombre de personnel, de commande et de rapport dans le pressing
-        $pressing->loadCount(['personnels','commandes','rapportPerformance']);
+        $pressing->loadCount(['personnels','commandes','rapportPerformances']);
         return view('pressings.show', compact('pressing'));
     }
 
@@ -84,9 +84,10 @@ class PressingController extends Controller
     public function destroy(Pressing $pressing)
     {
         $pressing->loadCount(['personnels', 'commandes']);
-        if ($pressing->personnels_count > 0 || $pressing->commandes_count > 0) {
-    return back()->withErrors(['error' => 'Impossible de supprimer ce pressing : il contient des données associées.']);
-}
+        
+    if ($pressing->personnels_count > 0 || $pressing->commandes_count > 0) {
+        return redirect()->back()->with('error', 'Impossible de supprimer ce pressing : il contient des données associées.');
+    }
         $pressing->delete();
         return redirect()->route('pressings.index')->with('success', 'Pressing supprimé.');
     }

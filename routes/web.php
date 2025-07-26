@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\PressingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TypeFacturationController;
 use App\Http\Controllers\TypePrestationController;
+use App\Http\Controllers\VetementController;
 use App\Models\Personnel;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +67,31 @@ Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
 
 Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
     Route::resource('type_prestations', TypePrestationController::class);
+});
+
+//Routes pour gérer les catégories
+
+
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+    Route::resource('categories', CategorieController::class);
+});
+
+//Routes pour gérer les vêtements
+
+
+Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
+   Route::resource('vetements', VetementController::class);
+});
+
+
+
+// route des cas d'utilisation du personnel
+Route::middleware(['auth'])->prefix('personnels')->group(function () {
+    Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
+
+    Route::get('/commandes/pending', [CommandeController::class, 'pendingIndex'])->name('commandes.pendingIndex');
+
+    Route::resource("commandes", CommandeController::class);
 });
 
 

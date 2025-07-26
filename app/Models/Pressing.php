@@ -37,7 +37,7 @@ class Pressing extends Model
         return $this->hasMany(Commande::class, 'pressing_id', 'pressing_id');
     }
 
-    public function rapportPerformance(): HasMany
+    public function rapportPerformances(): HasMany
     {
         return $this->hasMany(RapportsPerformance::class, 'pressing_id', 'pressing_id');
     }

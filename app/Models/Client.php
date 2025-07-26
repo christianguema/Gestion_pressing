@@ -20,7 +20,7 @@ class Client extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'client_id', 'id');
     }
 
     public function commandes(): HasMany

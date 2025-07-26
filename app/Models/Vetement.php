@@ -22,7 +22,7 @@ class Vetement extends Model
 
     public function categorie(): BelongsTo
     {
-        return $this->belongsTo(Categorie::class);
+        return $this->belongsTo(Categorie::class,'categorie_id');
     }
 
     public function commandes(): BelongsToMany

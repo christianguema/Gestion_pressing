@@ -24,15 +24,15 @@
                             $prenom = auth()->user()->lastname;
                             $nom = auth()->user()->name;
                             $contact = auth()->user()->contact;
-                            $profession = auth()->user()->profession;
+                            $poste = auth()->user()->poste;
                             $email = auth()->user()->email;
 
                             ?>
                             <img src="{{ $user->profileImage ? asset('storage/' . $user->profileImage) : asset('assets/img/profile-img.jpg') }}"
                                 alt="Profile" class="rounded-circle">
                             <h2>{{ ucfirst($nom) }} {{ ucfirst($prenom) }}</h2>
-                            @if (auth()->user()->profession)
-                                <h3>{{ auth()->user()->profession }}</h3>
+                            @if (auth()->user()->poste)
+                                <h3>{{ auth()->user()->poste }}</h3>
                             @endif
                         </div>
                     </div>
@@ -83,9 +83,9 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-3 col-md-4 label">Profession</div>
-                                        @if (auth()->user()->profession)
-                                            <div class="col-lg-9 col-md-8">{{ auth()->user()->profession }}</div>
+                                        <div class="col-lg-3 col-md-4 label">Poste</div>
+                                        @if (auth()->user()->poste)
+                                            <div class="col-lg-9 col-md-8">{{ auth()->user()->poste }}</div>
                                         @else
                                             <div class="col-lg-9 col-md-8">Pas specifier</div>
                                         @endif
@@ -182,11 +182,11 @@
                                         </div>
 
                                         <div class="mb-3 row">
-                                            <label for="profession"
-                                                class="col-md-4 col-lg-3 col-form-label">Profession</label>
+                                            <label for="poste"
+                                                class="col-md-4 col-lg-3 col-form-label">Poste</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="profession" type="text" class="form-control" id="Job"
-                                                    value="{{ old('profession', $profession) }}" placeholder="rien">
+                                                <input name="poste" type="text" class="form-control" id="Job"
+                                                    value="{{ old('poste', $poste) }}" placeholder="rien">
                                             </div>
                                         </div>
 
