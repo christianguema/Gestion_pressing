@@ -18,6 +18,43 @@
     <form id="commandeForm" method="POST" action="{{ route('commandes.store') }}">
         @csrf
         <!-- Step 1 : Client -->
+        {{-- <div class="mb-4 card step-form" id="step1">
+            <div class="card-header">Client</div>
+            <div class="card-body row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Sélectionner un client existant</label>
+                    <select name="client_id" id="client_id" class="mb-2 form-select">
+                        <option value="">-- Aucun, créer un nouveau client --</option>
+                        @foreach($clients as $client)
+                        <option value="{{ $client->client_id }}">{{ $client->user->name }} {{ $client->user->last_name
+                            }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div id="newClientFields" style="display:none;">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nom</label>
+                        <input type="text" name="name" id="client_name" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="last_name" class="form-label">Prénom</label>
+                        <input type="text" name="last_name" id="client_last_name" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="client_contact" class="form-label">Contact</label>
+                        <input type="text" name="contact" id="client_contact" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="client_email" class="form-label">Email</label>
+                        <input type="email" name="email" id="client_email" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                <button type="button" class="btn btn-primary next-step">Suivant</button>
+            </div>
+        </div> --}}
+
         <div class="mb-4 card step-form" id="step1">
             <div class="card-header">Client</div>
             <div class="card-body row g-3">
@@ -59,12 +96,25 @@
         <div class="mb-4 card step-form" id="step2" style="display:none;">
             <div class="card-header">Informations générales</div>
             <div class="card-body row g-3">
+                {{-- @role('personnel') --}}
                 <div hidden>
                     <input type="text" value="{{ Auth::user()->personnel->pressing->pressing_id }}" name="pressing_id"
                         id="pressing_id">
                     <input type="text" value="{{ Auth::user()->personnel->personnel_id }}" name="personnel_id" id="personnel_id">
                 </div>
+                {{-- @endrole --}}
 
+                {{-- @role('gestionnaire')
+                    <div class="col-md-6">
+                        <label for="pressing_id" class="form-label">Pressing</label>
+                        <select name="pressing_id" id="pressing_id" class="form-select" required>
+                            <option value="">Sélectionner un pressing</option>
+                            @foreach($pressings as $pressing)
+                            <option value="{{ $pressing->pressing_id }}">{{ $pressing->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endrole --}}
                 <div class="col-md-6">
                     <label for="type_facturation_id" class="form-label">Type de facturation</label>
                     <select name="type_facturation_id" id="type_facturation_id" class="form-select" required>
@@ -79,7 +129,7 @@
                     <select name="type_prestation_id" id="type_prestation_id" class="form-select" required>
                         <option selected disabled>Sélectionner</option>
                         @foreach($typePrestations as $prestation)
-                            <option value="{{ $prestation->type_prestation_id }}" @required(true)>{{ $prestation->intitule }}</option>
+                        <option value="{{ $prestation->type_prestation_id }}">{{ $prestation->intitule }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -99,7 +149,7 @@
                 </div>
                 <div class="col-md-6" id="prixUnitaireKiloField" style="display:none;">
                     <label for="prix_unitaire_kilo" class="form-label">Prix unitaire par kilo</label>
-                    <input type="number" step="100" min="0" name="prix_unitaire_kilo" id="prix_unitaire_kilo"
+                    <input type="number" step="500" min="0" name="prix_unitaire_kilo" id="prix_unitaire_kilo"
                         class="form-control">
                 </div>
             </div>

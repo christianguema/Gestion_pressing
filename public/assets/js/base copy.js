@@ -1,5 +1,5 @@
-
 //code pour la confirmation de la suppression d'un compte personnel
+
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
     $("#deletePersonnelForm").attr("action", "/gestionnaire/personnels/" + id);
@@ -8,7 +8,9 @@ $(document).on("click", ".delete-btn", function () {
 // Remplissage du modal personnel
 $(document).on("click", ".view-btn", function () {
     $("#personnel-image").attr("src", $(this).data("image"));
-    $("#personnel-nom").text($(this).data("nom") + " " + $(this).data("prenom"));
+    $("#personnel-nom").text(
+        $(this).data("nom") + " " + $(this).data("prenom")
+    );
     $("#personnel-poste").text($(this).data("poste"));
     $("#personnel-email").text($(this).data("email"));
     $("#personnel-contact").text($(this).data("contact"));
@@ -20,17 +22,29 @@ $(document).on("click", ".view-btn", function () {
 $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");
     var libelle = $(this).data("libelle");
+    // Remplit les champs du modal
     $('#modifyfacturation input[name="libelle"]').val(libelle);
-    $("#editFacturation").attr("action", "/gestionnaire/type_facturations/" + id);
+
+    // Met à jour l'action du formulaire
+    $("#editFacturation").attr(
+        "action",
+        "/gestionnaire/type_facturations/" + id
+    );
+    // Ajoute le spoofing method PUT si besoin
     if ($('#editFacturation input[name="_method"]').length === 0) {
-        $("#editFacturation").append('<input type="hidden" name="_method" value="PUT">');
+        $("#editFacturation").append(
+            '<input type="hidden" name="_method" value="PUT">'
+        );
     }
 });
 
 //suppression du type de facturation
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
-    $("#deletefacturationForm").attr("action", "/gestionnaire/type_facturations/" + id);
+    $("#deletefacturationForm").attr(
+        "action",
+        "/gestionnaire/type_facturations/" + id
+    );
 });
 
 //modification du type de prestation
@@ -38,38 +52,57 @@ $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");
     var intitule = $(this).data("intitulle");
     var duree = $(this).data("duree");
+    // Remplit les champs du modal
     $('#modifyfacturation input[name="intitule"]').val(intitule);
     $('#modifyfacturation input[name="duree_moyenne"]').val(duree);
-    $("#editFacturation").attr("action", "/gestionnaire/type_prestations/" + id);
+
+    // Met à jour l'action du formulaire
+    $("#editFacturation").attr(
+        "action",
+        "/gestionnaire/type_prestations/" + id
+    );
+    // Ajoute le spoofing method PUT si besoin
     if ($('#editFacturation input[name="_method"]').length === 0) {
-        $("#editFacturation").append('<input type="hidden" name="_method" value="PUT">');
+        $("#editFacturation").append(
+            '<input type="hidden" name="_method" value="PUT">'
+        );
     }
 });
 
 //suppression du type de prestation
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
-    $("#deleteprestationForm").attr("action", "/gestionnaire/type_prestations/" + id);
+    $("#deleteprestationForm").attr(
+        "action",
+        "/gestionnaire/type_prestations/" + id
+    );
 });
+
 
 //modification du pressing
 $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");
     var nom = $(this).data("libelle");
     var adresse = $(this).data("adress");
+    // Remplit les champs du modal
     $('#modifypressing input[name="nom"]').val(nom);
     $('#modifypressing input[name="adresse"]').val(adresse);
+    // Met à jour l'action du formulaire
     $("#editPressingForm").attr("action", "/gestionnaire/pressings/" + id);
+    // Ajoute le spoofing method PUT si besoin
     if ($('#editPressingForm input[name="_method"]').length === 0) {
-        $("#editPressingForm").append('<input type="hidden" name="_method" value="PUT">');
+        $("#editPressingForm").append(
+            '<input type="hidden" name="_method" value="PUT">'
+        );
     }
 });
-
 //suppression du pressing
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
     $("#deletepressingForm").attr("action", "/gestionnaire/pressings/" + id);
 });
+
+
 
 
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
@@ -115,6 +148,7 @@ $('#showNewClientBtn').on('click', function() {
     $('#newClientFields input').prop('required', true);
 });
 
+
 // Affichage dynamique selon le type de facturation
 $("#type_facturation_id").on("change", function () {
     let selected = $(this).find("option:selected").text().toLowerCase();
@@ -145,7 +179,10 @@ $("#type_facturation_id").on("change", function () {
         $("#prixUnitaireTh").hide();
         $("#vetementsTable tbody tr").each(function () {
             $(this).find(".prix-unitaire-td").hide();
-            $(this).find(".prix-unitaire-input").prop("required", false).val("");
+            $(this)
+                .find(".prix-unitaire-input")
+                .prop("required", false)
+                .val("");
         });
     }
 });
@@ -164,7 +201,19 @@ $(document).on("click", ".prev-step", function () {
     $prev.show();
 });
 
+// Client: afficher les champs de création si aucun client sélectionné
+// $("#client_id").on("change", function () {
+//     if (!$(this).val()) {
+//         $("#newClientFields").show();
+//         $("#newClientFields input").prop("required", true);
+//     } else {
+//         $("#newClientFields").hide();
+//         $("#newClientFields input").prop("required", false);
+//     }
+// });
+
 // Date livraison affichée seulement pour prestation express
+
 $("#type_prestation_id").on("change", function () {
     let selected = $(this).find("option:selected").text().toLowerCase();
     if (selected.includes("express")) {
@@ -176,7 +225,44 @@ $("#type_prestation_id").on("change", function () {
     }
 });
 
-// -- Correction avec index pour vetements --
+// Affichage du champ poids total uniquement pour facturation par poids
+$("#type_facturation_id").on("change", function () {
+    let selected = $(this).find("option:selected").text().toLowerCase();
+    if (selected.includes("kilo") || selected.includes("poids")) {
+        $("#poidsTotalField").show();
+        $("#poids_total").prop("required", true);
+    } else {
+        $("#poidsTotalField").hide();
+        $("#poids_total").prop("required", false).val("");
+    }
+});
+
+// Ajout/suppression de ligne vêtement
+// function createVetementRow() {
+//     return `<tr>
+//         <td>
+//             <input type="text" class="form-control vetement-search" name="vetements[][type]" autocomplete="off" placeholder="Nom du vêtement">
+//             <div class="vetement-suggestions"></div>
+//             <input type="hidden" name="vetements[][vetement_id]" class="vetement-id">
+//         </td>
+//         <td><input type="number" min="1" name="vetements[][quantite]" class="form-control"></td>
+//         <td><input type="text" name="vetements[][couleur_vetement]" class="form-control"></td>
+//         <td class="prix-unitaire-td" style="display:none;">
+//             <input type="number" step="0.01" min="0" name="vetements[][prix_unitaire]" class="form-control prix-unitaire-input" readonly>
+//         </td>
+//         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
+//     </tr>`;
+// }
+
+// $("#addVetementRow").on("click", function () {
+//     $("#vetementsTable tbody").append(createVetementRow());
+//     let selected = $("#type_facturation_id").find("option:selected").text().toLowerCase();
+//     if (selected.includes("vetement")) {
+//         $("#vetementsTable tbody tr:last .prix-unitaire-td").show();
+//         $("#vetementsTable tbody tr:last .prix-unitaire-input").prop("required", true);
+//     }
+// });
+
 let vetementIndex = 0;
 function createVetementRow() {
     return `<tr>
@@ -193,18 +279,12 @@ function createVetementRow() {
         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
     </tr>`;
 }
-
-$("#addVetementRow").on("click", function () {
-    $("#vetementsTable tbody").append(createVetementRow());
+$('#addVetementRow').on('click', function() {
+    $('#vetementsTable tbody').append(createVetementRow());
     vetementIndex++;
-    let selected = $("#type_facturation_id").find("option:selected").text().toLowerCase();
-    if (selected.includes("vetement")) {
-        $("#vetementsTable tbody tr:last .prix-unitaire-td").show();
-        $("#vetementsTable tbody tr:last .prix-unitaire-input").prop("required", true);
-    }
 });
 
-// Suppression d'une ligne
+
 $(document).on("click", ".remove-vetement-row", function () {
     $(this).closest("tr").remove();
 });
@@ -241,7 +321,6 @@ $(document).on("click", ".suggestion-item", function () {
     let vetementId = $item.data("id");
     let vetementType = $item.data("type");
     let prixUnitaire = $item.data("prix");
-
     $input.val(vetementType);
     $input.siblings(".vetement-id").val(vetementId);
     $input.siblings(".vetement-suggestions").hide();
@@ -257,6 +336,10 @@ $(document).on("click", function (e) {
         $(".vetement-suggestions").hide();
     }
 });
+//--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
+
+
+
 
 
 // Affichage des modals de succès et d'erreur
@@ -271,3 +354,6 @@ if (errorModalEl) {
     var errorModal = new bootstrap.Modal(errorModalEl);
     errorModal.show();
 }
+
+
+

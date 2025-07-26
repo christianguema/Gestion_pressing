@@ -58,7 +58,6 @@
                                 </th>
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Reception</th>
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Livraison</th>
-                                <th>Nombre de Vetement</th>
                                 <th>Montant</th>
                                 <th>Etat</th>
                                 <th>ACTION</th>
@@ -67,16 +66,17 @@
                         <tbody>
                             @forelse($commandes as $commande)
                             <tr>
-                                <td>{{ $commande->client?->name ?? '-' }}</td>
+                                <td>{{ $commande->client?->user->name ?? '-' }}</td>
                                 <td>{{ $commande->date_reception ?
                                     \Carbon\Carbon::parse($commande->date_reception)->format('d/m/Y') : '-' }}
                                 </td>
                                 <td>{{ $commande->date_livraison ?
                                     \Carbon\Carbon::parse($commande->date_livraison)->format('d/m/Y') : '-' }}
                                 </td>
-                                <td>{{ $commande->vetements->count() }}</td>
-                                <td>{{ $commande->montant ?? '-' }}</td>
-                                <td class="badge bg-success"><i class="bi bi-check-circle me-1">Terminé</td>
+                                <td>{{ $commande->montant_total ?? '-' }}</td>
+                                <td>
+                                    <span class="badge rounded-pill bg-primary">En attente</span>
+                                </td>
                                 <td>
                                     <!-- Exemple d'action -->
                                     <a href="#" class="btn btn-info btn-sm">

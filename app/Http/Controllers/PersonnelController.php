@@ -30,13 +30,15 @@ class PersonnelController extends Controller
         return view('personnels.index', compact('personnels', 'pressingId', 'pressings'));
     }
 
-    public function create(){
+    public function create()
+    {
         $pressings = Pressing::All();
-        return view('personnels.create',compact('pressings'));
+        return view('personnels.create', compact('pressings'));
     }
 
 
-    public function store(PersonnelRequest $request){
+    public function store(PersonnelRequest $request)
+    {
         DB::beginTransaction();
         try {
 
@@ -45,10 +47,10 @@ class PersonnelController extends Controller
                 'name' => $request['name'],
                 'last_name' => $request['last_name'],
                 'birthday' => $request['birthday'],
-                'contact' =>$request['contact'],
+                'contact' => $request['contact'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'adresse' =>$request['adresse'],
+                'adresse' => $request['adresse'],
 
             ]);
             //ajout de la photo de profil du personnel
@@ -62,12 +64,11 @@ class PersonnelController extends Controller
 
             //envoi d'email d'email
             DB::commit();
-            return redirect()->route('personnels.index')->with('success','Personnel créé avec succès');
-
+            return redirect()->route('personnels.index')->with('success', 'Personnel créé avec succès');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->withErrors(['error' => 'Erreur : ' . $th->getMessage()])
-             ->withInput();
+                ->withInput();
         }
     }
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vetements', function (Blueprint $table) {
             $table->id('vetement_id');
             $table->string('type');
-            $table->float('prix_unitaire');
+            $table->decimal('prix_unitaire', 8, 2);
             $table->integer('categorie_id');
             $table->foreign('categorie_id')->references('categorie_id')->on('categories')->cascadeOnDelete();
             $table->timestamps();

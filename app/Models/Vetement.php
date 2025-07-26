@@ -17,7 +17,7 @@ class Vetement extends Model
         'categorie_id',
     ];
 
-
+    protected $table = 'vetements';
     protected $primaryKey = 'vetement_id';
 
     public function categorie(): BelongsTo
@@ -27,6 +27,6 @@ class Vetement extends Model
 
     public function commandes(): BelongsToMany
     {
-        return $this->belongsToMany(Commande::class)->using(CommandeVetement::class)->withPivot(['quantite', 'poids']);
+        return $this->belongsToMany(Commande::class,'commande_vetement', 'vetement_id', 'commande_id')->using(CommandeVetement::class)->withPivot(['quantite', 'poids', 'prix_unitaire_kilo', 'couleur_vetement']);
     }
 }

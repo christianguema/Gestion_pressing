@@ -11,8 +11,8 @@ class CommandeVetement extends Pivot
 
     protected $fillable = [
         'couleur_vetement',
+        'prix_unitaire',
         'quantite',
-        'poids',
     ];
 
     protected $primaryKey = ['commande_id','vetement_id'];

@@ -33,13 +33,15 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource("personnels", PersonnelController::class);
 });
 
+
 // route des cas d'utilisation du personnel
 Route::middleware(['auth'])->prefix('personnel')->group(function () {
     Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
-
+    Route::get('/commandes/delivered', [CommandeController::class, 'deleveredIndex'])->name('commandes.deliveredIndex');
+    Route::get('/commandes/notDelivered', [CommandeController::class, 'notDeliveredIndex'])->name('commandes.notDeliveredIndex');
     Route::get('/commandes/pending', [CommandeController::class, 'pendingIndex'])->name('commandes.pendingIndex');
 
-    Route::resource("commandes", CommandeController::class);
+    Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });
 
 require __DIR__.'/auth.php';

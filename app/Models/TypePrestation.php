@@ -19,6 +19,6 @@ class TypePrestation extends Model
 
     public function commandes(): HasMany
     {
-        return $this->hasMany(Commande::class);
+        return $this->hasMany(Commande::class,"type_prestation_id", "type_prestation_id");
     }
 }

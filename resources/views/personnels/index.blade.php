@@ -42,7 +42,7 @@
             <li>
                 <a class="dropdown-item {{ (isset($pressingId) && $pressingId == $pressing->id) ? 'active' : '' }}"
                     href="{{ route('personnels.index', ['pressing_id' => $pressing->pressing_id]) }}">
-                    {{ $pressing->nom }}
+                    {{ $pressing->nom }}--{{ $pressing->adresse }}
                 </a>
             </li>
             @endforeach
@@ -53,6 +53,7 @@
 <table class="table table-striped datatable">
     <thead>
         <tr>
+            <th scope="col">Personnel</th>
             <th scope="col">Nom</th>
             <th scope="col">Prenom</th>
             <th scope="col">Contact</th>
@@ -64,11 +65,12 @@
     <tbody>
         @forelse ($personnels as $personnel)
         <tr>
-            <th scope="row">{{ $personnel->user->name }}</th>
+            <td><strong>{{ $loop->iteration }}</strong></td>
+            <td scope="row">{{ $personnel->user->name }}</td>
             <td>{{ $personnel->user->last_name }}</td>
             <td>{{ $personnel->user->contact }}</td>
             <td>{{ $personnel->poste }}</td>
-            <td>{{ $personnel->pressing?->nom }}</td>
+            <td>{{ $personnel->pressing?->nom }}--{{ $personnel->pressing?->adresse }}</td>
             <td>
                 <button class="btn view-btn btn-info btn-sm" data-nom="{{ $personnel->user->name }}"
                     data-prenom="{{ $personnel->user->last_name }}" data-contact="{{ $personnel->user->contact }}"

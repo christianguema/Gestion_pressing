@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->unsignedBigInteger('client_id')->primary();
             $table->foreign('client_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->enum("genre", ['Homme', 'Femme']);
+            $table->enum("genre", ['Homme', 'Femme'])->default('Homme');
             $table->timestamps();
         });
     }

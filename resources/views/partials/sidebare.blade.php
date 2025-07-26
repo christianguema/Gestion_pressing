@@ -61,10 +61,10 @@
     @endrole
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('commandes.*') ? '' : 'collapsed' }}" data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('commandes.*','type_facturations.*', 'type_prestations.*') ? '' : 'collapsed' }}" data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-shopping-cart-2-fill"></i><span>COMMANDES</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="commande-nav" class="nav-content collapse {{ request()->routeIs('commandes.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="commande-nav" class="nav-content collapse {{ request()->routeIs('commandes.*','type_facturations.*', 'type_prestations.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
             @role('gestionnaire')
                 <li>
@@ -75,8 +75,14 @@
             @endrole
 
             <li>
-                <a href="#">
+                <a href="{{ route('commandes.deliveredIndex') }}">
                     <i class="bi bi-circle"></i><span>Commandes livrées</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('commandes.notDeliveredIndex') }}">
+                    <i class="bi bi-circle"></i><span>Commandes non livrées</span>
                 </a>
             </li>
 
@@ -92,12 +98,13 @@
                     <i class="bi bi-circle"></i><span>Commandes en attentes</span>
                 </a>
             </li>
-
+            @role('personnel')
             <li>
                 <a href="{{ route('commandes.create') }}">
                     <i class="bi bi-circle"></i><span>Enregistrer une commande</span>
                 </a>
             </li>
+            @endrole
             @role('gestionnaire')
             <li>
                 <a href="{{route('type_facturations.index') }}">
@@ -138,12 +145,12 @@
         </a>
         <ul id="rapport-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="icons-bootstrap.html">
+                <a href="#">
                     <i class="bi bi-circle"></i><span>Rapport de revenu</span>
                 </a>
             </li>
             <li>
-                <a href="icons-remix.html">
+                <a href="#">
                     <i class="bi bi-circle"></i><span>Rapport performance</span>
                 </a>
             </li>
