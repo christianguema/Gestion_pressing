@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('commande_id');
             $table->unsignedBigInteger('vetement_id');
             $table->integer('quantite')->nullable();
-            $table->string('couleur_vetement')->nullable();
+            $table->string('description')->nullable();
             $table->decimal('prix_unitaire', 8, 2)->nullable();
             $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->foreign('vetement_id')->references('vetement_id')->on('vetements')->cascadeOnDelete();

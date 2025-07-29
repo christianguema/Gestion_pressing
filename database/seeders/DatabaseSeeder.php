@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             VetementSeeder::class,
             TypePrestationSeeder::class,
             TypeFacturationSeeder::class,
+            RemiseSeeder::class,
             UserSeeder::class,
             //CategorieSeeder::class,
 

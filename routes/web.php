@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PressingController;
 use App\Http\Controllers\TypeFacturationController;
 use App\Http\Controllers\TypePrestationController;
+use App\Http\Controllers\VetementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +33,8 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('type_prestations', TypePrestationController::class);
     Route::resource('type_facturations', TypeFacturationController::class);
     Route::resource("personnels", PersonnelController::class);
+    Route::resource('vetements', VetementController::class);
+     Route::resource('categories', CategorieController::class);
 });
 
 

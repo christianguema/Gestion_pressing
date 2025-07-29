@@ -10,7 +10,7 @@ class CommandeVetement extends Pivot
     use HasFactory;
 
     protected $fillable = [
-        'couleur_vetement',
+        'description',
         'prix_unitaire',
         'quantite',
     ];

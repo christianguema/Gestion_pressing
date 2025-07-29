@@ -22,11 +22,11 @@ class Vetement extends Model
 
     public function categorie(): BelongsTo
     {
-        return $this->belongsTo(Categorie::class);
+        return $this->belongsTo(Categorie::class, 'categorie_id', 'categorie_id');
     }
 
     public function commandes(): BelongsToMany
     {
-        return $this->belongsToMany(Commande::class,'commande_vetement', 'vetement_id', 'commande_id')->using(CommandeVetement::class)->withPivot(['quantite', 'poids', 'prix_unitaire_kilo', 'couleur_vetement']);
+        return $this->belongsToMany(Commande::class,'commande_vetement', 'vetement_id', 'commande_id')->using(CommandeVetement::class)->withPivot(['quantite', 'poids', 'prix_unitaire_kilo', 'description']);
     }
 }

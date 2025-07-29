@@ -73,6 +73,9 @@ $(document).on("click", ".delete-btn", function () {
 
 
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
+let vetementIndex = 0;
+updatePrixUnitaireKilo();
+// Recherche client
 $('#client_search').on('input', function() {
     let search = $(this).val().toLowerCase();
     let matches = clients.filter(c =>
@@ -80,7 +83,6 @@ $('#client_search').on('input', function() {
     );
     let $suggestions = $('#clientSuggestions');
     $suggestions.empty();
-
     if (search && matches.length) {
         matches.forEach(c => {
             $suggestions.append(
@@ -97,8 +99,6 @@ $('#client_search').on('input', function() {
         $('#showNewClientBtn').hide();
     }
 });
-
-// Sélection d'un client existant
 $(document).on('click', '.client-suggestion', function() {
     $('#client_id').val($(this).data('id'));
     $('#client_search').val($(this).data('name') + ' ' + $(this).data('lastname'));
@@ -107,13 +107,42 @@ $(document).on('click', '.client-suggestion', function() {
     $('#newClientFields').hide();
     $('#newClientFields input').prop('required', false);
 });
-
-// Affiche le formulaire d'ajout du client si on clique sur le bouton
 $('#showNewClientBtn').on('click', function() {
     $('#client_id').val('');
     $('#newClientFields').show();
     $('#newClientFields input').prop('required', true);
 });
+
+// Navigation multi-step
+$(document).on('click', '.next-step', function() {
+    let $current = $(this).closest('.step-form');
+    let $next = $current.next('.step-form');
+    $current.hide();
+    $next.show();
+});
+$(document).on('click', '.prev-step', function() {
+    let $current = $(this).closest('.step-form');
+    let $prev = $current.prev('.step-form');
+    $current.hide();
+    $prev.show();
+});
+
+// Quand on change le type de prestation ou le type de facturation
+function updatePrixUnitaireKilo() {
+    let facturation = $('#type_facturation_id option:selected').text().toLowerCase();
+    let prestationId = $('#type_prestation_id').val();
+    let prestation = typePrestations.find(p => p.type_prestation_id == prestationId);
+
+    if (facturation.includes('kilo') && prestation) {
+        $('#prix_unitaire_kilo').val(prestation.cout_par_kilo);
+        $('#prix_unitaire_kilo').prop('readonly', true);
+    } else {
+        $('#prix_unitaire_kilo').val('');
+        $('#prix_unitaire_kilo').prop('readonly', false);
+    }
+}
+
+$('#type_facturation_id, #type_prestation_id').on('change', updatePrixUnitaireKilo);
 
 // Affichage dynamique selon le type de facturation
 $("#type_facturation_id").on("change", function () {
@@ -122,62 +151,49 @@ $("#type_facturation_id").on("change", function () {
         $("#poidsTotalField").show();
         $("#prixUnitaireKiloField").show();
         $("#poids_total, #prix_unitaire_kilo").prop("required", true);
-        $("#step3").hide();
-        $("#nextToStep3").hide();
-        $("#submitKilo").show();
-    } else {
+        $("#step3").show();
+        $("#nextToStep3").show();
+        $("#submitKilo").hide();
+        $("#prixUnitaireTh").hide();
+        $("#vetementsTable tbody tr").each(function () {
+            $(this).find(".prix-unitaire-td").hide();
+            $(this).find(".prix-unitaire-input").prop("required", false).val('');
+        });
+    } else if (selected.includes("vetement")) {
         $("#poidsTotalField").hide();
         $("#prixUnitaireKiloField").hide();
         $("#poids_total, #prix_unitaire_kilo").prop("required", false).val("");
         $("#step3").show();
         $("#nextToStep3").show();
         $("#submitKilo").hide();
-    }
-
-    // Affiche ou cache le champ prix unitaire dans la table vêtements
-    if (selected.includes("vetement")) {
         $("#prixUnitaireTh").show();
         $("#vetementsTable tbody tr").each(function () {
             $(this).find(".prix-unitaire-td").show();
             $(this).find(".prix-unitaire-input").prop("required", true);
         });
     } else {
-        $("#prixUnitaireTh").hide();
-        $("#vetementsTable tbody tr").each(function () {
-            $(this).find(".prix-unitaire-td").hide();
-            $(this).find(".prix-unitaire-input").prop("required", false).val("");
-        });
+        $("#poidsTotalField").hide();
+        $("#prixUnitaireKiloField").hide();
+        $("#poids_total, #prix_unitaire_kilo").prop("required", false).val("");
+        $("#step3").hide();
+        $("#nextToStep3").show();
+        $("#submitKilo").hide();
     }
-});
-
-// Multi-step navigation
-$(document).on("click", ".next-step", function () {
-    let $current = $(this).closest(".step-form");
-    let $next = $current.next(".step-form");
-    $current.hide();
-    $next.show();
-});
-$(document).on("click", ".prev-step", function () {
-    let $current = $(this).closest(".step-form");
-    let $prev = $current.prev(".step-form");
-    $current.hide();
-    $prev.show();
 });
 
 // Date livraison affichée seulement pour prestation express
-$("#type_prestation_id").on("change", function () {
-    let selected = $(this).find("option:selected").text().toLowerCase();
-    if (selected.includes("express")) {
-        $("#dateLivraisonField").show();
-        $("#date_livraison").prop("required", true);
+$('#type_prestation_id').on('change', function() {
+    let selected = $(this).find('option:selected').text().toLowerCase();
+    if (selected.includes('express')) {
+        $('#dateLivraisonField').show();
+        $('#date_livraison').prop('required', true);
     } else {
-        $("#dateLivraisonField").hide();
-        $("#date_livraison").prop("required", false).val("");
+        $('#dateLivraisonField').hide();
+        $('#date_livraison').prop('required', false).val('');
     }
 });
 
-// -- Correction avec index pour vetements --
-let vetementIndex = 0;
+// Ajout/suppression de ligne vêtement
 function createVetementRow() {
     return `<tr>
         <td>
@@ -186,88 +202,71 @@ function createVetementRow() {
             <input type="hidden" name="vetements[${vetementIndex}][vetement_id]" class="vetement-id">
         </td>
         <td><input type="number" min="1" name="vetements[${vetementIndex}][quantite]" class="form-control"></td>
-        <td><input type="text" name="vetements[${vetementIndex}][couleur_vetement]" class="form-control"></td>
+        <td><input type="text" name="vetements[${vetementIndex}][description]" class="form-control"></td>
         <td class="prix-unitaire-td" style="display:none;">
             <input type="number" step="0.01" min="0" name="vetements[${vetementIndex}][prix_unitaire]" class="form-control prix-unitaire-input" readonly>
         </td>
         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
     </tr>`;
 }
-
-$("#addVetementRow").on("click", function () {
-    $("#vetementsTable tbody").append(createVetementRow());
-    vetementIndex++;
-    let selected = $("#type_facturation_id").find("option:selected").text().toLowerCase();
-    if (selected.includes("vetement")) {
-        $("#vetementsTable tbody tr:last .prix-unitaire-td").show();
-        $("#vetementsTable tbody tr:last .prix-unitaire-input").prop("required", true);
+$('#addVetementRow').on('click', function() {
+    $('#vetementsTable tbody').append(createVetementRow());
+    let selected = $('#type_facturation_id').find('option:selected').text().toLowerCase();
+    if (selected.includes('vetement')) {
+        $('#vetementsTable tbody tr:last .prix-unitaire-td').show();
+        $('#vetementsTable tbody tr:last .prix-unitaire-input').prop('required', true);
     }
+    vetementIndex++;
 });
-
-// Suppression d'une ligne
-$(document).on("click", ".remove-vetement-row", function () {
-    $(this).closest("tr").remove();
+$(document).on('click', '.remove-vetement-row', function() {
+    $(this).closest('tr').remove();
 });
 
 // Recherche assistée vêtements
-function getVetementOptions(search = "") {
+function getVetementOptions(search = '') {
     if (!search) return vetements;
-    return vetements.filter((v) =>
-        v.type.toLowerCase().includes(search.toLowerCase())
-    );
+    return vetements.filter(v => v.type.toLowerCase().includes(search.toLowerCase()));
 }
-
-$(document).on("input", ".vetement-search", function () {
+$(document).on('input', '.vetement-search', function() {
     let $input = $(this);
     let search = $input.val();
     let options = getVetementOptions(search);
-    let $suggestions = $input.siblings(".vetement-suggestions");
+    let $suggestions = $input.siblings('.vetement-suggestions');
     $suggestions.empty();
     if (search && options.length) {
-        options.forEach((v) => {
-            $suggestions.append(
-                `<div class="suggestion-item" data-id="${v.vetement_id}" data-type="${v.type}" data-prix="${v.prix_unitaire}">${v.type}</div>`
-            );
+        options.forEach(v => {
+            $suggestions.append(`<div class="suggestion-item" data-id="${v.vetement_id}" data-type="${v.type}" data-prix="${v.prix_unitaire}">${v.type}</div>`);
         });
         $suggestions.show();
     } else {
         $suggestions.hide();
     }
 });
-
-$(document).on("click", ".suggestion-item", function () {
+$(document).on('click', '.suggestion-item', function() {
     let $item = $(this);
-    let $input = $item.closest("td").find(".vetement-search");
-    let vetementId = $item.data("id");
-    let vetementType = $item.data("type");
-    let prixUnitaire = $item.data("prix");
-
+    let $input = $item.closest('td').find('.vetement-search');
+    let vetementId = $item.data('id');
+    let vetementType = $item.data('type');
+    let prixUnitaire = $item.data('prix');
     $input.val(vetementType);
-    $input.siblings(".vetement-id").val(vetementId);
-    $input.siblings(".vetement-suggestions").hide();
+    $input.siblings('.vetement-id').val(vetementId);
+    $input.siblings('.vetement-suggestions').hide();
 
-    // Remplir et bloquer le champ prix unitaire
-    let $prixInput = $item.closest("tr").find(".prix-unitaire-input");
-    $prixInput.val(prixUnitaire);
-    $prixInput.prop("readonly", true);
+    // Remplir et bloquer le champ prix unitaire si facturation par vêtement
+    let selected = $('#type_facturation_id').find('option:selected').text().toLowerCase();
+    let $prixInput = $item.closest('tr').find('.prix-unitaire-input');
+    if (selected.includes('vetement')) {
+        $prixInput.val(prixUnitaire);
+        $prixInput.prop('readonly', true);
+    } else {
+        $prixInput.val('');
+        $prixInput.prop('readonly', false);
+    }
 });
-
-$(document).on("click", function (e) {
-    if (!$(e.target).hasClass("vetement-search")) {
-        $(".vetement-suggestions").hide();
+$(document).on('click', function(e) {
+    if (!$(e.target).hasClass('vetement-search')) {
+        $('.vetement-suggestions').hide();
     }
 });
 
 
-// Affichage des modals de succès et d'erreur
-var successModalEl = document.getElementById("successModal");
-if (successModalEl) {
-    var successModal = new bootstrap.Modal(successModalEl);
-    successModal.show();
-}
-
-var errorModalEl = document.getElementById("errorModal");
-if (errorModalEl) {
-    var errorModal = new bootstrap.Modal(errorModalEl);
-    errorModal.show();
-}

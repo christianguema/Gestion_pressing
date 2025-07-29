@@ -78,7 +78,6 @@ $(document).on("click", ".delete-btn", function () {
     );
 });
 
-
 //modification du pressing
 $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");
@@ -96,6 +95,7 @@ $(document).on("click", ".edit-btn", function () {
         );
     }
 });
+
 //suppression du pressing
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
@@ -103,51 +103,50 @@ $(document).on("click", ".delete-btn", function () {
 });
 
 
-
-
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
-$('#client_search').on('input', function() {
+$("#client_search").on("input", function () {
     let search = $(this).val().toLowerCase();
-    let matches = clients.filter(c =>
+    let matches = clients.filter((c) =>
         c.user.name.toLowerCase().includes(search)
     );
-    let $suggestions = $('#clientSuggestions');
+    let $suggestions = $("#clientSuggestions");
     $suggestions.empty();
 
     if (search && matches.length) {
-        matches.forEach(c => {
+        matches.forEach((c) => {
             $suggestions.append(
                 `<button type="button" class="list-group-item list-group-item-action client-suggestion" data-id="${c.client_id}" data-name="${c.user.name}" data-lastname="${c.user.last_name}">${c.user.name} ${c.user.last_name}</button>`
             );
         });
         $suggestions.show();
-        $('#showNewClientBtn').hide();
+        $("#showNewClientBtn").hide();
     } else if (search) {
         $suggestions.hide();
-        $('#showNewClientBtn').show();
+        $("#showNewClientBtn").show();
     } else {
         $suggestions.hide();
-        $('#showNewClientBtn').hide();
+        $("#showNewClientBtn").hide();
     }
 });
 
 // Sélection d'un client existant
-$(document).on('click', '.client-suggestion', function() {
-    $('#client_id').val($(this).data('id'));
-    $('#client_search').val($(this).data('name') + ' ' + $(this).data('lastname'));
-    $('#clientSuggestions').hide();
-    $('#showNewClientBtn').hide();
-    $('#newClientFields').hide();
-    $('#newClientFields input').prop('required', false);
+$(document).on("click", ".client-suggestion", function () {
+    $("#client_id").val($(this).data("id"));
+    $("#client_search").val(
+        $(this).data("name") + " " + $(this).data("lastname")
+    );
+    $("#clientSuggestions").hide();
+    $("#showNewClientBtn").hide();
+    $("#newClientFields").hide();
+    $("#newClientFields input").prop("required", false);
 });
 
 // Affiche le formulaire d'ajout du client si on clique sur le bouton
-$('#showNewClientBtn').on('click', function() {
-    $('#client_id').val('');
-    $('#newClientFields').show();
-    $('#newClientFields input').prop('required', true);
+$("#showNewClientBtn").on("click", function () {
+    $("#client_id").val("");
+    $("#newClientFields").show();
+    $("#newClientFields input").prop("required", true);
 });
-
 
 // Affichage dynamique selon le type de facturation
 $("#type_facturation_id").on("change", function () {
@@ -238,30 +237,36 @@ $("#type_facturation_id").on("change", function () {
 });
 
 // Ajout/suppression de ligne vêtement
-// function createVetementRow() {
-//     return `<tr>
-//         <td>
-//             <input type="text" class="form-control vetement-search" name="vetements[][type]" autocomplete="off" placeholder="Nom du vêtement">
-//             <div class="vetement-suggestions"></div>
-//             <input type="hidden" name="vetements[][vetement_id]" class="vetement-id">
-//         </td>
-//         <td><input type="number" min="1" name="vetements[][quantite]" class="form-control"></td>
-//         <td><input type="text" name="vetements[][couleur_vetement]" class="form-control"></td>
-//         <td class="prix-unitaire-td" style="display:none;">
-//             <input type="number" step="0.01" min="0" name="vetements[][prix_unitaire]" class="form-control prix-unitaire-input" readonly>
-//         </td>
-//         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
-//     </tr>`;
-// }
+function createVetementRow() {
+    return `<tr>
+        <td>
+            <input type="text" class="form-control vetement-search" name="vetements[][type]" autocomplete="off" placeholder="Nom du vêtement">
+            <div class="vetement-suggestions"></div>
+            <input type="hidden" name="vetements[][vetement_id]" class="vetement-id">
+        </td>
+        <td><input type="number" min="1" name="vetements[][quantite]" class="form-control"></td>
+        <td><input type="text" name="vetements[][couleur_vetement]" class="form-control"></td>
+        <td class="prix-unitaire-td" style="display:none;">
+            <input type="number" step="0.01" min="0" name="vetements[][prix_unitaire]" class="form-control prix-unitaire-input" readonly>
+        </td>
+        <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
+    </tr>`;
+}
 
-// $("#addVetementRow").on("click", function () {
-//     $("#vetementsTable tbody").append(createVetementRow());
-//     let selected = $("#type_facturation_id").find("option:selected").text().toLowerCase();
-//     if (selected.includes("vetement")) {
-//         $("#vetementsTable tbody tr:last .prix-unitaire-td").show();
-//         $("#vetementsTable tbody tr:last .prix-unitaire-input").prop("required", true);
-//     }
-// });
+$("#addVetementRow").on("click", function () {
+    $("#vetementsTable tbody").append(createVetementRow());
+    let selected = $("#type_facturation_id")
+        .find("option:selected")
+        .text()
+        .toLowerCase();
+    if (selected.includes("vetement")) {
+        $("#vetementsTable tbody tr:last .prix-unitaire-td").show();
+        $("#vetementsTable tbody tr:last .prix-unitaire-input").prop(
+            "required",
+            true
+        );
+    }
+});
 
 let vetementIndex = 0;
 function createVetementRow() {
@@ -279,11 +284,11 @@ function createVetementRow() {
         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
     </tr>`;
 }
-$('#addVetementRow').on('click', function() {
-    $('#vetementsTable tbody').append(createVetementRow());
+
+$("#addVetementRow").on("click", function () {
+    $("#vetementsTable tbody").append(createVetementRow());
     vetementIndex++;
 });
-
 
 $(document).on("click", ".remove-vetement-row", function () {
     $(this).closest("tr").remove();
@@ -338,10 +343,6 @@ $(document).on("click", function (e) {
 });
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
 
-
-
-
-
 // Affichage des modals de succès et d'erreur
 var successModalEl = document.getElementById("successModal");
 if (successModalEl) {
@@ -354,6 +355,3 @@ if (errorModalEl) {
     var errorModal = new bootstrap.Modal(errorModalEl);
     errorModal.show();
 }
-
-
-

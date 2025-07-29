@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\Pressing;
-use App\Models\Remise;
 use App\Models\TypeFacturation;
 use App\Models\TypePrestation;
 use App\Models\User;
@@ -136,15 +135,13 @@ class CommandeController extends Controller
         $typeFacturations = TypeFacturation::all();
         $typePrestations = TypePrestation::all();
         $vetements = Vetement::all();
-        $remises = Remise::all();
-        return view('commandes.create', compact('clients', 'pressings', 'vetements', 'typeFacturations', 'typePrestations', 'remises'));
+        return view('commandes.create', compact('clients', 'pressings', 'vetements', 'typeFacturations', 'typePrestations'));
     }
 
     public function store(Request $request)
     {
         try {
-            //dd($request->all());
-           DB::beginTransaction();
+            DB::beginTransaction();
 
             // 1. Création ou sélection du client
             if ($request->filled('client_id')) {
@@ -175,18 +172,89 @@ class CommandeController extends Controller
                 }
             }
 
-            //gestion des remises
-            $remise = null;
-            if ($request->filled('remise_id')) {
-                $remise = Remise::find($request->input('remise_id'));
-                if ($remise) {
-                    if ($remise->type_remise === 'pourcentage') {
-                        $montant_total -= ($montant_total * $remise->valeur / 100);
-                    } elseif ($remise->type_remise === 'fixe') {
-                        $montant_total -= $remise->valeur;
-                    }
+            // 2. Création de la commande
+            $commande = Commande::create([
+                'client_id' => $client_id,
+                'pressing_id' => $request->input('pressing_id'),
+                'personnel_id' => $request->input('personnel_id'),
+                'type_facturation_id' => $request->input('type_facturation_id'),
+                'type_prestation_id' => $request->input('type_prestation_id'),
+                'date_reception' => $request->input('date_reception'),
+                'date_livraison' => $request->input('date_livraison') ?? now()->addDays(3),
+                'etat' => 'En_attente',
+                'poids_total' => $request->input('poids_total'),
+                'prix_unitaire_kilo' => $request->input('prix_unitaire_kilo'),
+                'montant_total' => $montant_total,
+            ]);
+
+            // Ajout des lignes de commande
+            if ($request->has('vetements')) {
+                foreach ($request->input('vetements') as $vetement) {
+                    $commande->vetements()->attach($vetement['vetement_id'] ?? null, [
+                        'quantite' => $vetement['quantite'] ?? 1,
+                        'couleur_vetement' => $vetement['couleur_vetement'] ?? null,
+                        'prix_unitaire' => $vetement['prix_unitaire'] ?? null,
+                    ]);
                 }
             }
+
+            DB::commit();
+            return redirect()->route('commandes.pendingIndex')->with('success', 'Commande enregistrée avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('commandes.create')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
+        }
+    }
+}
+
+
+// public function store2(Request $request)
+    {
+        try {
+            dd($request->all());
+            DB::beginTransaction();
+
+            // 1. Création ou sélection du client
+            if ($request->filled('client_id')) {
+                $client_id = $request->input('client_id');
+            } else {
+                $user = User::create([
+                    'name' => $request->input('name'),
+                    'last_name' => $request->input('last_name'),
+                    'contact' => $request->input('contact'),
+                    'email' => $request->input('email'),
+                ]);
+                $client = Client::create([
+                    'client_id' => $user->id,
+                ]);
+                $client_id = $client->client_id;
+            }
+
+            // Calcul du montant total
+            $montant_total = 0;
+            $typeFacturation = TypeFacturation::find($request->input('type_facturation_id'));
+            if ($typeFacturation && str_contains(strtolower($typeFacturation->libelle), 'kilo')) {
+                $montant_total = ($request->input('poids_total') ?? 0) * ($request->input('cout_par_kilo') ?? 0);
+            } elseif ($request->has('vetements')) {
+                foreach ($request->input('vetements') as $vetement) {
+                    $quantite = $vetement['quantite'] ?? 1;
+                    $prix_unitaire = $vetement['prix_unitaire'] ?? 0;
+                    $montant_total += $quantite * $prix_unitaire;
+                }
+            }
+
+            // //gestion des remises
+            // $remise = null;
+            // if ($request->filled('remise_id')) {
+            //     $remise = Remise::find($request->input('remise_id'));
+            //     if ($remise) {
+            //         if ($remise->type_remise === 'pourcentage') {
+            //             $montant_total -= ($montant_total * $remise->valeur / 100);
+            //         } elseif ($remise->type_remise === 'fixe') {
+            //             $montant_total -= $remise->valeur;
+            //         }
+            //     }
+            // }
 
             // 2. Création de la commande
             $commande = Commande::create([
@@ -197,7 +265,7 @@ class CommandeController extends Controller
                 'type_prestation_id' => $request->input('type_prestation_id'),
                 'date_reception' => $request->input('date_reception'),
                 'remise_id' => $remise ? $remise->remise_id : null,
-                'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays($typeFacturation->duree_moyenne) : now()->addDays(3),
+                'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays(3) : now()->addDays(3),
                 'etat' => 'En_attente',
                 'poids_total' => $request->input('poids_total'),
                 'prix_unitaire_kilo' => $request->input('prix_unitaire_kilo'),
@@ -226,4 +294,3 @@ class CommandeController extends Controller
             return redirect()->route('commandes.create')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
         }
     }
-}

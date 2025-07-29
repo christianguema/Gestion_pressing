@@ -22,6 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger('paiement_id')->nullable();
 
             $table->float('poids_total')->nullable();
+            $table->unsignedBigInteger('remise_id')->nullable();
+
+            $table->foreign('remise_id')->references('remise_id')->on('remises')->nullOnDelete();
             $table->decimal('prix_unitaire_kilo', 8, 2)->nullable();
             $table->date('date_reception');
             $table->date('date_livraison');

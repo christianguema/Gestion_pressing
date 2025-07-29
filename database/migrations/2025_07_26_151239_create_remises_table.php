@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_prestations', function (Blueprint $table) {
-            $table->id('type_prestation_id');
-            $table->string('intitule');
-            $table->integer('cout_par_kilo')->nullable();
-            $table->integer('duree_moyenne')->nullable();
+        Schema::create('remises', function (Blueprint $table) {
+            $table->id('remise_id');
+            $table->enum('type_remise',value(['pourcentage', 'fixe']));
+            $table->decimal('valeur', 10, 2);
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_prestations');
+        Schema::dropIfExists('remises');
     }
 };

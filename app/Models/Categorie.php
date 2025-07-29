@@ -14,10 +14,10 @@ class Categorie extends Model
         'intitule',
     ];
 
-     protected $primaryKey = 'categorie_id';
+    protected $primaryKey = 'categorie_id';
 
     public function vetements(): HasMany
     {
-        return $this->hasMany(Vetement::class);
+        return $this->hasMany(Vetement::class, 'categorie_id', 'categorie_id');
     }
 }
