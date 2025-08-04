@@ -17,43 +17,43 @@ use Illuminate\Support\Facades\DB;
 class CommandeController extends Controller
 {
 
-    public function endIndex(Request $request)
-    {
-        $filter = $request->get('filter');
-        $query = Commande::query();
+    // public function endIndex(Request $request)
+    // {
+    //     $filter = $request->get('filter');
+    //     $query = Commande::query();
 
-        // Récupère l'utilisateur connecté
-        $user = Auth::user();
+    //     // Récupère l'utilisateur connecté
+    //     $user = Auth::user();
 
-        // Récupère l'id du personnel lié à l'utilisateur
-        $personnelId = $user->personnel->personnel_id ?? null;
+    //     // Récupère l'id du personnel lié à l'utilisateur
+    //     $personnelId = $user->personnel->personnel_id ?? null;
 
-        // Filtre par personnel connecté
-        if ($personnelId) {
-            $query->where('personnel_id', $personnelId);
-        }
+    //     // Filtre par personnel connecté
+    //     if ($personnelId) {
+    //         $query->where('personnel_id', $personnelId);
+    //     }
 
-        // Filtre par période
-        if ($filter === 'today') {
-            $query->whereDate('date_reception', Carbon::today());
-        } elseif ($filter === 'yesterday') {
-            $query->whereDate('date_reception', Carbon::yesterday())->where('etat', 'Terminé');
-        } elseif ($filter === 'last_week') {
-            $query->whereBetween('date_reception', [
-                Carbon::now()->subWeek()->startOfWeek(),
-                Carbon::now()->subWeek()->endOfWeek()
-            ])->where('etat', 'Terminé');
-        } elseif ($filter === 'last_month') {
-            $query->whereBetween('date_reception', [
-                Carbon::now()->subMonth()->startOfMonth(),
-                Carbon::now()->subMonth()->endOfMonth()
-            ])->where('etat', 'Terminé');
-        }
+    //     // Filtre par période
+    //     if ($filter === 'today') {
+    //         $query->whereDate('date_reception', Carbon::today());
+    //     } elseif ($filter === 'yesterday') {
+    //         $query->whereDate('date_reception', Carbon::yesterday())->where('etat', 'Terminé');
+    //     } elseif ($filter === 'last_week') {
+    //         $query->whereBetween('date_reception', [
+    //             Carbon::now()->subWeek()->startOfWeek(),
+    //             Carbon::now()->subWeek()->endOfWeek()
+    //         ])->where('etat', 'Terminé');
+    //     } elseif ($filter === 'last_month') {
+    //         $query->whereBetween('date_reception', [
+    //             Carbon::now()->subMonth()->startOfMonth(),
+    //             Carbon::now()->subMonth()->endOfMonth()
+    //         ])->where('etat', 'Terminé');
+    //     }
 
-        $commandes = $query->get();
+    //     $commandes = $query->get();
 
-        return view('commandes.endIndex', compact('commandes', 'filter'));
-    }
+    //     return view('commandes.endIndex', compact('commandes', 'filter'));
+    // }
 
     public function pendingIndex(Request $request)
     {
@@ -90,41 +90,41 @@ class CommandeController extends Controller
 
         $commandes = $query->get();
 
-        return view('commandes.pendingIndex', compact('commandes', 'filter'));
+        return view('commandes.Index', compact('commandes', 'filter'));
     }
 
-    public function deleveredIndex()
-    {
-        // Récupère l'utilisateur connecté
-        $user = Auth::user();
+    // public function deleveredIndex()
+    // {
+    //     // Récupère l'utilisateur connecté
+    //     $user = Auth::user();
 
-        // Récupère l'id du personnel lié à l'utilisateur
-        $personnelId = $user->personnel->personnel_id ?? null;
+    //     // Récupère l'id du personnel lié à l'utilisateur
+    //     $personnelId = $user->personnel->personnel_id ?? null;
 
-        // Récupère les commandes livrées par le personnel connecté
-        $commandes = Commande::where('etat', 'Livré')
-            ->where('personnel_id', $personnelId)
-            ->get();
+    //     // Récupère les commandes livrées par le personnel connecté
+    //     $commandes = Commande::where('etat', 'Livré')
+    //         ->where('personnel_id', $personnelId)
+    //         ->get();
 
-        return view('commandes.deleveredIndex', compact('commandes'));
-    }
+    //     return view('commandes.deleveredIndex', compact('commandes'));
+    // }
 
 
-    public function notdeliveredIndex()
-    {
-        // Récupère l'utilisateur connecté
-        $user = Auth::user();
+    // public function notdeliveredIndex()
+    // {
+    //     // Récupère l'utilisateur connecté
+    //     $user = Auth::user();
 
-        // Récupère l'id du personnel lié à l'utilisateur
-        $personnelId = $user->personnel->personnel_id ?? null;
+    //     // Récupère l'id du personnel lié à l'utilisateur
+    //     $personnelId = $user->personnel->personnel_id ?? null;
 
-        // Récupère les commandes non livrées par le personnel connecté
-        $commandes = Commande::where('etat', 'Non_livré')
-            ->where('personnel_id', $personnelId)
-            ->get();
+    //     // Récupère les commandes non livrées par le personnel connecté
+    //     $commandes = Commande::where('etat', 'Non_livré')
+    //         ->where('personnel_id', $personnelId)
+    //         ->get();
 
-        return view('commandes.notDeleveredIndex', compact('commandes'));
-    }
+    //     return view('commandes.notDeleveredIndex', compact('commandes'));
+    // }
 
 
     public function create()
@@ -209,88 +209,88 @@ class CommandeController extends Controller
 
 
 // public function store2(Request $request)
-    {
-        try {
-            dd($request->all());
-            DB::beginTransaction();
+{
+    try {
+        dd($request->all());
+        DB::beginTransaction();
 
-            // 1. Création ou sélection du client
-            if ($request->filled('client_id')) {
-                $client_id = $request->input('client_id');
-            } else {
-                $user = User::create([
-                    'name' => $request->input('name'),
-                    'last_name' => $request->input('last_name'),
-                    'contact' => $request->input('contact'),
-                    'email' => $request->input('email'),
-                ]);
-                $client = Client::create([
-                    'client_id' => $user->id,
-                ]);
-                $client_id = $client->client_id;
-            }
-
-            // Calcul du montant total
-            $montant_total = 0;
-            $typeFacturation = TypeFacturation::find($request->input('type_facturation_id'));
-            if ($typeFacturation && str_contains(strtolower($typeFacturation->libelle), 'kilo')) {
-                $montant_total = ($request->input('poids_total') ?? 0) * ($request->input('cout_par_kilo') ?? 0);
-            } elseif ($request->has('vetements')) {
-                foreach ($request->input('vetements') as $vetement) {
-                    $quantite = $vetement['quantite'] ?? 1;
-                    $prix_unitaire = $vetement['prix_unitaire'] ?? 0;
-                    $montant_total += $quantite * $prix_unitaire;
-                }
-            }
-
-            // //gestion des remises
-            // $remise = null;
-            // if ($request->filled('remise_id')) {
-            //     $remise = Remise::find($request->input('remise_id'));
-            //     if ($remise) {
-            //         if ($remise->type_remise === 'pourcentage') {
-            //             $montant_total -= ($montant_total * $remise->valeur / 100);
-            //         } elseif ($remise->type_remise === 'fixe') {
-            //             $montant_total -= $remise->valeur;
-            //         }
-            //     }
-            // }
-
-            // 2. Création de la commande
-            $commande = Commande::create([
-                'client_id' => $client_id,
-                'pressing_id' => $request->input('pressing_id'),
-                'personnel_id' => $request->input('personnel_id'),
-                'type_facturation_id' => $request->input('type_facturation_id'),
-                'type_prestation_id' => $request->input('type_prestation_id'),
-                'date_reception' => $request->input('date_reception'),
-                'remise_id' => $remise ? $remise->remise_id : null,
-                'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays(3) : now()->addDays(3),
-                'etat' => 'En_attente',
-                'poids_total' => $request->input('poids_total'),
-                'prix_unitaire_kilo' => $request->input('prix_unitaire_kilo'),
-                'montant_total' => $montant_total,
+        // 1. Création ou sélection du client
+        if ($request->filled('client_id')) {
+            $client_id = $request->input('client_id');
+        } else {
+            $user = User::create([
+                'name' => $request->input('name'),
+                'last_name' => $request->input('last_name'),
+                'contact' => $request->input('contact'),
+                'email' => $request->input('email'),
             ]);
-
-            // Ajout des lignes de commande (table pivot commande_vetement)
-            if ($request->has('vetements')) {
-                foreach ($request->input('vetements') as $vetement) {
-                    // Pour la facturation par kilo, on ne prend pas en compte prix_unitaire
-                    $pivotData = [
-                        'quantite' => $vetement['quantite'] ?? 1,
-                        'description' => $vetement['description'] ?? null,
-                    ];
-                    if ($typeFacturation && str_contains(strtolower($typeFacturation->libelle), 'vetement')) {
-                        $pivotData['prix_unitaire'] = $vetement['prix_unitaire'] ?? null;
-                    }
-                    $commande->vetements()->attach($vetement['vetement_id'] ?? null, $pivotData);
-                }
-            }
-
-            DB::commit();
-            return redirect()->route('commandes.pendingIndex')->with('success', 'Commande enregistrée avec succès.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->route('commandes.create')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
+            $client = Client::create([
+                'client_id' => $user->id,
+            ]);
+            $client_id = $client->client_id;
         }
+
+        // Calcul du montant total
+        $montant_total = 0;
+        $typeFacturation = TypeFacturation::find($request->input('type_facturation_id'));
+        if ($typeFacturation && str_contains(strtolower($typeFacturation->libelle), 'kilo')) {
+            $montant_total = ($request->input('poids_total') ?? 0) * ($request->input('cout_par_kilo') ?? 0);
+        } elseif ($request->has('vetements')) {
+            foreach ($request->input('vetements') as $vetement) {
+                $quantite = $vetement['quantite'] ?? 1;
+                $prix_unitaire = $vetement['prix_unitaire'] ?? 0;
+                $montant_total += $quantite * $prix_unitaire;
+            }
+        }
+
+        // //gestion des remises
+        // $remise = null;
+        // if ($request->filled('remise_id')) {
+        //     $remise = Remise::find($request->input('remise_id'));
+        //     if ($remise) {
+        //         if ($remise->type_remise === 'pourcentage') {
+        //             $montant_total -= ($montant_total * $remise->valeur / 100);
+        //         } elseif ($remise->type_remise === 'fixe') {
+        //             $montant_total -= $remise->valeur;
+        //         }
+        //     }
+        // }
+
+        // 2. Création de la commande
+        $commande = Commande::create([
+            'client_id' => $client_id,
+            'pressing_id' => $request->input('pressing_id'),
+            'personnel_id' => $request->input('personnel_id'),
+            'type_facturation_id' => $request->input('type_facturation_id'),
+            'type_prestation_id' => $request->input('type_prestation_id'),
+            'date_reception' => $request->input('date_reception'),
+            'remise_id' => $remise ? $remise->remise_id : null,
+            'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays(3) : now()->addDays(3),
+            'etat' => 'En_attente',
+            'poids_total' => $request->input('poids_total'),
+            'prix_unitaire_kilo' => $request->input('prix_unitaire_kilo'),
+            'montant_total' => $montant_total,
+        ]);
+
+        // Ajout des lignes de commande (table pivot commande_vetement)
+        if ($request->has('vetements')) {
+            foreach ($request->input('vetements') as $vetement) {
+                // Pour la facturation par kilo, on ne prend pas en compte prix_unitaire
+                $pivotData = [
+                    'quantite' => $vetement['quantite'] ?? 1,
+                    'description' => $vetement['description'] ?? null,
+                ];
+                if ($typeFacturation && str_contains(strtolower($typeFacturation->libelle), 'vetement')) {
+                    $pivotData['prix_unitaire'] = $vetement['prix_unitaire'] ?? null;
+                }
+                $commande->vetements()->attach($vetement['vetement_id'] ?? null, $pivotData);
+            }
+        }
+
+        DB::commit();
+        return redirect()->route('commandes.pendingIndex')->with('success', 'Commande enregistrée avec succès.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->route('commandes.create')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
     }
+}

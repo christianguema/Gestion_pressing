@@ -89,7 +89,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="6" class="text-center">Aucun personnel enregistré.</td>
+            <td colspan="7" class="text-center">Aucun personnel enregistré.</td>
         </tr>
         @endforelse
 

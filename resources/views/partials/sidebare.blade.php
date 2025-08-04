@@ -106,14 +106,14 @@
         <ul id="commande-nav" class="nav-content collapse {{ request()->routeIs('commandes.*','type_facturations.*', 'type_prestations.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
 
             @role('gestionnaire')
-                <li>
+                {{-- <li>
                     <a href="#">
                         <i class="bi bi-circle"></i><span>Toute Les commandes</span>
                     </a>
-                </li>
+                </li> --}}
             @endrole
 
-            <li>
+            {{-- <li>
                 <a href="{{ route('commandes.deliveredIndex') }}">
                     <i class="bi bi-circle"></i><span>Commandes livrées</span>
                 </a>
@@ -130,11 +130,11 @@
                 <a href="{{ route('commandes.endIndex') }}">
                     <i class="bi bi-circle"></i><span>Commandes terminées</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li>
                 <a href="{{ route('commandes.pendingIndex') }}">
-                    <i class="bi bi-circle"></i><span>Commandes en attentes</span>
+                    <i class="bi bi-circle"></i><span>Liste des commandes</span>
                 </a>
             </li>
             @role('personnel')

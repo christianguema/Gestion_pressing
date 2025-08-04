@@ -26,8 +26,10 @@
                 <div class="col-md-12">
                     <label class="form-label">Rechercher un client par nom</label>
                     <div class="input-group">
-                        <input type="text" id="client_search" class="form-control" autocomplete="off" placeholder="Nom du client">
-                        <button type="button" id="showNewClientBtn" class="btn btn-outline-primary" style="display:none;">Créer le client</button>
+                        <input type="text" id="client_search" class="form-control" autocomplete="off"
+                            placeholder="Nom du client">
+                        <button type="button" id="showNewClientBtn" class="btn btn-outline-primary"
+                            style="display:none;">Créer le client</button>
                     </div>
                     <div id="clientSuggestions" class="mt-1 list-group"></div>
                     <input type="hidden" name="client_id" id="client_id">
@@ -61,15 +63,18 @@
             <div class="card-header">Informations générales</div>
             <div class="card-body row g-3">
                 <div hidden>
-                    <input type="text" value="{{ Auth::user()->personnel->pressing->pressing_id }}" name="pressing_id" id="pressing_id">
-                    <input type="text" value="{{ Auth::user()->personnel->personnel_id }}" name="personnel_id" id="personnel_id">
+                    <input type="text" value="{{ Auth::user()->personnel->pressing->pressing_id }}" name="pressing_id"
+                        id="pressing_id">
+                    <input type="text" value="{{ Auth::user()->personnel->personnel_id }}" name="personnel_id"
+                        id="personnel_id">
                 </div>
                 <div class="form-group">
                     <label>Remise (optionnel)</label>
                     <select name="remise_id" class="form-control">
                         <option value="">Aucune remise</option>
                         @foreach($remises as $remise)
-                        <option value="{{ $remise->remise_id }}">{{ $remise->description }} ({{ $remise->type == 'pourcentage' ? $remise->valeur.'%' : $remise->valeur.' FCFA' }})</option>
+                        <option value="{{ $remise->remise_id }}">{{ $remise->description }} ({{ $remise->type ==
+                            'pourcentage' ? $remise->valeur.'%' : $remise->valeur.' FCFA' }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -93,11 +98,13 @@
                 </div>
                 <div class="col-md-6">
                     <label for="date_reception" class="form-label">Date de réception</label>
-                    <input type="date" name="date_reception" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" readonly id="date_reception" class="form-control" required>
+                    <input type="date" name="date_reception" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}"
+                        readonly id="date_reception" class="form-control" required>
                 </div>
                 <div class="col-md-6" id="dateLivraisonField" style="display:none;">
                     <label for="date_livraison" class="form-label">Date de livraison (Express)</label>
-                    <input type="date" name="date_livraison" min="{{ date('Y-m-d') }}" id="date_livraison" class="form-control">
+                    <input type="date" name="date_livraison" min="{{ date('Y-m-d') }}" id="date_livraison"
+                        class="form-control">
                 </div>
                 <div class="col-md-6" id="poidsTotalField" style="display:none;">
                     <label for="poids_total" class="form-label">Poids total (kg)</label>
@@ -105,13 +112,15 @@
                 </div>
                 <div class="col-md-6" id="prixUnitaireKiloField" style="display:none;">
                     <label for="prix_unitaire_kilo" class="form-label">Prix unitaire par kilo</label>
-                    <input type="number" step="100" min="0" name="prix_unitaire_kilo" id="prix_unitaire_kilo" class="form-control">
+                    <input type="number" step="100" min="0" name="prix_unitaire_kilo" id="prix_unitaire_kilo"
+                        class="form-control">
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary prev-step">Précédent</button>
                 <button type="button" class="btn btn-primary next-step" id="nextToStep3">Suivant</button>
-                <button type="submit" class="btn btn-success" id="submitKilo" style="display:none;">Enregistrer la commande</button>
+                <button type="submit" class="btn btn-success" id="submitKilo" style="display:none;">Enregistrer la
+                    commande</button>
             </div>
         </div>
 
@@ -146,7 +155,7 @@
 </section>
 
 <script>
-let vetements = @json($vetements);
+    let vetements = @json($vetements);
 let clients = @json($clients);
 let typePrestations = @json($typePrestations);
 </script>

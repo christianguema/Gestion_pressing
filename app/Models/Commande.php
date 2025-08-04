@@ -22,6 +22,8 @@ class Commande extends Model
         'pressing_id',
         'date_reception',
         'date_livraison',
+        'remise_id',
+        'paiement_id',
         'etat',
         'poids_total',
         'prix_unitaire_kilo',

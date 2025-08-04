@@ -19,7 +19,7 @@
                             <li class="list-group-item"><strong>Email :</strong> <span id="personnel-email"></span></li>
                             <li class="list-group-item"><strong>Téléphone :</strong> <span id="personnel-contact"></span></li>
                             <li class="list-group-item"><strong>Date de naissance :</strong> <span id="personnel-birthday"></span></li>
-                            <li class="list-group-item"><strong>Poste :</strong> <span id="personnel-poste"></span></li>
+                            <li class="list-group-item"><strong>Poste :</strong> <span id="personnel-poste2"></span></li>
                             <li class="list-group-item"><strong>Pressing assigné :</strong> <span id="personnel-pressing"></span></li>
                         </ul>
                     </div>

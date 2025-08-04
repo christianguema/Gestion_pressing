@@ -5,11 +5,11 @@
 @section('content')
 
 @if(session('success'))
-@include('components.alertModals.success')
+    @include('components.alertModals.success')
 @endif
 
 @if(session('error'))
-@include('components.alertModals.error')
+    @include('components.alertModals.error')
 @endif
 
 <div class="pagetitle">
@@ -40,18 +40,18 @@
                 </a>
             </li>
             @foreach($categories as $cat)
-            <li>
-                <a class="dropdown-item {{ request('categorie_id') == $cat->categorie_id ? 'active' : '' }}"
-                    href="{{ route('vetements.index', ['categorie_id' => $cat->categorie_id]) }}">
-                    {{ $cat->intitule }}
-                </a>
-            </li>
+                <li>
+                    <a class="dropdown-item {{ request('categorie_id') == $cat->categorie_id ? 'active' : '' }}"
+                        href="{{ route('vetements.index', ['categorie_id' => $cat->categorie_id]) }}">
+                        {{ $cat->intitule }}
+                    </a>
+                </li>
             @endforeach
         </ul>
     </div>
 </div>
 
-<form method="GET" action="{{ route('vetements.index') }}" class="mb-3">
+{{-- <form method="GET" action="{{ route('vetements.index') }}" class="mb-3">
     <div class="input-group">
         <input type="text" name="search" class="form-control"
                placeholder="Rechercher un vêtement..." value="{{ request('search') }}"
@@ -61,7 +61,7 @@
             <a href="{{ route('vetements.index') }}" class="btn btn-outline-secondary">Réinitialiser</a>
         @endif
     </div>
-</form>
+</form> --}}
 
 @if($vetements->isEmpty())
     <p>Aucun vêtement trouvé.</p>
@@ -84,20 +84,19 @@
                 <td>{{ $vetement->prix_unitaire ?? 'Non défini' }}</td>
                 <td>{{ $vetement->categorie->intitule }}</td>
                 <td>
-                    <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info">Voir</a>
-                    <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning">Modifier</a>
-                    <form action="{{ route('vetements.destroy', $vetement) }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger"
-                            onclick="return confirm('Supprimer ce vêtement ?')">Supprimer
-                        </button>
-                    </form>
+                    <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i>Voir</a>
+                    <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning"><i class="bi-pencil"></i> Modifier</a>
+                    <button type="button" data-id="{{ $vetement->vetement_id }}" class="btn delete-btn btn-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#deleteVetement">
+                        <i class="bi bi-trash"></i> Supprimer
+                    </button>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 @endif
+
+@include('components.modals.vetement.delete')
 @endsection
 

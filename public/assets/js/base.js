@@ -1,4 +1,3 @@
-
 //code pour la confirmation de la suppression d'un compte personnel
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
@@ -10,6 +9,7 @@ $(document).on("click", ".view-btn", function () {
     $("#personnel-image").attr("src", $(this).data("image"));
     $("#personnel-nom").text($(this).data("nom") + " " + $(this).data("prenom"));
     $("#personnel-poste").text($(this).data("poste"));
+    $("#personnel-poste2").text($(this).data("poste"));
     $("#personnel-email").text($(this).data("email"));
     $("#personnel-contact").text($(this).data("contact"));
     $("#personnel-pressing").text($(this).data("pressing"));
@@ -31,6 +31,17 @@ $(document).on("click", ".edit-btn", function () {
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
     $("#deletefacturationForm").attr("action", "/gestionnaire/type_facturations/" + id);
+});
+
+//suppression du vetement
+$(document).on("click", ".delete-btn", function () {
+    var id = $(this).data("id");
+    $("#deleteVetementForm").attr("action", "/gestionnaire/vetements/" + id);
+});
+
+$(document).on("click", ".delete-btn", function () {
+    var id = $(this).data("id");
+    $("#deleteCategorieForm").attr("action", "/gestionnaire/categories/" + id);
 });
 
 //modification du type de prestation

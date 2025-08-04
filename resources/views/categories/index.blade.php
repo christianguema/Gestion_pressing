@@ -4,13 +4,32 @@
 
 @section('content')
 
-<h1>Categories</h1>
-
-<a href="{{ route('categories.create') }}" class="mb-3 btn btn-success">Ajouter une Catégorie</a>
-
 @if(session('success'))
-<div class="alert alert-success">{{ session('success') }}</div>
+    @include('components.alertModals.success')
 @endif
+
+@if(session('error'))
+    @include('components.alertModals.error')
+@endif
+
+
+<div class="pagetitle">
+    <h1>LES CATEGORIES DE VETEMENT</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Catégories</a></li>
+            <li class="breadcrumb-item active">Créer</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="mb-3 d-flex justify-content-between align-items-center">
+    <a href="{{ route('categories.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Ajouter une categorie
+    </a>
+</div>
+
 
 @if($categories->isEmpty())
 <p>Aucune catégorie enregistrée.</p>
@@ -29,15 +48,14 @@
             <td>{{$loop->iteration}}</td>
             <td>{{ $categorie->intitule }}</td>
             <td>
-                <a href="{{ route('categories.show', $categorie) }}" class="btn btn-sm btn-info">Voir</a>
-                <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-sm btn-warning">Modifier</a>
-                <form action="{{ route('categories.destroy', $categorie) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Supprimer cette catégorie ?')">Supprimer
-                    </button>
-                </form>
+                {{-- <a href="{{ route('categories.show', $categorie) }}" class="btn btn-sm btn-info"><i
+                        class="bi bi-eye"></i> Voir</a> --}}
+                <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-sm btn-warning"><i
+                        class="bi bi-pencil"></i> Modifier</a>
+                <button type="button" data-id="{{ $categorie->categorie_id }}" class="btn delete-btn btn-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#deleteCategorie">
+                    <i class="bi bi-trash"></i> Supprimer
+                </button>
             </td>
         </tr>
         @endforeach
@@ -45,5 +63,5 @@
 </table>
 
 @endif
-
+@include('components.modals.categorie.delete')
 @endsection

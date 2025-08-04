@@ -32,10 +32,10 @@ class VetementController extends Controller
         }
 
         // Recherche dynamique (on la prépare aussi)
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where('type', 'like', "%{$search}%");
-        }
+        // if ($request->filled('search')) {
+        //     $search = $request->search;
+        //     $query->where('type', 'like', "%{$search}%");
+        // }
 
         $vetements = $query->orderBy('type')->paginate(10)->appends($request->query());
 
@@ -108,8 +108,14 @@ class VetementController extends Controller
     /**
      * Supprime un vêtement.
      */
-    public function destroy(Vetement $vetement): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
+        $vetement = Vetement::findOrFail($id);
+        // Vérification si le vêtement est utilisé dans des commandes
+        if ($vetement->commandes()->count() > 0) {
+            return redirect()->route('vetements.index')
+                ->with('error', 'Impossible de supprimer ce vêtement car il est utilisé dans des commandes.');
+        }
         $vetement->delete();
 
         return redirect()->route('vetements.index')

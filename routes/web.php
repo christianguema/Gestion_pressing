@@ -34,16 +34,17 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('type_facturations', TypeFacturationController::class);
     Route::resource("personnels", PersonnelController::class);
     Route::resource('vetements', VetementController::class);
-     Route::resource('categories', CategorieController::class);
+    Route::resource('categories', CategorieController::class);
 });
 
 
 // route des cas d'utilisation du personnel
 Route::middleware(['auth'])->prefix('personnel')->group(function () {
-    Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
-    Route::get('/commandes/delivered', [CommandeController::class, 'deleveredIndex'])->name('commandes.deliveredIndex');
-    Route::get('/commandes/notDelivered', [CommandeController::class, 'notDeliveredIndex'])->name('commandes.notDeliveredIndex');
-    Route::get('/commandes/pending', [CommandeController::class, 'pendingIndex'])->name('commandes.pendingIndex');
+    //Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
+    //Route::get('/commandes/delivered', [CommandeController::class, 'deleveredIndex'])->name('commandes.deliveredIndex');
+    //Route::get('/commandes/notDelivered', [CommandeController::class, 'notDeliveredIndex'])->name('commandes.notDeliveredIndex');
+    Route::get('/commandes/pending', [CommandeController::class, 'index'])->name('commandes.pendingIndex');
+    Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');
 
     Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });
