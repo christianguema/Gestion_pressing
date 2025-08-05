@@ -14,10 +14,8 @@ class Paiement extends Model
         'commande_id',
         'montant',
         'mode_paiement',
-        'statut',
         'date_paiement',
         'reference_transaction',
-        'facture',
     ];
 
     protected $primaryKey = 'paiement_id';

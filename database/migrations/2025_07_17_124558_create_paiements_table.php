@@ -16,10 +16,8 @@ return new class extends Migration
             $table->integer('commande_id');
             $table->decimal('montant', 10, 2);
             $table->string('mode_paiement');
-            $table->enum('statut', ['En attente', 'Effectué', 'Annulé']);
             $table->date('date_paiement');
             $table->string('reference_transaction');
-            $table->string('facture');
             $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->timestamps();
         });

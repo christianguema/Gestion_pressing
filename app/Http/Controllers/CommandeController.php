@@ -96,13 +96,24 @@ class CommandeController extends Controller
                 Carbon::now()->subMonth()->startOfMonth(),
                 Carbon::now()->subMonth()->endOfMonth()
             ]);
+        }elseif($filter === 'in_week') {
+            $query->whereBetween('date_reception', [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ]);
         }
 
         $commandes = $query->orderBy('date_reception', 'asc')->get();
         $pressings = Pressing::all();
         $statuses = ['En_attente', 'Livré', 'Terminé', 'En_souffrance'];
+        $nextStatuses = [
+            'En_attente' => ['Livré', 'Terminé', 'En_souffrance'],
+            'Livré' => [],
+            'Terminé' => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré'],
+        ];
 
-        return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'pressingId'));
+        return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId'));
     }
 
     // public function pendingIndex(Request $request)
@@ -292,28 +303,52 @@ class CommandeController extends Controller
                 $montantRemise = $remise->valeur;
             }
         }
-        $statuses = ['Livré', 'Terminé', 'En_souffrance'];
-        return view('commandes.show', compact('commande', 'vetements', 'remise', 'statuses','montantRemise'));
+        $nextStatuses = [
+            'En_attente' => ['Livré', 'Terminé', 'En_souffrance'],
+            'Livré' => [],
+            'Terminé' => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré'],
+        ];
+        return view('commandes.show', compact('commande', 'vetements', 'remise', 'nextStatuses','montantRemise'));
     }
 
     public function changeStatus(Request $request, $id)
     {
         $commande = Commande::findOrFail($id);
+        $etatActuel = $commande->etat;
+        $nouvelEtat = $request->input('status');
+        $transitions = [
+            'En_attente'    => ['Livré', 'Terminé', 'En_souffrance'],
+            'En_souffrance' => ['Livré', 'Terminé'],
+            'Terminé'       => ['Livré', 'En_souffrance'],
+            'Livré'         => [],
+        ];
         $request->validate([
             'status' => 'required|in:En_attente,Livré,Terminé,En_souffrance',
         ]);
+        if (!in_array($nouvelEtat, $transitions[$etatActuel] ?? [])) {
+            return back()->with('error', 'Transition de statut non autorisée.');
+        }
 
-        $commande->etat = $request->input('status');
+
+        $commande->etat = $nouvelEtat;
         $commande->update();
         // Générer des étiquettes si le statut est changé
-        $this->generateLabels($commande);
 
         return back()->with('success', 'Statut de la commande mis à jour.');
     }
 
-    //function pour générer des étiquettes a chaque fois que le statut de la commande change de statut
-    public function generateLabels(Commande $commande)
+    public function facture(Commande $commande)
     {
+        // Logique pour concevoir la facture d'une
+
+        return view('commandes.facture', compact('commande', 'vetements', 'remise', 'montantRemise'));
+    }
+
+    //function pour générer des étiquettes a chaque fois que le statut de la commande change de statut
+    public function generateLabels($id)
+    {
+        $commande = Commande::findOrFail($id);
         // Charger les relations nécessaires
         $commande->load('client.user', 'vetements');
 
@@ -321,6 +356,8 @@ class CommandeController extends Controller
         $data = [
             'commande_id' => $commande->commande_id,
             'client_nom' => $commande->client->user->name . ' ' . $commande->client->user->last_name,
+            'client_contact' => $commande->client->user->contact,
+            'date_livraison' => $commande->date_livraison,
             'date_reception' => $commande->date_reception,
             'etat' => $commande->etat,
             'vetements' => $commande->vetements,
@@ -333,7 +370,7 @@ class CommandeController extends Controller
         return $pdf->download('etiquette_commande_' . $commande->commande_id . '.pdf');
     }
 
-    
+
     // public function download(){
     //     return (new LaraTeX)->dryRun();
     // }

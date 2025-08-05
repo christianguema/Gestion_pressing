@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PressingController;
@@ -44,8 +45,9 @@ Route::middleware(['auth'])->prefix('personnel')->group(function () {
     //Route::get('/commandes/delivered', [CommandeController::class, 'deleveredIndex'])->name('commandes.deliveredIndex');
     //Route::get('/commandes/notDelivered', [CommandeController::class, 'notDeliveredIndex'])->name('commandes.notDeliveredIndex');
     Route::get('/commandes/pending', [CommandeController::class, 'index'])->name('commandes.pendingIndex');
+    Route::get('/commandes/{id}/etiquette', [CommandeController::class, 'generateLabels'])->name('commandes.downloadEtiquette');
     Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');
-
+    Route::post('/paiements', [PaiementController::class, 'storePaiement'])->name('paiements.store');
     Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });
 

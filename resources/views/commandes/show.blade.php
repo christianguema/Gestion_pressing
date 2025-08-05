@@ -93,7 +93,7 @@
             <div class="mb-3">
                 <label for="status" class="form-label">Changer l'état de la commande</label>
                 <select class="form-select" id="status" name="status" required>
-                    @foreach($statuses as $status)
+                    @foreach($nextStatuses[$commande->etat] ?? [] as $status)
                     <option value="{{ $status }}" {{ $commande->etat === $status ? 'selected' : '' }}>{{ $status }}</option>
                     @endforeach
                 </select>

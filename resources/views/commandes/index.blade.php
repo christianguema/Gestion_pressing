@@ -27,9 +27,9 @@
 
 <div class="mb-3 d-flex justify-content-between align-items-center">
     @role('personnel')
-    <a href="{{ route('commandes.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Enregistrer
-    </a>
+        <a href="{{ route('commandes.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Enregistrer
+        </a>
     @endrole
     {{-- <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -71,6 +71,7 @@
             <option value="today" {{ $filter=='today' ? 'selected' : '' }}>Aujourd'hui</option>
             <option value="yesterday" {{ $filter=='yesterday' ? 'selected' : '' }}>Hier</option>
             <option value="last_week" {{ $filter=='last_week' ? 'selected' : '' }}>Semaine passée</option>
+            <option value="in_week" {{ $filter=='in_week' ? 'selected' : '' }}>Dans la semaine</option>
             <option value="last_month" {{ $filter=='last_month' ? 'selected' : '' }}>Mois passé</option>
         </select>
         <button type="submit" class="btn btn-outline-primary">Filtrer</button>
@@ -107,7 +108,15 @@
                                 </td>
                                 <td>{{ $commande->montant_total ?? '-' }}</td>
                                 <td>
+                                    @if($commande->etat == 'En_attente')
                                     <span class="badge rounded-pill bg-primary">En attente</span>
+                                    @elseif($commande->etat == 'Livré')
+                                    <span class="badge rounded-pill bg-success text-dark">Livrée</span>
+                                    @elseif($commande->etat == 'Terminé')
+                                    <span class="badge rounded-pill bg-info">Terminée</span>
+                                    @elseif($commande->etat == 'En_souffrance')
+                                    <span class="badge rounded-pill bg-warning">En souffrance</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="dropdown">
@@ -122,40 +131,49 @@
                                                     <i class="bi bi-eye"></i> Details
                                                 </a>
                                             </li>
-                                            {{-- <li>
-                                                <a href="#" class="dropdown-item btn-warning">
-                                                    <i class="bi bi-pencil"></i> Modifier
+                                            @if($commande->etat !== 'Livré' && $commande->etat !== 'Terminé' && !isset($commande->paiement))
+                                                <li>
+                                                    <button data-id ="{{ $commande->commande_id }}" data-montant="{{ $commande->montant_total }}" class="dropdown-item btn-primary btn-card btn-sm" data-bs-toggle="modal" data-bs-target="#payementCard">
+                                                        <i class="bi bi-credit-card"></i> Paiement
+                                                    </button>
+                                                </li>
+                                            @endif
+                                            <li>
+                                                <a href="{{ route('commandes.downloadEtiquette', $commande->commande_id) }}" class="dropdown-item btn-warning">
+                                                    <i class="bi bi-file-earmark-pdf"></i> Etiquette
                                                 </a>
-                                            </li> --}}
+                                            </li>
 
-                                            {{-- @if($commande->paiement) --}}
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                @foreach($statuses as $s)
-                                                    @if($s !== $commande->etat)
+                                            @role('personnel')
+                                                @if($commande->paiement)
                                                     <li>
-                                                        <form method="POST" action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <input type="hidden" name="status" value="{{ $s }}">
-                                                            <button type="submit" class="dropdown-item">
-                                                                <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
-                                                            </button>
-                                                        </form>
+                                                        <hr class="dropdown-divider">
                                                     </li>
-                                                    @endif
-                                                @endforeach
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li>
-                                                    {{-- telecharger la facture --}}
-                                                    <a href="#" class="dropdown-item btn-success">
-                                                        <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
-                                                    </a>
-                                                </li>
-                                            {{-- @endif --}}
+                                                    @foreach($nextStatuses[$commande->etat] ?? [] as $s)
+                                                        {{-- @if($s !== $commande->etat) --}}
+                                                        <li>
+                                                            <form method="POST" action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <input type="hidden" name="status" value="{{ $s }}">
+                                                                <button type="submit" class="dropdown-item">
+                                                                    <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                        {{-- @endif --}}
+                                                    @endforeach
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li>
+                                                        {{-- telecharger la facture --}}
+                                                        <a href="#" class="dropdown-item btn-success">
+                                                            <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endrole
                                         </ul>
                                     </div>
                                 </td>
@@ -174,5 +192,5 @@
     </div>
 </section>
 
-
+@include('components.modals.payementCard.payementModal')
 @endsection
