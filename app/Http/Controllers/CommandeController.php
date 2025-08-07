@@ -19,43 +19,6 @@ use Ismaelw\LaraTeX\LaraTeX;
 class CommandeController extends Controller
 {
 
-    // public function endIndex(Request $request)
-    // {
-    //     $filter = $request->get('filter');
-    //     $query = Commande::query();
-
-    //     // Récupère l'utilisateur connecté
-    //     $user = Auth::user();
-
-    //     // Récupère l'id du personnel lié à l'utilisateur
-    //     $personnelId = $user->personnel->personnel_id ?? null;
-
-    //     // Filtre par personnel connecté
-    //     if ($personnelId) {
-    //         $query->where('personnel_id', $personnelId);
-    //     }
-
-    //     // Filtre par période
-    //     if ($filter === 'today') {
-    //         $query->whereDate('date_reception', Carbon::today());
-    //     } elseif ($filter === 'yesterday') {
-    //         $query->whereDate('date_reception', Carbon::yesterday())->where('etat', 'Terminé');
-    //     } elseif ($filter === 'last_week') {
-    //         $query->whereBetween('date_reception', [
-    //             Carbon::now()->subWeek()->startOfWeek(),
-    //             Carbon::now()->subWeek()->endOfWeek()
-    //         ])->where('etat', 'Terminé');
-    //     } elseif ($filter === 'last_month') {
-    //         $query->whereBetween('date_reception', [
-    //             Carbon::now()->subMonth()->startOfMonth(),
-    //             Carbon::now()->subMonth()->endOfMonth()
-    //         ])->where('etat', 'Terminé');
-    //     }
-
-    //     $commandes = $query->get();
-
-    //     return view('commandes.endIndex', compact('commandes', 'filter'));
-    // }
 
     public function index(Request $request)
     {
@@ -96,7 +59,7 @@ class CommandeController extends Controller
                 Carbon::now()->subMonth()->startOfMonth(),
                 Carbon::now()->subMonth()->endOfMonth()
             ]);
-        }elseif($filter === 'in_week') {
+        } elseif ($filter === 'in_week') {
             $query->whereBetween('date_reception', [
                 Carbon::now()->startOfWeek(),
                 Carbon::now()->endOfWeek()
@@ -105,87 +68,18 @@ class CommandeController extends Controller
 
         $commandes = $query->orderBy('date_reception', 'asc')->get();
         $pressings = Pressing::all();
-        $statuses = ['En_attente', 'Livré', 'Terminé', 'En_souffrance'];
+        $statuses = ['En_attente', 'Livré', 'Terminé', 'En_souffrance', 'Partiellement'];
         $nextStatuses = [
-            'En_attente' => ['Livré', 'Terminé', 'En_souffrance'],
+            'En_attente' => ['Livré', 'Terminé', 'En_souffrance', 'Partiellement'],
             'Livré' => [],
-            'Terminé' => ['Livré', 'En_souffrance'],
-            'En_souffrance' => ['Livré'],
+            'Terminé' => ['Livré', 'En_souffrance', 'Partiellement'],
+            'Partiellement' => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré', 'Partiellement'],
         ];
 
         return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId'));
     }
 
-    // public function pendingIndex(Request $request)
-    // {
-    //     $filter = $request->get('filter');
-    //     $query = Commande::query();
-
-    //     // Récupère l'utilisateur connecté
-    //     $user = Auth::user();
-
-    //     // Récupère l'id du personnel lié à l'utilisateur
-    //     $personnelId = $user->personnel->personnel_id ?? null;
-
-    //     // Filtre par personnel connecté
-    //     if ($personnelId) {
-    //         $query->where('personnel_id', $personnelId);
-    //     }
-
-    //     // Filtre par période
-    //     if ($filter === 'today') {
-    //         $query->whereDate('date_reception', Carbon::today());
-    //     } elseif ($filter === 'yesterday') {
-    //         $query->whereDate('date_reception', Carbon::yesterday())->where('etat', 'En_attente');
-    //     } elseif ($filter === 'last_week') {
-    //         $query->whereBetween('date_reception', [
-    //             Carbon::now()->subWeek()->startOfWeek(),
-    //             Carbon::now()->subWeek()->endOfWeek()
-    //         ])->where('etat', 'En_attente');
-    //     } elseif ($filter === 'last_month') {
-    //         $query->whereBetween('date_reception', [
-    //             Carbon::now()->subMonth()->startOfMonth(),
-    //             Carbon::now()->subMonth()->endOfMonth()
-    //         ])->where('etat', 'En_attente');
-    //     }
-
-    //     $commandes = $query->get();
-
-    //     return view('commandes.index', compact('commandes', 'filter'));
-    // }
-
-    // public function deleveredIndex()
-    // {
-    //     // Récupère l'utilisateur connecté
-    //     $user = Auth::user();
-
-    //     // Récupère l'id du personnel lié à l'utilisateur
-    //     $personnelId = $user->personnel->personnel_id ?? null;
-
-    //     // Récupère les commandes livrées par le personnel connecté
-    //     $commandes = Commande::where('etat', 'Livré')
-    //         ->where('personnel_id', $personnelId)
-    //         ->get();
-
-    //     return view('commandes.deleveredIndex', compact('commandes'));
-    // }
-
-
-    // public function notdeliveredIndex()
-    // {
-    //     // Récupère l'utilisateur connecté
-    //     $user = Auth::user();
-
-    //     // Récupère l'id du personnel lié à l'utilisateur
-    //     $personnelId = $user->personnel->personnel_id ?? null;
-
-    //     // Récupère les commandes non livrées par le personnel connecté
-    //     $commandes = Commande::where('etat', 'Non_livré')
-    //         ->where('personnel_id', $personnelId)
-    //         ->get();
-
-    //     return view('commandes.notDeleveredIndex', compact('commandes'));
-    // }
 
 
     public function create()
@@ -195,7 +89,8 @@ class CommandeController extends Controller
         $pressings = Pressing::all();
         $typeFacturations = TypeFacturation::all();
         $typePrestations = TypePrestation::all();
-        $vetements = Vetement::all();
+        //tous les vetements et leur catégorie associé
+        $vetements = Vetement::with('categorie')->get();
         $remises = Remise::all();
         return view('commandes.create', compact('clients', 'pressings', 'vetements', 'typeFacturations', 'typePrestations', 'remises'));
     }
@@ -295,8 +190,8 @@ class CommandeController extends Controller
         $remise = Remise::find($commande->remise_id);
         $montantApresRemise = $commande->montant_total;
         $montantRemise = 0;
-        if($remise) {
-            if($remise->type_remise === 'pourcentage') {
+        if ($remise) {
+            if ($remise->type_remise === 'pourcentage') {
                 $montantAvantRemise = $montantApresRemise * 100 / (100 - $remise->valeur);
                 $montantRemise = $montantAvantRemise - $montantApresRemise;
             } else {
@@ -304,12 +199,13 @@ class CommandeController extends Controller
             }
         }
         $nextStatuses = [
-            'En_attente' => ['Livré', 'Terminé', 'En_souffrance'],
+            'En_attente' => ['Livré', 'Terminé', 'En_souffrance', 'Partiellement'],
             'Livré' => [],
-            'Terminé' => ['Livré', 'En_souffrance'],
-            'En_souffrance' => ['Livré'],
+            'Terminé' => ['Livré', 'En_souffrance', 'Partiellement'],
+            'Partiellement' => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré', 'Partiellement'],
         ];
-        return view('commandes.show', compact('commande', 'vetements', 'remise', 'nextStatuses','montantRemise'));
+        return view('commandes.show', compact('commande', 'vetements', 'remise', 'nextStatuses', 'montantRemise'));
     }
 
     public function changeStatus(Request $request, $id)
@@ -370,9 +266,43 @@ class CommandeController extends Controller
         return $pdf->download('etiquette_commande_' . $commande->commande_id . '.pdf');
     }
 
+    public function updateLivraisonPartielle(Request $request, Commande $commande)
+    {
+        DB::beginTransaction();
+        try {
+            $livraisons = $request->input('livraisons', []);
+            $toutLivre = true;
+
+            foreach ($livraisons as $vetementId => $quantiteLivree) {
+                $vetement = $commande->vetements()->where('vetement_id', $vetementId)->first();
+                if (!$vetement) continue;
+
+                $nouvelleQuantiteLivree = $vetement->pivot->quantite_livree + $quantiteLivree;
+                $commande->vetements()->updateExistingPivot($vetementId, [
+                    'quantite_livree' => $nouvelleQuantiteLivree
+                ]);
+
+                if ($nouvelleQuantiteLivree < $vetement->pivot->quantite) {
+                    $toutLivre = false;
+                }
+            }
+
+            // Si tout est livré, on passe la commande en état "Livré"
+            if ($toutLivre) {
+                $commande->etat = 'Livré';
+                $commande->save();
+            }
+
+            DB::commit();
+            return back()->with('success', 'Livraison partielle enregistrée avec succès.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Erreur lors de l\'enregistrement de la livraison partielle.');
+        }
+    }
+
 
     // public function download(){
     //     return (new LaraTeX)->dryRun();
     // }
 }
-

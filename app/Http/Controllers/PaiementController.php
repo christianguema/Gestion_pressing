@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commande;
 use App\Models\Paiement;
+use App\Models\Remise;
 use Illuminate\Http\Request;
 use Ismaelw\LaraTeX\LaraTeX;
 use Nette\Utils\Random;
@@ -18,8 +19,11 @@ class PaiementController extends Controller
         return view('paiements.index', compact('paiements'));
     }
 
-    public function create()
-    {
+    public function create() {
+
+        // Logique pour afficher le formulaire de création de paiement
+        $commandes = Commande::all();
+        return view('paiements.create', compact('commandes'));
 
     }
     /**
@@ -65,10 +69,31 @@ class PaiementController extends Controller
     public function facturePaiement($commandeId)
     {
         // Logique pour générer la facture PDF du paiement
-
+        $commande = Commande::findOrFail($commandeId);
+        $paiement = $commande->paiement;
+        if (!$paiement) {
+            return redirect()->back()->with('error', 'Aucun paiement trouvé pour cette commande.');
+        }
+        $remise = Remise::find($commande->remise_id);
+        $montantApresRemise = $commande->montant_total;
+        $montantRemise = 0;
+        if($remise) {
+            if($remise->type_remise === 'pourcentage') {
+                $montantAvantRemise = $montantApresRemise * 100 / (100 - $remise->valeur);
+                $montantRemise = $montantAvantRemise - $montantApresRemise;
+            } else {
+                $montantRemise = $remise->valeur;
+            }
+        }
+        $data = [
+            'montant_remise' => $montantRemise,
+            'commande' => $commande,
+            'paiement' => $paiement,
+        ];
 
         // Générer le PDF de la facture ici
+        $pdf = (new LaraTeX('factures.facture-pdf'))->with($data);
 
-        return;
+        return $pdf->download('facture_paiement_' . $commandeId . '.pdf');
     }
 }

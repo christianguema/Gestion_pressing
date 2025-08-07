@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('prix_unitaire_kilo', 8, 2)->nullable();
             $table->date('date_reception');
             $table->date('date_livraison');
-            $table->enum('etat', ['En_attente', 'Livré', 'Terminé', 'En_souffrance']);
+            $table->enum('etat', ['En_attente', 'Livré', 'Terminé', 'En_souffrance','Partiellement'])->default('En_attente');
             $table->decimal('montant_total', 10, 2)->nullable();
 
 

@@ -18,9 +18,6 @@ $(document).on("click", ".view-btn", function () {
     $("#personnel-birthday").text($(this).data("datenaissance"));
 });
 
-
-
-
 //modification du type de facturation
 $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");
@@ -105,18 +102,13 @@ $(document).on("click", ".delete-btn", function () {
     $("#deletepressingForm").attr("action", "/gestionnaire/pressings/" + id);
 });
 
-
-
-$(document).on('click','.btn-card', function(){
-  var commande_id = $(this).data('id');
-  var montant = $(this).data('montant');
-  $("#commande_id").val(commande_id);
-  $("#montant").val(montant);
-  $("#payementForm").attr('action',"/personnel/paiements");
+$(document).on("click", ".btn-card", function () {
+    var commande_id = $(this).data("id");
+    var montant = $(this).data("montant");
+    $("#commande_id").val(commande_id);
+    $("#montant").val(montant);
+    $("#payementForm").attr("action", "/personnel/paiements");
 });
-
-
-
 
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
 let vetementIndex = 0;
@@ -302,7 +294,7 @@ $(document).on("input", ".vetement-search", function () {
     if (search && options.length) {
         options.forEach((v) => {
             $suggestions.append(
-                `<div class="suggestion-item" data-id="${v.vetement_id}" data-type="${v.type}" data-prix="${v.prix_unitaire}">${v.type}</div>`
+                `<div class="suggestion-item" data-id="${v.vetement_id}" data-type="${v.type}" data-prix="${v.prix_unitaire}">${v.type} - ${v.categorie.intitule}</div>`
             );
         });
         $suggestions.show();
@@ -339,3 +331,39 @@ $(document).on("click", function (e) {
         $(".vetement-suggestions").hide();
     }
 });
+
+//code de gestion de la livraison partielle
+
+// $(document).ready(function() {
+//     $('.livraison-partielle-btn').on('click', function() {
+//         const commandeId = $(this).data('commande-id');
+
+//         // Reset form
+//         $('#livraisonPartielleTableBody').empty();
+//         $('#livraisonPartielleForm').attr('action', `/personnel/commandes/${commandeId}/livraison-partielle`);
+
+//         // Charge les détails de la commande
+//         $.get(`/personnel/commandes/${commandeId}/vetements`, function(data) {
+//             let html = '';
+//             data.forEach(item => {
+//                 const restantALivrer = item.pivot.quantite - item.pivot.quantite_livree;
+//                 html += `
+//                     <tr>
+//                         <td>${item.type}</td>
+//                         <td>${item.pivot.quantite}</td>
+//                         <td>${item.pivot.quantite_livree}</td>
+//                         <td>
+//                             <input type="number"
+//                                    name="livraisons[${item.vetement_id}]"
+//                                    class="form-control"
+//                                    min="0"
+//                                    max="${restantALivrer}"
+//                                    value="0"
+//                                    required>
+//                         </td>
+//                     </tr>`;
+//             });
+//             $('#livraisonPartielleTableBody').html(html);
+//         });
+//     });
+// });

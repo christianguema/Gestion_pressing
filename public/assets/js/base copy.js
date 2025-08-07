@@ -102,7 +102,6 @@ $(document).on("click", ".delete-btn", function () {
     $("#deletepressingForm").attr("action", "/gestionnaire/pressings/" + id);
 });
 
-
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
 $("#client_search").on("input", function () {
     let search = $(this).val().toLowerCase();
@@ -355,3 +354,33 @@ if (errorModalEl) {
     var errorModal = new bootstrap.Modal(errorModalEl);
     errorModal.show();
 }
+
+// Confirmation de la livraison partielle
+$(document).ready(function() {
+    $('.livraison-partielle-btn').on('click', function() {
+        const commandeId = $(this).data('commande-id');
+
+        // Charger les détails de la commande
+        $.get(`/commandes/${commandeId}/vetements`, function(data) {
+            let html = '';
+            data.forEach(item => {
+                html += `
+                    <tr>
+                        <td>${item.type}</td>
+                        <td>${item.pivot.quantite}</td>
+                        <td>${item.pivot.quantite_livree}</td>
+                        <td>
+                            <input type="number"
+                                   name="livraisons[${item.vetement_id}]"
+                                   class="form-control"
+                                   min="0"
+                                   max="${item.pivot.quantite - item.pivot.quantite_livree}"
+                                   required>
+                        </td>
+                    </tr>`;
+            });
+            $('#livraisonPartielleTableBody').html(html);
+            $('#livraisonPartielleForm').attr('action', `/commandes/${commandeId}/livraison-partielle`);
+        });
+    });
+});

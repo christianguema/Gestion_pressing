@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('quantite')->nullable();
             $table->string('description')->nullable();
             $table->decimal('prix_unitaire', 8, 2)->nullable();
+            $table->integer('quantite_livree')->nullable()->default(0);
             $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->foreign('vetement_id')->references('vetement_id')->on('vetements')->cascadeOnDelete();
             $table->primary(['commande_id', 'vetement_id']);

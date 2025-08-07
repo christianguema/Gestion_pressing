@@ -1,4 +1,3 @@
-
 <ul class="sidebar-nav" id="sidebar-nav">
     <li class="nav-item">
         <a class="nav-link " href="{{ route('dashboard') }}">
@@ -8,109 +7,121 @@
     </li><!-- End Dashboard Nav -->
 
     @role('gestionnaire')
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('personnels.*') ? '' : 'collapsed' }}" data-bs-target="#compte-nav" data-bs-toggle="collapse" href="#">
-                <i class="ri-user-2-fill"></i><span>COMPTES</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="compte-nav" class="nav-content collapse {{ request()->routeIs('personnels.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('personnels.index') }}">
-                        <i class="bi bi-circle"></i><span>Liste des personnels</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('personnels.create') }}">
-                        <i class="bi bi-circle"></i><span>Ajouter un compte</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Gerer les compte</span>
-                    </a>
-                </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('personnels.*') ? '' : 'collapsed' }}" data-bs-target="#compte-nav"
+            data-bs-toggle="collapse" href="#">
+            <i class="ri-user-2-fill"></i><span>COMPTES</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="compte-nav" class="nav-content collapse {{ request()->routeIs('personnels.*') ? 'show' : '' }}"
+            data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('personnels.index') }}">
+                    <i class="bi bi-circle"></i><span>Liste des personnels</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('personnels.create') }}">
+                    <i class="bi bi-circle"></i><span>Ajouter un compte</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>Gerer les compte</span>
+                </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Gerer les roles</span>
-                    </a>
-                </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>Gerer les roles</span>
+                </a>
+            </li>
 
-                <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>---</span>
-                    </a>
-                </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>---</span>
+                </a>
+            </li>
 
-            </ul>
-        </li>
-    @endrole <!-- End Accompte Nav -->
+        </ul>
+    </li>
+    @endrole
+    <!-- End Accompte Nav -->
 
     @role('gestionnaire')
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('pressings.*') ? '' : 'collapsed' }}" data-bs-target="#pressing-nav" data-bs-toggle="collapse" href="#">
-                <i class="ri-store-3-fill"></i><span>PRESSING</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="pressing-nav" class="nav-content collapse {{ request()->routeIs('pressings.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{{ route('pressings.index') }}">
-                        <i class="bi bi-circle"></i><span>Liste des pressings</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('pressings.create') }}">
-                        <i class="bi bi-circle"></i><span>Enregistrer un pressing</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>---</span>
-                    </a>
-                </li>
-            </ul>
-        </li><!-- End pressing Nav -->
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('pressings.*') ? '' : 'collapsed' }}" data-bs-target="#pressing-nav"
+            data-bs-toggle="collapse" href="#">
+            <i class="ri-store-3-fill"></i><span>PRESSING</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="pressing-nav" class="nav-content collapse {{ request()->routeIs('pressings.*') ? 'show' : '' }}"
+            data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('pressings.index') }}">
+                    <i class="bi bi-circle"></i><span>Liste des pressings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('pressings.create') }}">
+                    <i class="bi bi-circle"></i><span>Enregistrer un pressing</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>---</span>
+                </a>
+            </li>
+        </ul>
+    </li><!-- End pressing Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('vetements.*','categories.*') ? '' : 'collapsed' }}" data-bs-target="#vetement-nav" data-bs-toggle="collapse" href="#">
+    <li class="nav-item">
+        <a class="nav-link {{ request()->routeIs('vetements.*','categories.*') ? '' : 'collapsed' }}"
+            data-bs-target="#vetement-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-wallet-3-fill"></i><span>VETEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="vetement-nav" class="nav-content collapse {{ request()->routeIs('vetements.*','categories.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        </a>
+        <ul id="vetement-nav"
+            class="nav-content collapse {{ request()->routeIs('vetements.*','categories.*') ? 'show' : '' }}"
+            data-bs-parent="#sidebar-nav">
             <li>
                 <a href="{{ route('categories.index') }}">
-                <i class="bi bi-circle"></i><span>Categories</span>
+                    <i class="bi bi-circle"></i><span>Categories</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('vetements.index') }}">
-                <i class="bi bi-circle"></i><span>Liste des vetements</span>
+                    <i class="bi bi-circle"></i><span>Liste des vetements</span>
                 </a>
             </li>
             {{-- <li>
                 <a href="#">
-                <i class="bi bi-circle"></i><span>---</span>
+                    <i class="bi bi-circle"></i><span>---</span>
                 </a>
             </li>
 
             <li>
                 <a href="#">
-                <i class="bi bi-circle"></i><span>---</span>
+                    <i class="bi bi-circle"></i><span>---</span>
                 </a>
             </li> --}}
-            </ul>
-        </li><!-- End vetement Nav -->
-    @endrole <!-- End Vetement Nav -->
+        </ul>
+    </li><!-- End vetement Nav -->
+    @endrole
+    <!-- End Vetement Nav -->
 
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('commandes.*','type_facturations.*', 'type_prestations.*') ? '' : 'collapsed' }}" data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('commandes.*','type_facturations.*', 'remises.*' ,'type_prestations.*') ? '' : 'collapsed' }}"
+            data-bs-target="#commande-nav" data-bs-toggle="collapse" href="#">
             <i class="ri-shopping-cart-2-fill"></i><span>COMMANDES</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="commande-nav" class="nav-content collapse {{ request()->routeIs('commandes.*','type_facturations.*', 'type_prestations.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+        <ul id="commande-nav"
+            class="nav-content collapse {{ request()->routeIs('commandes.*', 'remises.*' ,'type_facturations.*', 'type_prestations.*') ? 'show' : '' }}"
+            data-bs-parent="#sidebar-nav">
 
             @role('gestionnaire')
-                {{-- <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Toute Les commandes</span>
-                    </a>
-                </li> --}}
+            {{-- <li>
+                <a href="#">
+                    <i class="bi bi-circle"></i><span>Toute Les commandes</span>
+                </a>
+            </li> --}}
             @endrole
 
             {{-- <li>
@@ -146,6 +157,11 @@
             @endrole
             @role('gestionnaire')
             <li>
+                <a href="{{ route("remises.index") }}">
+                    <i class="bi bi-circle"></i><span>Remise</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{route('type_facturations.index') }}">
                     <i class="bi bi-circle"></i><span>Type facturation</span>
                 </a>
@@ -165,16 +181,16 @@
         </a>
         <ul id="payement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
             <li>
-                <a href="#">
+                <a href="{{ route("paiements.create") }}">
                     <i class="bi bi-circle"></i><span>Enregistrer un paiement</span>
                 </a>
             </li>
 
-            <li>
+            {{-- <li>
                 <a href="#">
                     <i class="bi bi-circle"></i><span>----</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </li><!-- End payement Nav -->
 
@@ -214,4 +230,4 @@
         </a>
     </li><!-- End Profile Page Nav -->
 
-<!-- End Sidebar-->
+    <!-- End Sidebar-->

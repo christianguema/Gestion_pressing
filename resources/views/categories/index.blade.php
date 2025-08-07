@@ -50,10 +50,8 @@
             <td>
                 {{-- <a href="{{ route('categories.show', $categorie) }}" class="btn btn-sm btn-info"><i
                         class="bi bi-eye"></i> Voir</a> --}}
-                <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-sm btn-warning"><i
-                        class="bi bi-pencil"></i> Modifier</a>
-                <button type="button" data-id="{{ $categorie->categorie_id }}" class="btn delete-btn btn-danger btn-sm"
-                    data-bs-toggle="modal" data-bs-target="#deleteCategorie">
+                <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i> Modifier</a>
+                <button type="button" data-id="{{ $categorie->categorie_id }}" class="btn delete-btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategorie">
                     <i class="bi bi-trash"></i> Supprimer
                 </button>
             </td>

@@ -13,6 +13,7 @@ class CommandeVetement extends Pivot
         'description',
         'prix_unitaire',
         'quantite',
+        'quantite_livree',
     ];
 
     protected $primaryKey = ['commande_id','vetement_id'];

@@ -5,11 +5,11 @@
 @section('content')
 
 @if(session('success'))
-    @include('components.alertModals.success')
+@include('components.alertModals.success')
 @endif
 
 @if(session('error'))
-    @include('components.alertModals.error')
+@include('components.alertModals.error')
 @endif
 
 <div class="pagetitle">
@@ -40,12 +40,12 @@
                 </a>
             </li>
             @foreach($categories as $cat)
-                <li>
-                    <a class="dropdown-item {{ request('categorie_id') == $cat->categorie_id ? 'active' : '' }}"
-                        href="{{ route('vetements.index', ['categorie_id' => $cat->categorie_id]) }}">
-                        {{ $cat->intitule }}
-                    </a>
-                </li>
+            <li>
+                <a class="dropdown-item {{ request('categorie_id') == $cat->categorie_id ? 'active' : '' }}"
+                    href="{{ route('vetements.index', ['categorie_id' => $cat->categorie_id]) }}">
+                    {{ $cat->intitule }}
+                </a>
+            </li>
             @endforeach
         </ul>
     </div>
@@ -53,50 +53,50 @@
 
 {{-- <form method="GET" action="{{ route('vetements.index') }}" class="mb-3">
     <div class="input-group">
-        <input type="text" name="search" class="form-control"
-               placeholder="Rechercher un vêtement..." value="{{ request('search') }}"
-               oninput="this.form.submit()">
+        <input type="text" name="search" class="form-control" placeholder="Rechercher un vêtement..."
+            value="{{ request('search') }}" oninput="this.form.submit()">
         <button type="submit" class="btn btn-outline-secondary">Rechercher</button>
         @if(request()->has('search'))
-            <a href="{{ route('vetements.index') }}" class="btn btn-outline-secondary">Réinitialiser</a>
+        <a href="{{ route('vetements.index') }}" class="btn btn-outline-secondary">Réinitialiser</a>
         @endif
     </div>
 </form> --}}
 
 @if($vetements->isEmpty())
-    <p>Aucun vêtement trouvé.</p>
+<p>Aucun vêtement trouvé.</p>
 @else
-    <table class="table table-striped datatable">
-        <thead>
-            <tr>
-                <th>Numero</th>
-                <th>Designation</th>
-                <th>Prix Unitaire</th>
-                <th>Catégorie</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($vetements as $vetement)
-            <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{ $vetement->type }}</td>
-                <td>{{ $vetement->prix_unitaire ?? 'Non défini' }}</td>
-                <td>{{ $vetement->categorie->intitule }}</td>
-                <td>
-                    <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i>Voir</a>
-                    <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning"><i class="bi-pencil"></i> Modifier</a>
-                    <button type="button" data-id="{{ $vetement->vetement_id }}" class="btn delete-btn btn-danger btn-sm"
+<table class="table table-striped datatable">
+    <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Designation</th>
+            <th>Prix Unitaire</th>
+            <th>Catégorie</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($vetements as $vetement)
+        <tr>
+            <td>{{$loop->iteration}}</td>
+            <td>{{ $vetement->type }}</td>
+            <td>{{ $vetement->prix_unitaire ?? 'Non défini' }}</td>
+            <td>{{ $vetement->categorie->intitule }}</td>
+            <td>
+                <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info"><i
+                        class="bi bi-eye"></i>Voir</a>
+                <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning"><i
+                        class="bi-pencil"></i> Modifier</a>
+                <button type="button" data-id="{{ $vetement->vetement_id }}" class="btn delete-btn btn-danger btn-sm"
                     data-bs-toggle="modal" data-bs-target="#deleteVetement">
-                        <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    <i class="bi bi-trash"></i> Supprimer
+                </button>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 @endif
 
 @include('components.modals.vetement.delete')
 @endsection
-

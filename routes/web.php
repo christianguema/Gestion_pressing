@@ -6,6 +6,7 @@ use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PressingController;
+use App\Http\Controllers\RemiseController;
 use App\Http\Controllers\TypeFacturationController;
 use App\Http\Controllers\TypePrestationController;
 use App\Http\Controllers\VetementController;
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('type_facturations', TypeFacturationController::class);
     Route::resource("personnels", PersonnelController::class);
     Route::resource('vetements', VetementController::class);
+    Route::resource('remises', RemiseController::class);
     Route::resource('categories', CategorieController::class);
 });
 
@@ -48,6 +50,10 @@ Route::middleware(['auth'])->prefix('personnel')->group(function () {
     Route::get('/commandes/{id}/etiquette', [CommandeController::class, 'generateLabels'])->name('commandes.downloadEtiquette');
     Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');
     Route::post('/paiements', [PaiementController::class, 'storePaiement'])->name('paiements.store');
+    Route::get('/paiement/create',[PaiementController::class, 'create'])->name('paiements.create');
+    Route::get('/commandes/{commandeId}/facture', [PaiementController::class, 'facturePaiement'])->name('paiements.facture');
+    Route::patch('/commandes/{commande}/livraison-partielle', [CommandeController::class, 'updateLivraisonPartielle'])
+    ->name('commandes.updateLivraisonPartielle');
     Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });
 

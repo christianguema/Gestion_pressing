@@ -51,7 +51,7 @@
     <form method="GET" action="{{ route('commandes.pendingIndex') }}" class="gap-2 d-flex">
         @role('gestionnaire')
         <select name="pressing_id" class="form-select" style="width:auto;" @if(Auth::user()->personnel) disabled @endif>
-            <option value="">Tous les pressings</option>
+            <option value="" >Tous les pressings</option>
             @foreach($pressings as $pressing)
             <option value="{{ $pressing->pressing_id }}" {{ (request('pressing_id', $pressingId)==$pressing->
                 pressing_id) ?
@@ -150,17 +150,28 @@
                                                         <hr class="dropdown-divider">
                                                     </li>
                                                     @foreach($nextStatuses[$commande->etat] ?? [] as $s)
-                                                        {{-- @if($s !== $commande->etat) --}}
-                                                        <li>
-                                                            <form method="POST" action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="{{ $s }}">
-                                                                <button type="submit" class="dropdown-item">
-                                                                    <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
+                                                        {{-- @if($commande->etat === 'Partiellement') --}}
+                                                            {{-- <li>
+                                                                <button type="button"
+                                                                        class="dropdown-item btn-warning livraison-partielle-btn"
+                                                                        data-commande-id="{{ $commande->commande_id }}"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#livraisonPartielleModal">
+                                                                    <i class="bi bi-box-seam"></i> Livraison partielle
                                                                 </button>
-                                                            </form>
-                                                        </li>
+                                                            </li> --}}
+                                                        {{-- @else --}}
+                                                            <li>
+                                                                <form method="POST" action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
+                                                                    @csrf
+                                                                    @method('PATCH')
+                                                                    <input type="hidden" name="status" value="{{ $s }}">
+                                                                    <button type="submit" class="dropdown-item">
+
+                                                                        <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
+                                                                    </button>
+                                                                </form>
+                                                            </li>
                                                         {{-- @endif --}}
                                                     @endforeach
                                                     <li>
@@ -168,7 +179,7 @@
                                                     </li>
                                                     <li>
                                                         {{-- telecharger la facture --}}
-                                                        <a href="#" class="dropdown-item btn-success">
+                                                        <a href="{{ route('paiements.facture', $commande->commande_id) }}" class="dropdown-item btn-success">
                                                             <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
                                                         </a>
                                                     </li>
@@ -191,6 +202,6 @@
         </div>
     </div>
 </section>
-
+@include('components.modals.partiellement.partiellement')
 @include('components.modals.payementCard.payementModal')
 @endsection

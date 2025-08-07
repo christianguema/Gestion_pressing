@@ -91,13 +91,14 @@ class VetementController extends Controller
     /**
      * Met à jour un vêtement.
      */
-    public function update(Request $request, Vetement $vetement)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'type' => 'required|string|max:255',
             'prix_unitaire' => 'nullable|numeric|min:0',
-            'categorie_id' => 'required|exists:categories,id',
+            'categorie_id' => 'required|exists:categories,categorie_id',
         ]);
+        $vetement = Vetement::findOrFail($id);
 
         $vetement->update($request->only('type', 'prix_unitaire', 'categorie_id'));
 

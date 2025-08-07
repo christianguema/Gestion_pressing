@@ -85,31 +85,35 @@
 </div>
 
 <div class="mb-3 card">
-    <div class="card-body">
-        <h5 class="card-title">Actions</h5>
-        <form action="{{ route('commandes.changeStatus', $commande->commande_id) }}" method="POST">
-            @csrf
-            @method('PATCH')
-            <div class="mb-3">
-                <label for="status" class="form-label">Changer l'état de la commande</label>
-                <select class="form-select" id="status" name="status" required>
-                    @foreach($nextStatuses[$commande->etat] ?? [] as $status)
-                    <option value="{{ $status }}" {{ $commande->etat === $status ? 'selected' : '' }}>{{ $status }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-3 d-flex justify-content-between align-items-center">
-                <button type="submit" class="btn btn-primary">Mettre à jour l'état</button>
-                <a href="{{ route('commandes.pendingIndex') }}" class="mt-3 btn btn-secondary">Retour</a>
-            </div>
-        </form>
+    @if($commande->paiement)
+        @if($commande->etat !== "Livré")
+            <div class="card-body">
+                <h5 class="card-title">Actions</h5>
+                <form action="{{ route('commandes.changeStatus', $commande->commande_id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Changer l'état de la commande</label>
+                        <select class="form-select" id="status" name="status" required>
+                            @foreach($nextStatuses[$commande->etat] ?? [] as $status)
+                            <option value="{{ $status }}" {{ $commande->etat === $status ? 'selected' : '' }}>{{ $status }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-    </div>
-    {{-- boutton de telechargement de facture --}}
-    <div class="card-footer">
-        <a href="#" class="btn btn-success">
-            <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
-        </a>
-    </div>
+                    <div class="mb-3 d-flex justify-content-between align-items-center">
+                        <button type="submit" class="btn btn-primary">Mettre à jour l'état</button>
+                        <a href="{{ route('commandes.pendingIndex') }}" class="mt-3 btn btn-secondary">Retour</a>
+                    </div>
+                </form>
+            </div>
+        @endif
+        {{-- boutton de telechargement de facture --}}
+        <div class="card-footer">
+            <a href="{{ route("paiements.facture", $commande->commande_id) }}" class="btn btn-success">
+                <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
+            </a>
+        </div>
+    @endif
 </div>
 @endsection

@@ -57,8 +57,7 @@ class TypePrestationController extends Controller
     public function update(Request $request, TypePrestation $typePrestation): RedirectResponse
     {
         $request->validate([
-            'intitule' => 'required|string|max:255|unique:type_prestations,intitule,' .
-            $typePrestation->id,
+            'intitule' => 'required|string|max:255',
             'duree_moyenne' => 'nullable|integer|min:0',
         ]);
 

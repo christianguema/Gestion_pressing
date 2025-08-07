@@ -50,20 +50,27 @@ class CategorieController extends Controller
     /**
      * Affiche le formulaire d'édition.
      */
-    public function edit(Categorie $categorie)
+    public function edit($id)
     {
+        $categorie = Categorie::findOrFail($id);
+
+        // Vérification si la catégorie existe
+        if (!$categorie) {
+            return redirect()->route('categories.index')->with('error', 'Catégorie non trouvée.');
+        }
         return view('categories.edit', compact('categorie'));
     }
 
     /**
      * Met à jour une catégorie.
      */
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'intitule' => 'required|string|max:255|unique:categories,intitule,' . $categorie->id,
+            'intitule' => 'required|string|max:255',
         ]);
 
+        $categorie = Categorie::findOrFail($id);
         $categorie->update($request->only('intitule'));
 
         return redirect()->route('categories.index')
@@ -73,8 +80,11 @@ class CategorieController extends Controller
     /**
      * Supprime une catégorie.
      */
-    public function destroy(Categorie $categorie)
+    public function destroy($id)
     {
+        $categorie = Categorie::findOrFail($id);
+
+        // Vérification si la catégorie est utilisée par des vêtements
         if ($categorie->vetements()->exists()) {
             return redirect()->route('categories.index')
                 ->with('error', 'Cette catégorie est utilisée par des vêtements et ne peut pas être supprimée.');
