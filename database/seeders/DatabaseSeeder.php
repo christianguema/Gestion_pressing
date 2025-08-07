@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorieSeeder::class,
             VetementSeeder::class,
-            TypePrestationSeeder::class,
+            // TypePrestationSeeder::class,
             TypeFacturationSeeder::class,
             // PressingSeeder::class,
             CommandeSeeder::class,

@@ -27,6 +27,18 @@
                 @enderror
             </div>
 
+            <!-- Coût par kilo fixe -->
+            <div class="mb-3">
+                <label for="cout_par_kilo" class="form-label">Coût de prestation par kilo (Fcfa)</label>
+                <input type="number" class="form-control @error('cout_par_kilo') is-invalid @enderror"
+                       id="cout_par_kilo" name="cout_par_kilo" value="{{ old('cout_par_kilo') }}"
+                       step="0.01" min="0" placeholder="Ex : 2.50">
+                <small class="text-muted">Coût fixe appliqué par kilogramme.</small>
+                @error('cout_par_kilo')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
             <button type="submit" class="btn btn-success">Enregistrer</button>
             <a href="{{ route('type_prestations.index') }}" class="btn btn-secondary">Annuler</a>
         </form>

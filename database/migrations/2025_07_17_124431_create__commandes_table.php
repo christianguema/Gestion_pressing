@@ -23,7 +23,11 @@ return new class extends Migration
 
             $table->unsignedBigInteger('type_facturation_id');
 
-            //$table->integer('paiement_id');
+            $table->integer('paiement_id')->nullable();
+
+            $table->float('poids_total')->nullable();
+
+            $table->decimal('prix_unitaire_kilo', 8, 0)->nullable();
 
             $table->unsignedBigInteger('pressing_id');
 
@@ -31,9 +35,9 @@ return new class extends Migration
 
             $table->date('date_livraison');
 
-            $table->string('etat');
-
-            $table->float('montant_total');
+            $table->enum('etat', ['En_attente', 'Livré', 'Terminé', 'Annulé', 'Non_livré']);
+            
+            $table->decimal('montant_total', 10, 0)->nullable();
 
             $table->timestamps();
 
@@ -57,10 +61,10 @@ return new class extends Migration
                   ->on('type_facturations')
                   ->onDelete('cascade');
 
-            // $table->foreign('paiement_id')
-            //       ->references('paiement_id')
-            //       ->on('paiements')
-            //       ->onDelete('cascade');
+            $table->foreign('paiement_id')
+                  ->references('paiement_id')
+                  ->on('paiements')
+                  ->onDelete('cascade');
 
             $table->foreign('pressing_id')
                   ->references('pressing_id')

@@ -61,7 +61,6 @@
                                 </th>
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Reception</th>
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Livraison</th>
-                                <th>Nombre de Vetement</th>
                                 <th>Montant</th>
                                 <th>Etat</th>
                                 <th>ACTION</th>
@@ -77,12 +76,13 @@
                                 <td>{{ $commande->date_livraison ?
                                     \Carbon\Carbon::parse($commande->date_livraison)->format('d/m/Y') : '-' }}
                                 </td>
-                                <td>{{ $commande->vetements->count() }}</td>
                                 <td>{{ $commande->montant ?? '-' }}</td>
-                                <td class="badge bg-success"><i class="bi bi-check-circle me-1">Terminé</td>
+                                <td>
+                                    <span class="badge rounded-pill bg-success">Terminé</span>
+                                </td>
                                 <td>
                                     <!-- Exemple d'action -->
-                                    <a href="{{ route('commandes.show', $commande->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('commandes.show', $commande->commande_id) }}" class="btn btn-info btn-sm">
                                         <i class="bi bi-eye"></i> Details
                                     </a>
                                 </td>

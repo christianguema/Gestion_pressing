@@ -26,6 +26,8 @@ class Commande extends Model
         'date_livraison',
         'etat',
         'montant_total',
+        'prix_unitaire_kilo',
+        'poids_total'
     ];
 
     protected $primaryKey = 'commande_id';
@@ -81,7 +83,16 @@ class Commande extends Model
     {
         return $this->belongsToMany(Vetement::class, 'commande_vetement', 'commande_id', 'vetement_id')
                     ->using(CommandeVetement::class)
-                    ->withPivot(['quantite', 'poids']);
+                    ->withPivot(['quantite','prix_unitaire', 'couleur_vetement']);
+    }
+
+    /**
+     * Une commande peut avoir plusieurs remises
+     */
+    public function remise(): BelongsTo
+    {
+        // Si une commande peut avoir une seule remise, sinon utiliser BelongsToMany
+        return $this->belongsTo(Remise::class, 'remise_id', 'remise_id');
     }
 
     /**

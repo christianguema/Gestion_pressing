@@ -31,19 +31,14 @@ class TypePrestationController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //Ancien
-        // $request->validate([
-        //     'intitule' => 'required|string|max:255|unique:type_prestations,intitule',
-        //     'duree_moyenne' => 'nullable|integer|min:0',
-        // ]);
-
-        //New
+        
         $request->validate([
             'intitule' => 'required|string|max:255|unique:type_prestations,intitule',
             'duree_moyenne' => 'nullable|integer|min:0',
+            'cout_par_kilo' => 'nullable|numeric|min:0|between:0,999999.99',
         ]);
 
-        TypePrestation::create($request->only('intitule','duree_moyenne'));
+        TypePrestation::create($request->only('intitule','duree_moyenne','cout_par_kilo' ));
 
         return redirect()->route('type_prestations.index')
             ->with('success', 'Type de prestation ajouté avec succès.');
@@ -71,12 +66,13 @@ class TypePrestationController extends Controller
     public function update(Request $request, TypePrestation $typePrestation): RedirectResponse
     {
         $request->validate([
-            'intitule' => 'required|string|max:255|unique:type_prestations,intitule,' . 
-            $typePrestation->id,
+            'intitule' => 'required|string|max:255' . 
+            $typePrestation->type_prestation_id,
+            'cout_par_kilo' => 'nullable|numeric|min:0|between:0,999999.99',
             'duree_moyenne' => 'nullable|integer|min:0',
         ]);
 
-        $typePrestation->update($request->only('intitule','duree_moyenne'));
+        $typePrestation->update($request->only('intitule','duree_moyenne','cout_par_kilo' ));
 
         return redirect()->route('type_prestations.index')
             ->with('success', 'Type de prestation mis à jour.');
@@ -87,12 +83,6 @@ class TypePrestationController extends Controller
      */
     public function destroy(TypePrestation $typePrestation)
     {
-        // Optionnel : vérifier si le type est utilisé ailleurs
-        // if ($typePrestation->commandes()->exists()) {
-        //     return redirect()->route('type_prestations.index')
-        //         ->with('error', 'Ce type de prestation est utilisé et ne peut pas être supprimé.');
-        // }
-
         $typePrestation->delete();
 
         return redirect()->route('type_prestations.index')

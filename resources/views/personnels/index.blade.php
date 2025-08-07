@@ -178,6 +178,7 @@
                 data-poste="{{ $personnel->poste }}"
                 data-datenaissance="{{ $personnel->user->birthday }}"
                 data-pressing="{{ $personnel->pressing?->nom ?? 'Non assigné' }}"
+                data-pressing_adresse="{{$personnel->pressing?->adresse}}"
                 data-image="{{ $personnel->profilImage }}"
                 data-bs-toggle="modal"
                 data-bs-target="#viewPersonnelModal">

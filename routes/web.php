@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\PressingController;
 use App\Http\Controllers\ProfileController;
@@ -33,7 +34,6 @@ Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
     Route::resource("personnels", PersonnelController::class);
 });
 
-// route des cas d'utilisation du personnel
 
 
 //Routes pour la gestion du pressing
@@ -41,19 +41,6 @@ Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
 Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
     Route::resource('pressings', PressingController::class);
 });
-
-
-
-// Route::prefix('pressings')->name('pressings.')->group(function () {
-//     Route::get('/', [PressingController::class, 'index'])->name('index');
-//     Route::get('/create', [PressingController::class, 'create'])->name('create');
-//     Route::post('/', [PressingController::class, 'store'])->name('store');
-//     Route::get('/{pressing}', [PressingController::class, 'show'])->name('show');
-//     Route::get('/{pressing}/edit', [PressingController::class, 'edit'])->name('edit');
-//     Route::put('/{pressing}', [PressingController::class, 'update'])->name('update');
-//     Route::delete('/{pressing}', [PressingController::class, 'destroy'])->name('destroy');
-// });
-
 
 
 //Routes pour gérer le typeFacturation
@@ -87,11 +74,14 @@ Route::middleware(['auth', 'role:gestionnaire'])->group(function () {
 
 // route des cas d'utilisation du personnel
 Route::middleware(['auth'])->prefix('personnels')->group(function () {
-    Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
+    
+    Route::get('/commandes/pending', [CommandeController::class, 'index'])->name('commandes.pendingIndex');
+    Route::get('/commandes/{id}/etiquette', [CommandeController::class, 'generateLabels'])->name('commandes.downloadEtiquette');
+    Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');
+    Route::post('/paiements', [PaiementController::class, 'storePaiement'])->name('paiements.store');
+    Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 
-    Route::get('/commandes/pending', [CommandeController::class, 'pendingIndex'])->name('commandes.pendingIndex');
-
-    Route::resource("commandes", CommandeController::class);
+    
 });
 
 

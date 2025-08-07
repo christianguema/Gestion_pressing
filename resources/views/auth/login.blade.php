@@ -108,7 +108,7 @@
             <div class="d-flex flex-column align-content-end h-100">
                 <div class="h-100"></div>
                 <div class="p-3 rounded overlay-content p-lg-4">
-                    <h5 class="mb-3 overlay-title">Bienvenu sur le page de connexion</h5>
+                    <h5 class="mb-3 overlay-title">Bienvenu sur la page de connexion</h5>
                     <div>
                         Plus rapide et fiable que jamais, Ges-press vous permet de gérer votre pressing en toute simplicité.
                         <br>

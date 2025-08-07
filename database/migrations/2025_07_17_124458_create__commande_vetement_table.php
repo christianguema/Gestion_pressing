@@ -9,32 +9,48 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    // public function up(): void
+    // {
+    //     Schema::create('commande_vetement', function (Blueprint $table) {
+    //         $table->id('commande_vetement_id');
+
+    //         $table->unsignedBigInteger('commande_id');
+
+    //         $table->unsignedBigInteger('vetement_id');
+
+    //         $table->unsignedBigInteger('quantite')->nullable();
+
+    //         $table->float('poids')->nullable();
+
+    //         $table->timestamps();
+
+    //         $table->foreign('commande_id')
+    //               ->references('commande_id')
+    //               ->on('commandes')
+    //               ->onDelete('cascade');
+
+    //         $table->foreign('vetement_id')
+    //               ->references('vetement_id')
+    //               ->on('vetements')
+    //               ->onDelete('cascade');
+    //     });
+    // }
+
     public function up(): void
     {
         Schema::create('commande_vetement', function (Blueprint $table) {
-            $table->id('commande_vetement_id');
-
             $table->unsignedBigInteger('commande_id');
-
             $table->unsignedBigInteger('vetement_id');
-
-            $table->unsignedBigInteger('quantite')->nullable();
-
-            $table->float('poids')->nullable();
-
+            $table->integer('quantite')->nullable();
+            $table->string('couleur_vetement')->nullable();
+            $table->decimal('prix_unitaire', 8, 0)->nullable();
+            $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
+            $table->foreign('vetement_id')->references('vetement_id')->on('vetements')->cascadeOnDelete();
+            $table->primary(['commande_id', 'vetement_id']);
             $table->timestamps();
-
-            $table->foreign('commande_id')
-                  ->references('commande_id')
-                  ->on('commandes')
-                  ->onDelete('cascade');
-
-            $table->foreign('vetement_id')
-                  ->references('vetement_id')
-                  ->on('vetements')
-                  ->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.
