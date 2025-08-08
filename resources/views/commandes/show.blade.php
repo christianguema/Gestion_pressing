@@ -19,25 +19,29 @@
 <div class="mb-3 card">
     <div class="card-body">
         <h5 class="card-title">Informations Générales</h5>
-        <p><strong>Nom complet du Client:</strong> {{ $commande->client->user->name }} {{ $commande->client->user->last_name }}</p>
+        <p><strong>Nom complet du Client:</strong> {{ $commande->client->user->name }} {{
+            $commande->client->user->last_name }}</p>
         @role('gestionnaire')
-            <p><strong>Personnel:</strong> {{ $commande->personnel->user->name ?? '-' }}</p>
-            <p><strong>Pressing:</strong> {{ $commande->pressing->nom }}</p>
+        <p><strong>Personnel:</strong> {{ $commande->personnel->user->name ?? '-' }}</p>
+        <p><strong>Pressing:</strong> {{ $commande->pressing->nom }}</p>
         @endrole
         <p><strong>Type de facturation:</strong> {{ $commande->typeFacturation->libelle ?? '-' }}</p>
         <p><strong>Type de prestation:</strong> {{ $commande->typePrestation->intitule ?? '-' }}</p>
-        <p><strong>Date de Réception:</strong> {{ $commande->date_reception ? \Carbon\Carbon::parse($commande->date_reception)->format('d/m/Y') : '-' }}</p>
-        <p><strong>Date de Livraison:</strong> {{ $commande->date_livraison ? \Carbon\Carbon::parse($commande->date_livraison)->format('d/m/Y') : '-' }}</p>
+        <p><strong>Date de Réception:</strong> {{ $commande->date_reception ?
+            \Carbon\Carbon::parse($commande->date_reception)->format('d/m/Y') : '-' }}</p>
+        <p><strong>Date de Livraison:</strong> {{ $commande->date_livraison ?
+            \Carbon\Carbon::parse($commande->date_livraison)->format('d/m/Y') : '-' }}</p>
         <p><strong>État:</strong> {{ $commande->etat }}</p>
         @if($commande->paiement)
-            <p><strong>Paiement:</strong> {{ $commande->paiement->mode_paiement }} ({{ $commande->paiement->montant }})</p>
+        <p><strong>Paiement:</strong> {{ $commande->paiement->mode_paiement }} ({{ $commande->paiement->montant }})</p>
         @else
-            <p><strong>Paiement:</strong> Non payé</p>
+        <p><strong>Paiement:</strong> Non payé</p>
         @endif
 
         @if($remise)
-            <p><strong>Remise:</strong> {{ $remise->description }} ({{ $remise->type == 'pourcentage' ? $remise->valeur.'%' : $remise->valeur.' FCFA' }})</p>
-            <p><strong>Montant Remise:</strong> {{ $montantRemise }} FCFA</p>
+        <p><strong>Remise:</strong> {{ $remise->description }} ({{ $remise->type == 'pourcentage' ? $remise->valeur.'%'
+            : $remise->valeur.' FCFA' }})</p>
+        <p><strong>Montant Remise:</strong> {{ $montantRemise }} FCFA</p>
         @endif
         <p><strong>Montant A Payer:</strong> {{ $commande->montant_total }} FCFA</p>
 
@@ -51,18 +55,24 @@
             <thead>
                 <tr>
                     <th>Article</th>
-                    <th>Quantité</th>
                     <th>Description</th>
-                    <th>Prix Unitaire</th>
-                    <th>Total</th>
+                    <th>Quantité</th>
+                    @if(str_contains(strtolower($commande->typeFacturation->libelle ?? ''), 'kilo'))
+                        <th>Poids total</th>
+                        <th>Montant</th>
+                    @else
+                        <th>Prix Unitaire</th>
+                        <th>Montant</th>
+                    @endif
+
                 </tr>
             </thead>
             <tbody>
                 @foreach($vetements as $article)
                 <tr>
                     <td>{{ $article->type }}</td>
-                    <td>{{ $article->pivot->quantite }}</td>
                     <td>{{ $article->pivot->description }}</td>
+                    <td>{{ $article->pivot->quantite }}</td>
                     <td>
                         @if(str_contains(strtolower($commande->typeFacturation->libelle ?? ''), 'kilo'))
                             {{ $commande->prix_unitaire_kilo ?? '-' }}
@@ -77,6 +87,7 @@
                             {{ ($article->pivot->prix_unitaire ?? 0) * ($article->pivot->quantite ?? 0) }}
                         @endif
                     </td>
+                </tr>
                 </tr>
                 @endforeach
             </tbody>
@@ -96,7 +107,8 @@
                         <label for="status" class="form-label">Changer l'état de la commande</label>
                         <select class="form-select" id="status" name="status" required>
                             @foreach($nextStatuses[$commande->etat] ?? [] as $status)
-                            <option value="{{ $status }}" {{ $commande->etat === $status ? 'selected' : '' }}>{{ $status }}</option>
+                            <option value="{{ $status }}" {{ $commande->etat === $status ? 'selected' : '' }}>{{ $status }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -110,7 +122,7 @@
         @endif
         {{-- boutton de telechargement de facture --}}
         <div class="card-footer">
-            <a href="{{ route("paiements.facture", $commande->commande_id) }}" class="btn btn-success">
+            <a href="{{ route(" paiements.facture", $commande->commande_id) }}" class="btn btn-success">
                 <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
             </a>
         </div>

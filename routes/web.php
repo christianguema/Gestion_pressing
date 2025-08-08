@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
@@ -16,9 +17,13 @@ Route::get('/', function () {
     return view('acceuil.welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth','verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 // route de gestion des profils
 Route::middleware('auth')->group(function () {
@@ -38,14 +43,13 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('vetements', VetementController::class);
     Route::resource('remises', RemiseController::class);
     Route::resource('categories', CategorieController::class);
+    Route::get('/dashboard/statistiques', [DashboardController::class, 'getStats'])
+    ->name('dashboard.stats');
 });
 
 
 // route des cas d'utilisation du personnel
 Route::middleware(['auth'])->prefix('personnel')->group(function () {
-    //Route::get('/commandes/endIndex', [CommandeController::class, 'endIndex'])->name('commandes.endIndex');
-    //Route::get('/commandes/delivered', [CommandeController::class, 'deleveredIndex'])->name('commandes.deliveredIndex');
-    //Route::get('/commandes/notDelivered', [CommandeController::class, 'notDeliveredIndex'])->name('commandes.notDeliveredIndex');
     Route::get('/commandes/pending', [CommandeController::class, 'index'])->name('commandes.pendingIndex');
     Route::get('/commandes/{id}/etiquette', [CommandeController::class, 'generateLabels'])->name('commandes.downloadEtiquette');
     Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');

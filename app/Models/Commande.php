@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,7 +81,7 @@ class Commande extends Model
      */
     public function vetements(): BelongsToMany
     {
-        return $this->belongsToMany(Vetement::class, 'commande_vetement', 'commande_id', 'vetement_id')->using(CommandeVetement::class)->withPivot(['quantite','prix_unitaire', 'description']);
+        return $this->belongsToMany(Vetement::class, 'commande_vetement', 'commande_id', 'vetement_id')->using(CommandeVetement::class)->withPivot(['quantite', 'prix_unitaire', 'description']);
     }
 
     /**

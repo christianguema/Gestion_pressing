@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\TypeFacturation;
@@ -75,6 +76,10 @@ class TypeFacturationController extends Controller
      */
     public function destroy(TypeFacturation $typeFacturation): RedirectResponse
     {
+        $typeFacturation->loadCount(['commandes']);
+        if ($typeFacturation->commandes_count > 0) {
+            return redirect()->route("type_facturations.index")->with('error', 'Impossible de supprimer ce type il contient des données associées.');
+        }
         $typeFacturation->delete();
 
         return redirect()->back()->with('success', 'Type de facturation supprimé avec succès.');

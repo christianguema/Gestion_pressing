@@ -21,7 +21,7 @@
 
     <!-- Vendor CSS Files -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.cs') }}s" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
@@ -70,5 +70,6 @@
 <script src="{{ asset('assets/js/modal.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/base.js') }}"></script>
+<script src="{{ asset('assets/js/charts.js') }}"></script>
 
 </html>

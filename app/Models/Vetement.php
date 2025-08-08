@@ -27,6 +27,6 @@ class Vetement extends Model
 
     public function commandes(): BelongsToMany
     {
-        return $this->belongsToMany(Commande::class,'commande_vetement', 'vetement_id', 'commande_id')->using(CommandeVetement::class)->withPivot(['quantite', 'poids', 'prix_unitaire_kilo', 'description']);
+        return $this->belongsToMany(Commande::class,'commande_vetement', 'vetement_id', 'commande_id')->using(CommandeVetement::class)->withPivot(['quantite', 'prix_unitaire', 'description']);
     }
 }

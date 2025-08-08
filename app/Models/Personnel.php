@@ -28,7 +28,7 @@ class Personnel extends Model
 
     public function commandes(): HasMany
     {
-        return $this->hasMany(Commande::class);
+        return $this->hasMany(Commande::class,"personnel_id","personnel_id");
     }
 
     public function pressing(): BelongsTo

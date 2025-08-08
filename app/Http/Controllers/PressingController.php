@@ -79,7 +79,7 @@ class PressingController extends Controller
     {
         $pressing->loadCount(['personnels', 'commandes']);
         if ($pressing->personnels_count > 0 || $pressing->commandes_count > 0) {
-            return redirect()->route("pressings.index")->with('error','Impossible de supprimer ce pressing il contient des données associées.');
+            return redirect()->route("pressings.index")->with('error', 'Impossible de supprimer ce pressing il contient des données associées.');
         }
         $pressing->delete();
         return redirect()->route("pressings.index")->with('success', 'Pressing supprimé.');
