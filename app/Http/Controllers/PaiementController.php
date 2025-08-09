@@ -77,6 +77,7 @@ class PaiementController extends Controller
         $remise = Remise::find($commande->remise_id);
         $montantApresRemise = $commande->montant_total;
         $montantRemise = 0;
+        $montantAvantRemise = 0;
         if($remise) {
             if($remise->type_remise === 'pourcentage') {
                 $montantAvantRemise = $montantApresRemise * 100 / (100 - $remise->valeur);
@@ -85,7 +86,9 @@ class PaiementController extends Controller
                 $montantRemise = $remise->valeur;
             }
         }
+        // dd($montantAvantRemise);
         $data = [
+            'montant_avant' => $montantAvantRemise,
             'montant_remise' => $montantRemise,
             'commande' => $commande,
             'paiement' => $paiement,

@@ -32,40 +32,41 @@
 <table class="table table-striped datatable">
     <thead>
         <tr>
-           <th scope="col">Numero</th>
-           <th scope="col">Type de remise</th>
-           <th scope="col">Valeur</th>
-           <th scope="col">Description</th>
-           <th scope="col">ACTIONS</th>
+            <th scope="col">Numero</th>
+            <th scope="col">Type de remise</th>
+            <th scope="col">Valeur</th>
+            <th scope="col">Description</th>
+            <th scope="col">ACTIONS</th>
         </tr>
     </thead>
     <tbody>
         @forelse ($remises as $remise)
-            <tr>
-                <td><strong>{{ $loop->iteration }}</strong></td>
-                <td>{{ $remise->type_remise }}</td>
-                @if($remise->type_remise == "fixe")
-                    <td>{{ $remise->valeur }} FCFA</td>
-                @else
-                    <td>{{ $remise->valeur }}%</td>
-                @endif
-                <td>{{ $remise->description }}</td>
-                <td>
-                    <button type="button" data-id="{{ $remise->remise_id }}" data-valeur="{{ $remise->valeur }}" data-type_remise="{{ $remise->type_remise }}" data-description="{{ $remise->description }}" class="btn update-btn btn-warning btn-sm"
-                        data-bs-toggle="modal" data-bs-target="#updateRemise">
-                        <i class="bi bi-pencil"></i> Modifier
-                    </button>
+        <tr>
+            <td><strong>{{ $loop->iteration }}</strong></td>
+            <td>{{ $remise->type_remise }}</td>
+            @if($remise->type_remise == "fixe")
+            <td>{{ $remise->valeur }} FCFA</td>
+            @else
+            <td>{{ $remise->valeur }}%</td>
+            @endif
+            <td>{{ $remise->description }}</td>
+            <td>
+                <button type="button" data-id="{{ $remise->remise_id }}" data-valeur="{{ $remise->valeur }}"
+                    data-type_remise="{{ $remise->type_remise }}" data-description="{{ $remise->description }}"
+                    class="btn update-btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateRemise">
+                    <i class="bi bi-pencil"></i> Modifier
+                </button>
 
-                    <button type="button" data-id="{{ $remise->remise_id }}" class="btn delete-btn btn-danger btn-sm"
-                        data-bs-toggle="modal" data-bs-target="#deleteRemise">
-                        <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                </td>
-            </tr>
+                <button type="button" data-id="{{ $remise->remise_id }}" class="btn delete-btn btn-danger btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#deleteRemise">
+                    <i class="bi bi-trash"></i> Supprimer
+                </button>
+            </td>
+        </tr>
         @empty
-            <tr>
-                <td colspan="4">Aucune remise enregistré</td>
-            </tr>
+        <tr>
+            <td colspan="4">Aucune remise enregistré</td>
+        </tr>
         @endforelse
     </tbody>
 </table>
@@ -74,4 +75,3 @@
 @include('components.modals.remises.edit')
 @include('components.modals.remises.delete')
 @endsection
-

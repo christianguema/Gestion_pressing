@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('personnel_id')->primary();
             $table->string('poste');
             $table->date('date_embauche');
-            $table->enum("sexe",["F","M"]);
+            $table->enum("sexe",["F","M"])->default("M");
             $table->integer('pressing_id');
             $table->foreign('pressing_id')->references('pressing_id')->on('pressings')->cascadeOnDelete();
             $table->foreign('personnel_id')->references('id')->on('users')->cascadeOnDelete();

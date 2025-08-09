@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('title','Ajouter un personnel')
-@section('content')
 
+@section('content')
 <div class="pagetitle">
     <h1>PERSONNELS</h1>
     <nav>
@@ -14,20 +14,25 @@
 </div>
 <div class="card">
     <div class="card-body">
-
         <!-- Vertical Form -->
         <form method="POST" action="{{ route('personnels.store') }}" enctype="multipart/form-data" class="row g-3">
             @csrf
             {{-- Nom --}}
             <div class="col-md-6">
                 <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}">
+                <input type="text" class="form-control @error('name') is-invalid @enderror"  name="name" id="name" value="{{ old('name') }}">
+                @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             {{-- Prenom --}}
             <div class="col-md-6">
-                <label for="lastname" class="form-label">Prenom</label>
-                <input type="text" class="form-control" name="last_name" id="last_name" value="{{ old('lastname') }}">
+                <label for="last_name" class="form-label">Prenom</label>
+                <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" value="{{ old('last_name') }}">
+                @error('last_name')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             {{-- Date de naissance --}}
@@ -63,28 +68,41 @@
             {{-- Adresse --}}
             <div class="col-md-6">
                 <label for="adresse" class="form-label">Adresse</label>
-                <input type="text" class="form-control" id="adresse" name="adresse" placeholder="1234 Main St"
+                <input type="text" class="form-control @error('adresse') is-invalid @enderror" id="adresse" name="adresse" placeholder="1234 Main St"
                     value="{{ old('adresse') }}">
+                @error('adresse')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             {{-- Password --}}
             <div class="col-md-6">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="password" required>
+                <div class="input-group">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                        id="password" required>
+                    <button class="btn btn-outline-secondary" type="button" id="generatePassword">
+                        <i class="bi bi-key"></i> Générer
+                    </button>
+                    @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-
             {{-- Confirmer password --}}
             <div class="col-md-6">
                 <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
-                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"
-                    required>
+                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                    name="password_confirmation" id="password_confirmation" required>
+                @error('password_confirmation')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             {{-- Photo de profil --}}
             <div class="col-md-6">
                 <label for="profilImage" class="form-label">Photo de profil</label>
-                <input type="file" class="form-control @error('profilImage') is-invalid @enderror" id="profilImage"
-                    name="profilImage" accept="image/*">
+                <input type="file" class="form-control @error('profilImage') is-invalid @enderror" id="profilImage" name="profilImage" accept="image/*">
                 @error('profilImage')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -111,8 +129,7 @@
             {{-- Assignation d'un poste au personnel --}}
             <div class="col-md-12">
                 <label for="poste" class="form-label">Poste</label>
-                <input type="text" class="form-control @error('poste') is-invalid @enderror" id="poste" name="poste"
-                    placeholder="Caissier" value="{{ old('poste') }}">
+                <input type="text" class="form-control @error('poste') is-invalid @enderror" id="poste" name="poste" placeholder="Caissier" value="{{ old('poste') }}">
                 @error('poste')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -124,7 +141,6 @@
                 <button type="submit" class="btn btn-primary">Soumettre</button>
             </div>
         </form>
-
     </div>
 </div>
 

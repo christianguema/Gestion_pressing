@@ -122,7 +122,7 @@
         @endif
         {{-- boutton de telechargement de facture --}}
         <div class="card-footer">
-            <a href="{{ route(" paiements.facture", $commande->commande_id) }}" class="btn btn-success">
+            <a href="{{ route('paiements.facture', $commande->commande_id) }}" class="btn btn-success">
                 <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
             </a>
         </div>

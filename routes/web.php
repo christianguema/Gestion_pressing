@@ -58,6 +58,7 @@ Route::middleware(['auth'])->prefix('personnel')->group(function () {
     Route::get('/commandes/{commandeId}/facture', [PaiementController::class, 'facturePaiement'])->name('paiements.facture');
     Route::patch('/commandes/{commande}/livraison-partielle', [CommandeController::class, 'updateLivraisonPartielle'])
     ->name('commandes.updateLivraisonPartielle');
+    // Route::get('commandes/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
     Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });
 

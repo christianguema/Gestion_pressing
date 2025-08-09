@@ -25,7 +25,7 @@ class PersonnelRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'birthday' => 'required|date||before:-20 years',
+            'birthday' => 'required|date|before:-20 years',
             'contact' => 'required|string|max:15|unique:users,contact',
 
             'email' => 'required|string|email|max:255|unique:users,email',

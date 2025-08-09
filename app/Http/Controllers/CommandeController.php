@@ -18,8 +18,6 @@ use Ismaelw\LaraTeX\LaraTeX;
 
 class CommandeController extends Controller
 {
-
-
     public function index(Request $request)
     {
         $filter = $request->get('filter', 'today');
