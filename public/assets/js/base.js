@@ -55,24 +55,27 @@ $(document).on("click", ".delete-btn", function () {
 });
 
 //modification de la remise
-$(document).on("click", ".update-btn", function(){
-    var id = $(this).data('id');
-    var valeur = $(this).data('valeur');
-    var description = $(this).data('description');
-    var type_remise = $(this).data('type_remise');
+$(document).on("click", ".update-btn", function () {
+    var id = $(this).data("id");
+    var valeur = $(this).data("valeur");
+    var description = $(this).data("description");
+    var type_remise = $(this).data("type_remise");
 
     $('#updateRemise input[name="valeur"]').val(valeur);
     $('#updateRemise textarea[name="description"]').val(description);
-    if(type_remise === "fixe"){
-        $('#updateRemise input[name="type_remise"][value="fixe"]').prop('checked', true);
-    }else{
-        $('#updateRemise input[name="type_remise"][value="pourcentage"]').prop('checked', true);
+    if (type_remise === "fixe") {
+        $('#updateRemise input[name="type_remise"][value="fixe"]').prop(
+            "checked",
+            true
+        );
+    } else {
+        $('#updateRemise input[name="type_remise"][value="pourcentage"]').prop(
+            "checked",
+            true
+        );
     }
 
-    $("#updateRemiseForm").attr(
-        "action",
-        "/gestionnaire/remises/" + id
-    );
+    $("#updateRemiseForm").attr("action", "/gestionnaire/remises/" + id);
 
     if ($('#updateRemiseForm input[name="_method"]').length === 0) {
         $("#updateRemiseForm").append(
@@ -81,15 +84,11 @@ $(document).on("click", ".update-btn", function(){
     }
 });
 
-
 //suppression de la remise
-$(document).on("click", ".delete-btn",function(){
+$(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
     $("#deleteRemiseForm").attr("action", "/gestionnaire/remises/" + id);
 });
-
-
-
 
 //modification du type de prestation
 $(document).on("click", ".edit-btn", function () {
