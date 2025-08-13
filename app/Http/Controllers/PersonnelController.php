@@ -96,6 +96,11 @@ class PersonnelController extends Controller
         }
     }
 
+    public function compte()
+    {
+        return view('personnels.acompte');
+    }
+
     //founction de suppression d'un compte personnel
     public function destroy(Personnel $personnel)
     {

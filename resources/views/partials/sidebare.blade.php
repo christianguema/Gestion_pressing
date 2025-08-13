@@ -25,12 +25,12 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route("personnels.compte") }}">
                     <i class="bi bi-circle"></i><span>Gerer les compte</span>
                 </a>
             </li>
 
-            <li>
+            {{-- <li>
                 <a href="#">
                     <i class="bi bi-circle"></i><span>Gerer les roles</span>
                 </a>
@@ -40,7 +40,7 @@
                 <a href="#">
                     <i class="bi bi-circle"></i><span>---</span>
                 </a>
-            </li>
+            </li> --}}
 
         </ul>
     </li>
@@ -65,11 +65,11 @@
                     <i class="bi bi-circle"></i><span>Enregistrer un pressing</span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="#">
                     <i class="bi bi-circle"></i><span>---</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </li><!-- End pressing Nav -->
 
@@ -124,25 +124,6 @@
             </li> --}}
             @endrole
 
-            {{-- <li>
-                <a href="{{ route('commandes.deliveredIndex') }}">
-                    <i class="bi bi-circle"></i><span>Commandes livrées</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('commandes.notDeliveredIndex') }}">
-                    <i class="bi bi-circle"></i><span>Commandes non livrées</span>
-                </a>
-            </li>
-
-
-            <li>
-                <a href="{{ route('commandes.endIndex') }}">
-                    <i class="bi bi-circle"></i><span>Commandes terminées</span>
-                </a>
-            </li> --}}
-
             <li>
                 <a href="{{ route('commandes.pendingIndex') }}">
                     <i class="bi bi-circle"></i><span>Liste des commandes</span>
@@ -195,17 +176,17 @@
     </li><!-- End payement Nav -->
 
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#rapport-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('rapports.*') ? '' : 'collapsed' }}" data-bs-target="#rapport-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-file-word-fill"></i><span>RAPPORT</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="rapport-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="rapport-nav" class="nav-content collapse {{ request()->routeIs('rapports.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="#">
+                <a href="{{ route("rapports.repports") }}">
                     <i class="bi bi-circle"></i><span>Rapport de revenu</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('rapports.performance') }}">
                     <i class="bi bi-circle"></i><span>Rapport performance</span>
                 </a>
             </li>

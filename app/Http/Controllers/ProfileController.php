@@ -31,7 +31,7 @@ class ProfileController extends Controller
     public function update(profilRequest $request): RedirectResponse
     {
 
-        dd($request->validated());
+        //dd($request->validated());
 
         $request->user()->fill($request->validated());
         //$request->validated();
@@ -39,13 +39,13 @@ class ProfileController extends Controller
 
         $user = Auth::user();
         if ($user instanceof \App\Models\User) {
-            if ($request->hasFile('profileImage')) {
+            if ($request->hasFile('profilImage')) {
                 if ($user->profilImage) {
                     FacadesStorage::disk('Photo_profil')->delete($user->profilImage);
                 }
-                $imageName = $request->file('profileImage')->getClientOriginalName();
-                $imagePath = $request->file('profileImage')->storeAs('Photo_profil', $imageName, 'public');
-                $user->profileImage = $imagePath;
+                $imageName = $request->file('profilImage')->getClientOriginalName();
+                $imagePath = $request->file('profilImage')->storeAs('Photo_profil', $imageName, 'public');
+                $user->profilImage = $imagePath;
                 $user->save();
             }
         }

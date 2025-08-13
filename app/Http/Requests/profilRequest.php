@@ -22,7 +22,7 @@ class profilRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profileImage' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'profilImage' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'contact' => ['required', 'string', 'max:255'],

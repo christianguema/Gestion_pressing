@@ -7,6 +7,7 @@ use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PressingController;
+use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RemiseController;
 use App\Http\Controllers\TypeFacturationController;
 use App\Http\Controllers\TypePrestationController;
@@ -40,6 +41,10 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('type_prestations', TypePrestationController::class);
     Route::resource('type_facturations', TypeFacturationController::class);
     Route::resource("personnels", PersonnelController::class);
+    Route::get("personnel/accompte",[PersonnelController::class,"compte"])->name("personnels.compte");
+
+    Route::get('/rapport/performance', [RapportController::class,'performanceRepport'])->name('rapports.performance');
+    Route::get('/rapport', [RapportController::class,'repport'])->name('rapports.repports');
     Route::resource('vetements', VetementController::class);
     Route::resource('remises', RemiseController::class);
     Route::resource('categories', CategorieController::class);
@@ -56,8 +61,9 @@ Route::middleware(['auth'])->prefix('personnel')->group(function () {
     Route::post('/paiements', [PaiementController::class, 'storePaiement'])->name('paiements.store');
     Route::get('/paiement/create',[PaiementController::class, 'create'])->name('paiements.create');
     Route::get('/commandes/{commandeId}/facture', [PaiementController::class, 'facturePaiement'])->name('paiements.facture');
-    Route::patch('/commandes/{commande}/livraison-partielle', [CommandeController::class, 'updateLivraisonPartielle'])
-    ->name('commandes.updateLivraisonPartielle');
+    Route::patch('/commandes/{commandeId}/livraison-partielle', [CommandeController::class, 'updateLivraisonPartielle'])->name('commandes.updateLivraisonPartielle');
+
+    Route::get('/commandes/{id}/vetements', [CommandeController::class,'listVetement']);
     // Route::get('commandes/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
     Route::resource("commandes", CommandeController::class)->middleware("role:personnel");
 });

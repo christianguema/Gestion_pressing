@@ -12,7 +12,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Article</th>
+                                <th>Vetement</th>
                                 <th>Quantité Totale</th>
                                 <th>Déjà Livré</th>
                                 <th>Quantité à Livrer</th>

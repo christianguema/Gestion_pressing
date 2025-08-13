@@ -74,8 +74,9 @@
             <td>
                 <button class="btn view-btn btn-info btn-sm" data-nom="{{ $personnel->user->name }}"
                     data-prenom="{{ $personnel->user->last_name }}" data-contact="{{ $personnel->user->contact }}"
-                    data-image="{{$personnel->user->profilImage ? asset('storage/' . $personnel->user->profilImage) : asset('assets/img/profile-img.jpg')}}" data-email="{{ $personnel->user->email }}"
-                    data-poste="{{ $personnel->poste }}" data-datenaissance="{{ $personnel->user->birthday }}"
+                    data-image="{{$personnel->user->profilImage ? asset('storage/' . $personnel->user->profilImage) : asset('assets/img/profile-img.jpg')}}"
+                    data-email="{{ $personnel->user->email }}" data-poste="{{ $personnel->poste }}"
+                    data-datenaissance="{{ $personnel->user->birthday }}"
                     data-pressing="{{ $personnel->pressing?->nom ?? 'Non assigné' }}" data-bs-toggle="modal"
                     data-bs-target="#viewPersonnelModal">
                     <i class="bi bi-eye"></i> Voir

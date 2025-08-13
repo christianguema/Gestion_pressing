@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Commande;
+use App\Models\CommandeVetement;
 use App\Models\Pressing;
 use App\Models\Remise;
 use App\Models\TypeFacturation;
@@ -68,11 +69,11 @@ class CommandeController extends Controller
         $pressings = Pressing::all();
         $statuses = ['En_attente', 'Livré', 'Terminé', 'En_souffrance', 'Partiellement'];
         $nextStatuses = [
-            'En_attente' => ['Livré', 'Terminé', 'En_souffrance', 'Partiellement'],
+            'En_attente' => ['Livré', 'Terminé', 'En_souffrance'],
             'Livré' => [],
-            'Terminé' => ['Livré', 'En_souffrance', 'Partiellement'],
-            'Partiellement' => ['Livré', 'En_souffrance'],
-            'En_souffrance' => ['Livré', 'Partiellement'],
+            'Terminé' => ['Livré', 'En_souffrance'],
+            // 'Partiellement' => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré'],
         ];
 
         return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId'));
@@ -200,8 +201,8 @@ class CommandeController extends Controller
             'En_attente' => ['Livré', 'Terminé', 'En_souffrance', 'Partiellement'],
             'Livré' => [],
             'Terminé' => ['Livré', 'En_souffrance', 'Partiellement'],
-            'Partiellement' => ['Livré', 'En_souffrance'],
-            'En_souffrance' => ['Livré', 'Partiellement'],
+            'Partiellement' => ['Livré', 'En_souffrance','Partiellement'],
+            'En_souffrance' => ['Livré', 'Partiellement','Partiellement'],
         ];
         return view('commandes.show', compact('commande', 'vetements', 'remise', 'nextStatuses', 'montantRemise'));
     }
@@ -213,8 +214,9 @@ class CommandeController extends Controller
         $nouvelEtat = $request->input('status');
         $transitions = [
             'En_attente'    => ['Livré', 'Terminé', 'En_souffrance'],
-            'En_souffrance' => ['Livré', 'Terminé'],
-            'Terminé'       => ['Livré', 'En_souffrance'],
+            'En_souffrance' => ['Livré', 'Terminé','Partiellement'],
+            'Partiellement' => ['Livré', 'Terminé', 'En_souffrance'],
+            'Terminé'       => ['Livré', 'En_souffrance','Partiellement'],
             'Livré'         => [],
         ];
         $request->validate([
@@ -234,7 +236,7 @@ class CommandeController extends Controller
 
     public function facture(Commande $commande)
     {
-        // Logique pour concevoir la facture d'une
+        //Logique pour concevoir la facture d'une
 
         return view('commandes.facture', compact('commande', 'vetements', 'remise', 'montantRemise'));
     }
@@ -299,8 +301,24 @@ class CommandeController extends Controller
         }
     }
 
+    // public function listVetement($id)
+    // {
+    //     // Récupérer la commande avec ses vêtements
+    //     $lignes = CommandeVetement::with('vetement:vetement_id,type')
+    //     ->where('commande_id', $id)
+    //     ->get()
+    //     ->map(function ($ligne) {
+    //         return [
+    //             'vetement_id' => $ligne->vetement_id,
+    //             'type' => $ligne->vetement->type,
+    //             'pivot' => [
+    //                 'quantite' => $ligne->quantite,
+    //                 'quantite_livree' => $ligne->quantite_livree
+    //             ]
+    //         ];
+    //     });
 
-    // public function download(){
-    //     return (new LaraTeX)->dryRun();
+    //     return response()->json($lignes);
     // }
+
 }

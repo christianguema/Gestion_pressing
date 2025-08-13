@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
             'personnel_id' => $personnel1->id,
             'poste' => 'blanchisseur',
             'pressing_id' => 1,
-            'sexe'=>"M",
+            'sexe' => "M",
             'date_embauche' => '12/03/2022',
         ]);
 
@@ -72,7 +72,7 @@ class UserSeeder extends Seeder
             'personnel_id' => $personnel2->id,
             'poste' => 'detacheur',
             'pressing_id' => 2,
-            'sexe'=>"M",
+            'sexe' => "M",
             'date_embauche' => '12/03/2022',
         ]);
 
@@ -93,7 +93,7 @@ class UserSeeder extends Seeder
         ]);
 
 
-         // Assignation des rôles
+        // Assignation des rôles
 
         $client->assignRole('client');
         $personnel1->assignRole('personnel');

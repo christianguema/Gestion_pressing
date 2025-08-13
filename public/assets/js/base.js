@@ -362,44 +362,46 @@ $(document).on("click", ".suggestion-item", function () {
         $prixInput.prop("readonly", false);
     }
 });
+
 $(document).on("click", function (e) {
     if (!$(e.target).hasClass("vetement-search")) {
         $(".vetement-suggestions").hide();
     }
 });
+//Fin du code pour la gestion du formulaire d'enregistrement d'une commande
 
 //code de gestion de la livraison partielle
+// $(document).on('click', '.btn-partiellement', function () {
+//     let vetements = $(this).data('vetements');
 
-// $(document).ready(function() {
-//     $('.livraison-partielle-btn').on('click', function() {
-//         const commandeId = $(this).data('commande-id');
+//     console.log(vetements);
 
-//         // Reset form
-//         $('#livraisonPartielleTableBody').empty();
-//         $('#livraisonPartielleForm').attr('action', `/personnel/commandes/${commandeId}/livraison-partielle`);
+//     let commandeId = $(this).data('commande-id');
+//     let html = '';
 
-//         // Charge les détails de la commande
-//         $.get(`/personnel/commandes/${commandeId}/vetements`, function(data) {
-//             let html = '';
-//             data.forEach(item => {
-//                 const restantALivrer = item.pivot.quantite - item.pivot.quantite_livree;
-//                 html += `
-//                     <tr>
-//                         <td>${item.type}</td>
-//                         <td>${item.pivot.quantite}</td>
-//                         <td>${item.pivot.quantite_livree}</td>
-//                         <td>
-//                             <input type="number"
-//                                    name="livraisons[${item.vetement_id}]"
-//                                    class="form-control"
-//                                    min="0"
-//                                    max="${restantALivrer}"
-//                                    value="0"
-//                                    required>
-//                         </td>
-//                     </tr>`;
-//             });
-//             $('#livraisonPartielleTableBody').html(html);
-//         });
+//     $.each(vetements, function (index, item) {
+//         let restant = item.quantite - item.quantite_livree;
+//         html += `
+//             <tr>
+//                 <td>${item.type}</td>
+//                 <td>${item.quantite}</td>
+//                 <td>${item.quantite_livree}</td>
+//                 <td>
+//                     <input type="number"
+//                            name="livraisons[${item.vetement_id}]"
+//                            class="form-control"
+//                            min="0"
+//                            max="${restant}"
+//                            value="0"
+//                            required>
+//                 </td>
+//             </tr>`;
 //     });
+
+//     // Injecter dans le tableau du modal
+//     $('#livraisonPartielleTableBody').html(html);
+
+//     // Mettre à jour l'action du formulaire du modal avec l'ID de la commande
+//     $('#formLivraisonPartielle').attr('action', '/commandes/' + commandeId + '/livraison-partielle');
 // });
+

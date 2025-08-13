@@ -3,6 +3,17 @@
 @section('title', 'Profile')
 
 @section('content')
+
+@section('content')
+@if(session('success'))
+@include('components.alertModals.success')
+@endif
+
+@if(session('error'))
+@include('components.alertModals.error')
+@endif
+
+
 <div class="pagetitle">
     <h1>Profile</h1>
     <nav>
@@ -120,7 +131,7 @@
                                                 id="deleteButton"><i class="bi bi-trash"></i></a>
                                         </div>
                                     </div>
-                                    <input type="file" id="profileImageInput" name="profileImage" class="d-none">
+                                    <input type="file" id="profileImageInput" name="profilImage" class="d-none">
                                 </div>
 
                                 <script>

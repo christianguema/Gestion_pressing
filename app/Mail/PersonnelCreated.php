@@ -42,8 +42,8 @@ class PersonnelCreated extends Mailable
         return new Content(
             view: 'emails.personnelCreated',
             with: [
-                'user'=>$this->user,
-                'password'=>$this->password,
+                'user' => $this->user,
+                'password' => $this->password,
             ],
         );
     }

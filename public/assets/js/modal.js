@@ -10,3 +10,4 @@ if (errorModalEl) {
     var errorModal = new bootstrap.Modal(errorModalEl);
     errorModal.show();
 }
+
