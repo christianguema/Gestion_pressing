@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mode_paiements', function (Blueprint $table) {
-            $table->id('mode_paiement');
+            $table->id('mode_paiement_id');
+            $table->string('logo');
             $table->string('nom');
             $table->string("telephone");
             $table->timestamps();

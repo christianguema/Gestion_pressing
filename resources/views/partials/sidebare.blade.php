@@ -116,14 +116,6 @@
             class="nav-content collapse {{ request()->routeIs('commandes.*', 'remises.*' ,'type_facturations.*', 'type_prestations.*') ? 'show' : '' }}"
             data-bs-parent="#sidebar-nav">
 
-            @role('gestionnaire')
-            {{-- <li>
-                <a href="#">
-                    <i class="bi bi-circle"></i><span>Toute Les commandes</span>
-                </a>
-            </li> --}}
-            @endrole
-
             <li>
                 <a href="{{ route('commandes.pendingIndex') }}">
                     <i class="bi bi-circle"></i><span>Liste des commandes</span>
@@ -137,47 +129,48 @@
             </li>
             @endrole
             @role('gestionnaire')
-            <li>
-                <a href="{{route('type_facturations.index') }}">
-                    <i class="bi bi-circle"></i><span>Type facturation</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{route('type_prestations.index') }}">
-                    <i class="bi bi-circle"></i><span>Type prestation</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route("remises.index") }}">
-                    <i class="bi bi-circle"></i><span>Remise</span>
-                </a>
-            </li>
+                <li>
+                    <a href="{{route('type_facturations.index') }}">
+                        <i class="bi bi-circle"></i><span>Type facturation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('type_prestations.index') }}">
+                        <i class="bi bi-circle"></i><span>Type prestation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route("remises.index") }}">
+                        <i class="bi bi-circle"></i><span>Remise</span>
+                    </a>
+                </li>
             @endrole
         </ul>
     </li> <!-- End Commande nav -->
-    @role('personnel')
+
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#payement-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('paiements.*','mode_paiements.*') ? '' : 'collapsed' }}" data-bs-target="#payement-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-cash-coin"></i><span>PAIEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="payement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="payement-nav" class="nav-content collapse {{ request()->routeIs('paiements.*', 'mode_paiements.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
+            @role('personnel')
+                <li>
+                    <a href="{{ route("paiements.create") }}">
+                        <i class="bi bi-circle"></i><span>Enregistrer un paiement</span>
+                    </a>
+                </li>
+            @endrole
             <li>
-                <a href="{{ route("paiements.create") }}">
-                    <i class="bi bi-circle"></i><span>Enregistrer un paiement</span>
+                <a href="{{ route('mode_paiements.index') }}">
+                    <i class="bi bi-circle"></i><span>Mode de Paiments</span>
                 </a>
             </li>
-
-            {{-- <li>
-                <a href="#">
-                    <i class="bi bi-circle"></i><span>----</span>
-                </a>
-            </li> --}}
         </ul>
     </li><!-- End payement Nav -->
-    @endrole
+
     @role("gestionnaire")
     <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('rapports.*') ? '' : 'collapsed' }}" data-bs-target="#rapport-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link {{ request()->routeIs('rapports.*') ? '' : 'collapsed' }}" data-bs-target="#rapport-nav" data-bs-toggle="collapse">
             <i class="bi bi-file-word-fill"></i><span>RAPPORT</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="rapport-nav" class="nav-content collapse {{ request()->routeIs('rapports.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">

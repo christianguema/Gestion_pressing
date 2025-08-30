@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ModePaiement extends Model
 {
-    protected $fillable = ["nom","telephone"];
+    protected $fillable = ["logo","nom","telephone"];
 
-    protected $table = "ModePaiement";
+    protected $table = "mode_paiements";
 
-    protected $id = "mode_paiement_id";
+    protected $primaryKey = "mode_paiement_id";
 
     public function paiement() : HasMany
     {
         return $this->hasMany(Paiement::class, "paiement_id");
     }
+
+
 }

@@ -18,6 +18,28 @@ $(document).on("click", ".view-btn", function () {
     $("#personnel-birthday").text($(this).data("datenaissance"));
 });
 
+//gestion des modales de mode_paiement
+//suppression
+$(document).on("click", ".delete-btn", function () {
+    var id = $(this).data("id");
+    $("#deleteModePaiementForm").attr("action", "/gestionnaire/mode_paiements/" + id);
+});
+
+//modification
+$(document).on("click", ".edit-btn", function () {
+    var id = $(this).data("id");
+    var nom = $(this).data("nom");
+    var telephone = $(this).data("contact");
+
+    // Update modal content
+    $('#mod-name').text(nom);
+    $('#editModal input[name="nom"]').val(nom);
+    $('#editModal input[name="telephone"]').val(telephone);
+
+    // Update form action
+    $("#editModePaiementForm").attr("action", "/gestionnaire/mode_paiements/" + id);
+});
+
 //modification du type de facturation
 $(document).on("click", ".edit-btn", function () {
     var id = $(this).data("id");

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ModePaiementController;
 use App\Http\Controllers\PaiementController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\ProfileController;
@@ -56,6 +57,11 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('categories', CategorieController::class);
     Route::get('/dashboard/statistiques', [DashboardController::class, 'getStats'])
     ->name('dashboard.stats');
+
+    Route::get('/mode_paiements', [ModePaiementController::class, 'index'])->name('mode_paiements.index');
+    Route::post('/mode_paiements', [ModePaiementController::class, 'store'])->name('mode_paiements.store');
+    Route::put('/mode_paiements/{id}', [ModePaiementController::class, 'update'])->name('mode_paiements.update');
+    Route::delete('/mode_paiements/{id}', [ModePaiementController::class, 'destroy'])->name('mode_paiements.destroy');
 });
 
 
