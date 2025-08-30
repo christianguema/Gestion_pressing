@@ -20,22 +20,36 @@
 
             <div class="mb-3">
                 <label for="montant" class="form-label">Montant</label>
-                <input type="number" class="form-control" id="montant" name="montant" required>
+                <input type="" class="form-control" id="montant" name="montant" required>
             </div>
 
             <div class="mb-3">
                 <label for="mode_paiement" class="form-label">Mode de paiement</label>
-                <select class="form-select" id="mode_paiement" name="mode_paiement" required>
-                    <option value="">Sélectionner un mode de paiement</option>
-                    <option value="MoovMoney">MoovMoney</option>
-                    <option value="MixByYass">MixByYass</option>
-                    <option value="EnEspeces">En espèces</option>
+                <select class="form-select" id="mode_paiement" name="mode_paiement_id" required>
+                    <option value=" " selected disabled>Sélectionner un mode de paiement</option>
+                    @forelse ($modes as $item)
+                        <option value="{{ $item->mode_paiement_id }}">{{ $item->nom }} - Tel:{{ $item->telephone }}</option>
+                    @empty
+                        <option value=" " disabled>MoovMoney</option>
+                    @endforelse
                 </select>
             </div>
 
+            @foreach ($modes as $mode)
+                @if($mode !== 'En espèce'||$mode !== 'en espèce'|| $mode !== 'En espece')
+                    <div class="mb-3" id="reference_field" style="display: none;">
+                        <label for="reference_transaction" class="form-label">Référence de la transaction</label>
+                        <input type="number" class="form-control" id="reference_transaction"
+                            name="reference_transaction">
+                        <small class="form-text text-muted">Numéro de reférence transaction pour les paiements
+                            mobiles</small>
+                    </div>
+                @endif
+            @endforeach
+
             <div class="mb-3">
                 <label for="date_paiement" class="form-label">Date de paiement</label>
-                <input type="date" class="form-control" id="date_paiement" name="date_paiement" required>
+                <input type="date" class="form-control" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" id="date_paiement" name="date_paiement" required>
             </div>
 
             <div class="mb-3">

@@ -12,9 +12,11 @@ use App\Models\TypePrestation;
 use App\Models\User;
 use App\Models\Vetement;
 use Carbon\Carbon;
+use DragonCode\Contracts\Cashier\Config\Logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Ismaelw\LaraTeX\LaraTeX;
 
 class CommandeController extends Controller
@@ -63,7 +65,7 @@ class CommandeController extends Controller
                 Carbon::now()->startOfWeek(),
                 Carbon::now()->endOfWeek()
             ]);
-        } elseif($filter === "in_month"){
+        } elseif ($filter === "in_month") {
             $query->whereBetween('date_reception', [
                 Carbon::now()->startOfMonth(),
                 Carbon::now()->endOfMonth()
@@ -99,11 +101,40 @@ class CommandeController extends Controller
         return view('commandes.create', compact('clients', 'pressings', 'vetements', 'typeFacturations', 'typePrestations', 'remises'));
     }
 
+
+
+    private function generateTicketNumber($client_contact)
+    {
+        // Récupérer la dernière commande
+        $lastCommande = Commande::latest()->first();
+
+        // Extraire le numéro de séquence de la dernière commande ou commencer à 1
+        $lastNumber = 1;
+        if ($lastCommande && $lastCommande->numero_ticket) {
+            preg_match('/CMD(\d{3})-/', $lastCommande->numero_ticket, $matches);
+            if (isset($matches[1])) {
+                $lastNumber = intval($matches[1]) + 1;
+            }
+        }
+
+        // Formater le numéro de séquence sur 3 chiffres
+        $sequence = str_pad($lastNumber, 3, '0', STR_PAD_LEFT);
+
+        // Formater la date (YYMMDD)
+        $date = now()->format('ymd');
+
+        // Nettoyer le contact (enlever les espaces et caractères spéciaux)
+        $contact = preg_replace('/[^0-9]/', '', $client_contact);
+
+        // Générer le numéro de ticket
+        return "CMD{$sequence}-{$date}-{$contact}";
+    }
+
     public function store(Request $request)
     {
+        //dd($request->all());
         try {
             //dd($request->all());
-            DB::beginTransaction();
 
             // 1. Création ou sélection du client
             if ($request->filled('client_id')) {
@@ -121,6 +152,15 @@ class CommandeController extends Controller
                 $client_id = $client->client_id;
             }
 
+            // Générer le numéro de ticket
+            $contact = $request->filled('client_id')
+                ? Client::find($request->input('client_id'))->user->contact
+                : $request->input('contact');
+
+            $numero_ticket = $this->generateTicketNumber($contact);
+
+            //Log::info('recupération du client');
+
             // Calcul du montant total
             $montant_total = 0;
             $typeFacturation = TypeFacturation::find($request->input('type_facturation_id'));
@@ -133,6 +173,8 @@ class CommandeController extends Controller
                     $montant_total += $quantite * $prix_unitaire;
                 }
             }
+
+            //Log::info("Calul du montant");
 
             //gestion des remises
             $remise = null;
@@ -155,6 +197,7 @@ class CommandeController extends Controller
                 'type_facturation_id' => $request->input('type_facturation_id'),
                 'type_prestation_id' => $request->input('type_prestation_id'),
                 'date_reception' => $request->input('date_reception'),
+                'numero_ticket'=>$numero_ticket,
                 'remise_id' => $request->input('remise_id') ? $request->input('remise_id') : null,
                 'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays($typeFacturation->duree_moyenne) : now()->addDays(3),
                 'etat' => 'En_attente',
@@ -163,6 +206,7 @@ class CommandeController extends Controller
                 'montant_total' => $montant_total,
             ]);
 
+            //Log::info('enregistrement de la commande');
             // Ajout des lignes de commande (table pivot commande_vetement)
             if ($request->has('vetements')) {
                 foreach ($request->input('vetements') as $vetement) {
@@ -182,7 +226,7 @@ class CommandeController extends Controller
             return redirect()->route('commandes.pendingIndex')->with('success', 'Commande enregistrée avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('commandes.create')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
+            return redirect()->route('commandes.pendingIndex')->with('error', 'Une erreur est survenue lors de l\'enregistrement de la commande : ' . $e->getMessage())->withInput();
         }
     }
 
@@ -206,8 +250,8 @@ class CommandeController extends Controller
             'En_attente' => ['Livré', 'Terminé', 'En_souffrance', 'Partiellement'],
             'Livré' => [],
             'Terminé' => ['Livré', 'En_souffrance', 'Partiellement'],
-            'Partiellement' => ['Livré', 'En_souffrance','Partiellement'],
-            'En_souffrance' => ['Livré', 'Partiellement','Partiellement'],
+            'Partiellement' => ['Livré', 'En_souffrance', 'Partiellement'],
+            'En_souffrance' => ['Livré', 'Partiellement', 'Partiellement'],
         ];
         return view('commandes.show', compact('commande', 'vetements', 'remise', 'nextStatuses', 'montantRemise'));
     }
@@ -219,9 +263,9 @@ class CommandeController extends Controller
         $nouvelEtat = $request->input('status');
         $transitions = [
             'En_attente'    => ['Livré', 'Terminé', 'En_souffrance'],
-            'En_souffrance' => ['Livré', 'Terminé','Partiellement'],
+            'En_souffrance' => ['Livré', 'Terminé', 'Partiellement'],
             'Partiellement' => ['Livré', 'Terminé', 'En_souffrance'],
-            'Terminé'       => ['Livré', 'En_souffrance','Partiellement'],
+            'Terminé'       => ['Livré', 'En_souffrance', 'Partiellement'],
             'Livré'         => [],
         ];
         $request->validate([

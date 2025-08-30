@@ -153,18 +153,20 @@
             <i class="bi bi-cash-coin"></i><span>PAIEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="payement-nav" class="nav-content collapse {{ request()->routeIs('paiements.*', 'mode_paiements.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
-            @role('personnel')
-                <li>
+            @role("personnel")
+                 <li>
                     <a href="{{ route("paiements.create") }}">
                         <i class="bi bi-circle"></i><span>Enregistrer un paiement</span>
                     </a>
                 </li>
             @endrole
+            @role('gestionnaire')
             <li>
                 <a href="{{ route('mode_paiements.index') }}">
                     <i class="bi bi-circle"></i><span>Mode de Paiments</span>
                 </a>
             </li>
+            @endrole
         </ul>
     </li><!-- End payement Nav -->
 

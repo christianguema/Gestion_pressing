@@ -14,6 +14,7 @@ class Paiement extends Model
         'commande_id',
         'montant',
         'date_paiement',
+        'mode_paiement_id',
         'reference_transaction',
     ];
 

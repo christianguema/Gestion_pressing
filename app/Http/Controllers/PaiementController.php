@@ -3,14 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commande;
+use App\Models\ModePaiement;
 use App\Models\Paiement;
 use App\Models\Remise;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Ismaelw\LaraTeX\LaraTeX;
 use Nette\Utils\Random;
 
 class PaiementController extends Controller
 {
+
+    public function modePaiement()
+    {
+        $modes = ModePaiement::all();
+        return response()->json($modes);
+    }
+
     public function index()
     {
         // Logique pour récupérer la liste des paiements
@@ -25,7 +34,8 @@ class PaiementController extends Controller
         // Logique pour afficher le formulaire de création de paiement
         //Commande qui n'a pas encore été payée
         $commandes = Commande::whereDoesntHave('paiement')->get();
-        return view('paiements.create', compact('commandes'));
+        $modes = ModePaiement::all();
+        return view('paiements.create', compact('commandes', 'modes'));
     }
     /**
      * Affiche le formulaire de paiement pour une commande.
@@ -41,30 +51,36 @@ class PaiementController extends Controller
     /**
      * Enregistre le paiement pour une commande.
      */
-    public function storePaiement(Request $request, Paiement $paiement)
+    public function storePaiement(Request $request)
     {
+        //dd($request->all());
         // Logique pour enregistrer le paiement
-        $request->validate([
-            'montant' => 'required|numeric|min:0',
-            'mode_paiement' => 'required|string|max:255',
+        $validated = $request->validate([
             'commande_id' => 'required|exists:commandes,commande_id',
+            'montant' => 'required|numeric|min:0',
+            'mode_paiement_id' => 'required|exists:mode_paiements,mode_paiement_id',
             'date_paiement' => 'required|date',
+            'reference_transaction' => 'string|nullable'
         ]);
+        //dd($validated);
+        try {
+            DB::beginTransaction();
 
-        $commande = Commande::findOrFail($request->input('commande_id'));
+            $paiement = Paiement::create([
+                'commande_id' => $validated['commande_id'],
+                'montant' => $validated['montant'],
+                'mode_paiement_id' => $validated['mode_paiement_id'],
+                'date_paiement' => $validated['date_paiement'],
+                'reference_transaction' => $validated['reference_transaction'] ?? null
+            ]);
 
-        $paiement = Paiement::create([
-            'montant' => $request->input('montant'),
-            'mode_paiement' => $request->input('mode_paiement'),
-            'date_paiement' => $request->input('date_paiement'),
-            'commande_id' => $request->input('commande_id'),
-            'reference_transaction' => Random::generate(5, '0-9'),
-        ]);
 
-        $commande->paiement_id = $paiement->paiement_id;
-        $commande->update();
-
-        return redirect()->route('commandes.index')->with('success', 'Paiement enregistré avec succès.');
+            DB::commit();
+            return back()->with('success', 'Paiement enregistré avec succès');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Erreur lors de l\'enregistrement du paiement '.$e->getMessage())->withInput();
+        }
     }
 
     public function facturePaiement($commandeId)

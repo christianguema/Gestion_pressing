@@ -27,6 +27,7 @@ class Commande extends Model
         'remise_id',
         'paiement_id',
         'etat',
+        'numero_ticket',
         'poids_total',
         'prix_unitaire_kilo',
         'montant_total',

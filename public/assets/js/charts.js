@@ -34,6 +34,39 @@ fetch("/gestionnaire/dashboard/statistiques")
     });
 
 
+
+// Charger les modes de paiement quand le modal s'ouvre
+$('#payementCard').on('show.bs.modal', function () {
+    const select = document.getElementById('mode_paiement');
+
+    // Vider le select sauf la première option
+    while (select.options.length > 1) {
+        select.remove(1);
+    }
+
+    // Charger les modes de paiement via Fetch
+    fetch('/personnel/modes-paiement')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
+            }
+            return response.json();
+        })
+        .then(modes => {
+            modes.forEach(mode => {
+                const option = new Option(mode.nom, mode.mode_paiement_id, mode.telephone);
+                select.add(option);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors du chargement des modes de paiement');
+        });
+});
+
+
+
+//génération automatique du mot de passe pour le champ password du formulaire de création d'un personnel
 document
 .getElementById("generatePassword")
 .addEventListener("click", function () {

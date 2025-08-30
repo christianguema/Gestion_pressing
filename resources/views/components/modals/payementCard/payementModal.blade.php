@@ -15,12 +15,17 @@
                     </div>
                     <div class="mb-3">
                         <label for="mode_paiement" class="form-label">Mode de paiement</label>
-                        <select class="form-select" id="mode_paiement" name="mode_paiement" required>
+                        <select class="form-select" id="mode_paiement" name="mode_paiement_id" required>
                             <option value="" selected disabled>Sélectionner</option>
-                            <option value="MixByYass">MixByYass</option>
-                            <option value="MoovMoney">MoovMoney</option>
-                            <option value="En espèces">En espèces</option>
+                            <!-- Les options seront injectées par JS -->
                         </select>
+                    </div>
+                    <div class="mb-3" id="reference_field" style="display: none;">
+                        <label for="reference_transaction" class="form-label">Référence de la transaction</label>
+                        <input type="number" class="form-control" id="reference_transaction"
+                            name="reference_transaction">
+                        <small class="form-text text-muted">Numéro de reférence transaction pour les paiements
+                            mobiles</small>
                     </div>
                     <div class="mb-3">
                         <label for="date_paiement" class="form-label">Date de paiement</label>

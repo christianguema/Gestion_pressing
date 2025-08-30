@@ -7,10 +7,9 @@ use App\Http\Requests\profilRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage as FacadesStorage;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -41,7 +40,7 @@ class ProfileController extends Controller
         if ($user instanceof \App\Models\User) {
             if ($request->hasFile('profilImage')) {
                 if ($user->profilImage) {
-                    FacadesStorage::disk('Photo_profil')->delete($user->profilImage);
+                    Storage::disk('public')->delete($user->profilImage);
                 }
                 $imageName = $request->file('profilImage')->getClientOriginalName();
                 $imagePath = $request->file('profilImage')->storeAs('Photo_profil', $imageName, 'public');
@@ -64,7 +63,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         if ($user instanceof \App\Models\User) {
             if ($user->profileImage) {
-                FacadesStorage::disk('Photo_profil')->delete($user->profileImage);
+                Storage::disk('public')->delete($user->profileImage);
                 $user->profileImage = null;
                 $user->save();
 

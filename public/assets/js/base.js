@@ -22,7 +22,10 @@ $(document).on("click", ".view-btn", function () {
 //suppression
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
-    $("#deleteModePaiementForm").attr("action", "/gestionnaire/mode_paiements/" + id);
+    $("#deleteModePaiementForm").attr(
+        "action",
+        "/gestionnaire/mode_paiements/" + id
+    );
 });
 
 //modification
@@ -32,12 +35,15 @@ $(document).on("click", ".edit-btn", function () {
     var telephone = $(this).data("contact");
 
     // Update modal content
-    $('#mod-name').text(nom);
+    $("#mod-name").text(nom);
     $('#editModal input[name="nom"]').val(nom);
     $('#editModal input[name="telephone"]').val(telephone);
 
     // Update form action
-    $("#editModePaiementForm").attr("action", "/gestionnaire/mode_paiements/" + id);
+    $("#editModePaiementForm").attr(
+        "action",
+        "/gestionnaire/mode_paiements/" + id
+    );
 });
 
 //modification du type de facturation
@@ -161,16 +167,40 @@ $(document).on("click", ".delete-btn", function () {
 });
 
 
+//affichage dynamique du modal de payement
+$(document).on('change', '#mode_paiement', function() {
+    const selectedMode = $(this).find('option:selected').text().toLowerCase();
+    const referenceField = $('#reference_field');
+    const referenceInput = $('#reference_transaction');
+
+    if (selectedMode.includes('en espèce')||selectedMode.includes('en espece'))
+    {
+        referenceField.hide();
+        referenceInput.prop('required', false);
+        referenceInput.val('');
+    } else {
+        referenceField.show();
+        referenceInput.prop('required', true);
+    }
+});
+
 //gestion du modal form payement
 $(document).on("click", ".btn-card", function () {
     var commande_id = $(this).data("id");
     var montant = $(this).data("montant");
+
+    //mis a jour des champs du formulaire
     $("#commande_id").val(commande_id);
     $("#montant").val(montant);
+
+    // Reset du formulaire
+    $('#mode_paiement').val('');
+    $('#reference_transaction').val('');
+    $('#reference_field').hide();
+    $('#reference_transaction').prop('required', false);
+
     $("#payementForm").attr("action", "/personnel/paiements");
 });
-
-
 
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
 let vetementIndex = 0;
@@ -306,8 +336,7 @@ $("#type_prestation_id").on("change", function () {
 });
 
 // Ajout/suppression de ligne vêtement
-function createVetementRow()
-{
+function createVetementRow() {
     return `<tr>
         <td>
             <input type="text" class="form-control vetement-search" name="vetements[${vetementIndex}][type]" autocomplete="off" placeholder="Nom du vêtement">
@@ -399,6 +428,11 @@ $(document).on("click", function (e) {
 });
 //Fin du code pour la gestion du formulaire d'enregistrement d'une commande
 
+
+
+
+
+
 //code de gestion de la livraison partielle
 // $(document).on('click', '.btn-partiellement', function () {
 //     let vetements = $(this).data('vetements');
@@ -433,4 +467,3 @@ $(document).on("click", function (e) {
 //     // Mettre à jour l'action du formulaire du modal avec l'ID de la commande
 //     $('#formLivraisonPartielle').attr('action', '/commandes/' + commandeId + '/livraison-partielle');
 // });
-

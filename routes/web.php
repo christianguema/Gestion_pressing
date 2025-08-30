@@ -71,6 +71,9 @@ Route::middleware(['auth'])->prefix('personnel')->group(function () {
     Route::get('/commandes/{id}/etiquette', [CommandeController::class, 'generateLabels'])->name('commandes.downloadEtiquette');
     Route::patch('/commandes/{id}/change-status', [CommandeController::class, 'changeStatus'])->name('commandes.changeStatus');
     Route::post('/paiements', [PaiementController::class, 'storePaiement'])->name('paiements.store');
+
+    Route::get('/modes-paiement', [PaiementController::class, 'modePaiement']);
+
     Route::get('/paiement/create',[PaiementController::class, 'create'])->name('paiements.create');
     Route::get('/commandes/{commandeId}/facture', [PaiementController::class, 'facturePaiement'])->name('paiements.facture');
     Route::patch('/commandes/{commandeId}/livraison-partielle', [CommandeController::class, 'updateLivraisonPartielle'])->name('commandes.updateLivraisonPartielle');
