@@ -13,7 +13,6 @@ class Paiement extends Model
     protected $fillable = [
         'commande_id',
         'montant',
-        'mode_paiement',
         'date_paiement',
         'reference_transaction',
     ];
@@ -23,5 +22,10 @@ class Paiement extends Model
     public function commande(): BelongsTo
     {
         return $this->belongsTo(Commande::class);
+    }
+
+    public function mode_paiement() : BelongsTo
+    {
+        return $this->belongsTo(ModePaiement::class);
     }
 }

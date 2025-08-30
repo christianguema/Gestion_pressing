@@ -68,16 +68,7 @@
                     <input type="text" value="{{ Auth::user()->personnel->personnel_id }}" name="personnel_id"
                         id="personnel_id">
                 </div>
-                <div class="form-group">
-                    <label>Remise (optionnel)</label>
-                    <select name="remise_id" class="form-control">
-                        <option value="">Aucune remise</option>
-                        @foreach($remises as $remise)
-                        <option value="{{ $remise->remise_id }}">{{ $remise->description }} ({{ $remise->type ==
-                            'pourcentage' ? $remise->valeur.'%' : $remise->valeur.' FCFA' }})</option>
-                        @endforeach
-                    </select>
-                </div>
+
                 <div class="col-md-6">
                     <label for="type_facturation_id" class="form-label">Type de facturation</label>
                     <select name="type_facturation_id" id="type_facturation_id" class="form-select" required>
@@ -114,6 +105,17 @@
                     <label for="prix_unitaire_kilo" class="form-label">Prix unitaire par kilo</label>
                     <input type="number" step="100" min="0" name="prix_unitaire_kilo" id="prix_unitaire_kilo"
                         class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="remise"  class="form-label">Remise (optionnel)</label>
+                    <select name="remise_id" class="form-select">
+                        <option value="">Aucune remise</option>
+                        @foreach($remises as $remise)
+                        <option value="{{ $remise->remise_id }}">{{ $remise->description }} ({{ $remise->type ==
+                            'pourcentage' ? $remise->valeur.'%' : $remise->valeur.' FCFA' }})</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-between">

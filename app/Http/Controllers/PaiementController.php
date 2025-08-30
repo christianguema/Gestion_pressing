@@ -19,12 +19,13 @@ class PaiementController extends Controller
         return view('paiements.index', compact('paiements'));
     }
 
-    public function create() {
+    public function create()
+    {
 
         // Logique pour afficher le formulaire de création de paiement
-        $commandes = Commande::all();
+        //Commande qui n'a pas encore été payée
+        $commandes = Commande::whereDoesntHave('paiement')->get();
         return view('paiements.create', compact('commandes'));
-
     }
     /**
      * Affiche le formulaire de paiement pour une commande.
@@ -57,7 +58,7 @@ class PaiementController extends Controller
             'mode_paiement' => $request->input('mode_paiement'),
             'date_paiement' => $request->input('date_paiement'),
             'commande_id' => $request->input('commande_id'),
-            'reference_transaction' => Random::generate(10, '0-9'),
+            'reference_transaction' => Random::generate(5, '0-9'),
         ]);
 
         $commande->paiement_id = $paiement->paiement_id;
@@ -71,6 +72,9 @@ class PaiementController extends Controller
         // Logique pour générer la facture PDF du paiement
         $commande = Commande::findOrFail($commandeId);
         $paiement = $commande->paiement;
+        $num_fac = $commande->paiement->reference_transaction;
+        $date = $commande->paiement->date_paiement;
+        $nom_press = $commande->pressing->nom;
         if (!$paiement) {
             return redirect()->back()->with('error', 'Aucun paiement trouvé pour cette commande.');
         }
@@ -78,8 +82,8 @@ class PaiementController extends Controller
         $montantApresRemise = $commande->montant_total;
         $montantRemise = 0;
         $montantAvantRemise = 0;
-        if($remise) {
-            if($remise->type_remise === 'pourcentage') {
+        if ($remise) {
+            if ($remise->type_remise === 'pourcentage') {
                 $montantAvantRemise = $montantApresRemise * 100 / (100 - $remise->valeur);
                 $montantRemise = $montantAvantRemise - $montantApresRemise;
             } else {
@@ -90,6 +94,9 @@ class PaiementController extends Controller
         $data = [
             'montant_avant' => $montantAvantRemise,
             'montant_remise' => $montantRemise,
+            'num_facture' => $num_fac,
+            'date_paiement' => $date,
+            'nom_pressing' => $nom_press,
             'commande' => $commande,
             'paiement' => $paiement,
         ];

@@ -24,7 +24,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="date_paiement" class="form-label">Date de paiement</label>
-                        <input type="date" class="form-control" id="date_paiement" name="date_paiement" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
+                        <input type="date" class="form-control" id="date_paiement" name="date_paiement"
+                            value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Confirmer le paiement</button>
                 </form>

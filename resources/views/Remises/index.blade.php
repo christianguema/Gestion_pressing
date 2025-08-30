@@ -65,7 +65,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="4">Aucune remise enregistré</td>
+            <td colspan="5">Aucune remise enregistré</td>
         </tr>
         @endforelse
     </tbody>

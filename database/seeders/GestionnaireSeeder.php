@@ -15,7 +15,7 @@ class GestionnaireSeeder extends Seeder
     public function run(): void
     {
         // Supprime les anciennes données
-        DB::table('gestionnaires')->delete();
+        //DB::table('gestionnaires')->delete();
 
         // Récupère le rôle 'gestionnaire'
         $role = Role::where('name', 'gestionnaire')->first();
@@ -38,7 +38,7 @@ class GestionnaireSeeder extends Seeder
 
         foreach ($gestionnaireUserIds as $userId) {
             $gestionnaires[] = [
-                'gestionnaire_id' => $userId, 
+                'gestionnaire_id' => $userId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

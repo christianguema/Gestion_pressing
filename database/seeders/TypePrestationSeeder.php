@@ -14,7 +14,7 @@ class TypePrestationSeeder extends Seeder
     public function run(): void
     {
         // Supprime toutes les données existantes
-        DB::table('type_prestations')->delete();
+        //DB::table('type_prestations')->delete();
 
         // Définis les données à insérer
         $typePrestations = [

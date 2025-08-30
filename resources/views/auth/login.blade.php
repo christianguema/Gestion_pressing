@@ -110,7 +110,7 @@
                 <div class="p-3 rounded overlay-content p-lg-4">
                     <h5 class="mb-3 overlay-title">Bienvenu sur la page de connexion</h5>
                     <div>
-                        Plus rapide et fiable que jamais, Ges-press vous permet de gérer votre pressing en toute simplicité.
+                        Plus rapide et fiable que jamais, PressingMaNaGer vous permet de gérer votre pressing en toute simplicité.
                         <br>
                         Connectez-vous pour accéder à votre tableau de bord et découvrir toutes les fonctionnalités.
                     </div>

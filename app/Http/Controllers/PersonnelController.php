@@ -9,10 +9,14 @@ use App\Models\Pressing;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PersonnelController extends Controller
 {
@@ -96,15 +100,66 @@ class PersonnelController extends Controller
         }
     }
 
+    #vue de la gestion des comptes
     public function compte()
     {
-        return view('personnels.acompte');
+        $user = Auth::user();
+        $personnels = Personnel::with(['user', 'pressing'])
+            ->when($user->hasRole('gestionnaire'), function ($query) {
+                return $query->whereHas('pressing');
+            })
+            ->when($user->hasRole('personnel'), function ($query) use ($user) {
+                return $query->where('pressing_id', $user->personnel->pressing_id);
+            })
+            ->get();
+
+        // Récupérer tous les rôles et permissions
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('personnels.acompte', compact('personnels', 'roles', 'permissions'));
     }
 
+    public function updateAccount(Request $request, Personnel $personnel)
+    {
+        $request->validate([
+            'poste' => 'required|string',
+            'status' => 'required|in:actif,inactif'
+        ]);
+
+        $personnel->update([
+            'poste' => $request->poste,
+            'status' => $request->status
+        ]);
+
+        return back()->with('success', 'Compte mis à jour avec succès');
+    }
+
+    public function updateRoles(Request $request, Personnel $personnel)
+    {
+        $request->validate([
+            'roles' => 'array',
+            'permissions' => 'array'
+        ]);
+
+        $user = $personnel->user;
+
+        // Synchroniser les rôles
+        $user->syncRoles($request->roles ?? []);
+
+        // Synchroniser les permissions directes
+        $user->syncPermissions($request->permissions ?? []);
+
+        return back()->with('success', 'Rôles et permissions mis à jour avec succès');
+    }
     //founction de suppression d'un compte personnel
     public function destroy(Personnel $personnel)
     {
         //logic pour supprimer un personnel
+        //suppression du de l'image profile
+        if ($personnel->user->profilImage) {
+            Storage::disk('public')->delete($personnel->user->profilImage);
+        }
         $personnel->user->delete();
         return redirect()->back()->with('success', 'Personnel supprimé avec succès.');
     }

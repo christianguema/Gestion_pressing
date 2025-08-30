@@ -26,7 +26,7 @@
             @endif --}}
         @endauth
     @endif
-    <h1>Ges-press</h1>
+    <h1>PressingMaNaGer</h1>
     {{-- <a class="cta-btn" href="{{ route('register') }}">Inscription</a> --}}
   </div>
   <div class="container">

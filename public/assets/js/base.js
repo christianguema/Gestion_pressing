@@ -138,6 +138,8 @@ $(document).on("click", ".delete-btn", function () {
     $("#deletepressingForm").attr("action", "/gestionnaire/pressings/" + id);
 });
 
+
+//gestion du modal form payement
 $(document).on("click", ".btn-card", function () {
     var commande_id = $(this).data("id");
     var montant = $(this).data("montant");
@@ -145,6 +147,8 @@ $(document).on("click", ".btn-card", function () {
     $("#montant").val(montant);
     $("#payementForm").attr("action", "/personnel/paiements");
 });
+
+
 
 //--#Code JS POUR LE TRAITEMENT DU FORMULAIRE DE COMMANDE#--
 let vetementIndex = 0;
@@ -280,7 +284,8 @@ $("#type_prestation_id").on("change", function () {
 });
 
 // Ajout/suppression de ligne vêtement
-function createVetementRow() {
+function createVetementRow()
+{
     return `<tr>
         <td>
             <input type="text" class="form-control vetement-search" name="vetements[${vetementIndex}][type]" autocomplete="off" placeholder="Nom du vêtement">
@@ -295,6 +300,7 @@ function createVetementRow() {
         <td><button type="button" class="btn btn-danger btn-sm remove-vetement-row"><i class="bi bi-trash"></i></button></td>
     </tr>`;
 }
+
 $("#addVetementRow").on("click", function () {
     $("#vetementsTable tbody").append(createVetementRow());
     let selected = $("#type_facturation_id")
@@ -310,6 +316,7 @@ $("#addVetementRow").on("click", function () {
     }
     vetementIndex++;
 });
+
 $(document).on("click", ".remove-vetement-row", function () {
     $(this).closest("tr").remove();
 });

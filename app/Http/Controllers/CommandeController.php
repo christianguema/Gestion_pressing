@@ -63,6 +63,11 @@ class CommandeController extends Controller
                 Carbon::now()->startOfWeek(),
                 Carbon::now()->endOfWeek()
             ]);
+        } elseif($filter === "in_month"){
+            $query->whereBetween('date_reception', [
+                Carbon::now()->startOfMonth(),
+                Carbon::now()->endOfMonth()
+            ]);
         }
 
         $commandes = $query->orderBy('date_reception', 'asc')->get();

@@ -15,8 +15,7 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('users')->delete();
-
+        //DB::table('users')->delete();
 
         // Création d’un client
         $client = User::create([

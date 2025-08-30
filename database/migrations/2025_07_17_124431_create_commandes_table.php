@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('commande_id');
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('personnel_id');
+            $table->string('numero_ticket');
             $table->unsignedBigInteger('type_prestation_id');
 
             $table->unsignedBigInteger('type_facturation_id');

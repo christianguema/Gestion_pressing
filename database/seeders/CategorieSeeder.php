@@ -13,11 +13,11 @@ class CategorieSeeder extends Seeder
         DB::table('categories')->delete();
 
         $categories = [
-            ['categorie_id' => 1, 'intitule' => 'Chemises'],
-            ['categorie_id' => 2, 'intitule' => 'Pantalons'],
-            ['categorie_id' => 3, 'intitule' => 'Manteaux'],
-            ['categorie_id' => 4, 'intitule' => 'Robes'],
-            ['categorie_id' => 5, 'intitule' => 'Vestes'],
+            ['categorie_id' => 1, 'intitule' => 'Hommes'],
+            ['categorie_id' => 2, 'intitule' => 'Femmes'],
+            ['categorie_id' => 3, 'intitule' => 'Enfants'],
+            ['categorie_id' => 4, 'intitule' => 'Bébés'],
+            ['categorie_id' => 5, 'intitule' => 'Meubles'],
         ];
 
         DB::table('categories')->insert($categories);

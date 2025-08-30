@@ -13,7 +13,7 @@ class PressingSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('pressings')->delete();
+        //DB::table('pressings')->delete();
 
         $pressings = [
             [

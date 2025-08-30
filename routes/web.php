@@ -42,7 +42,13 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::resource('type_facturations', TypeFacturationController::class);
     Route::resource("personnels", PersonnelController::class);
     Route::get("personnel/accompte",[PersonnelController::class,"compte"])->name("personnels.compte");
+    Route::patch('/personnels/{personnel}/update-account', [PersonnelController::class,'updateAccount'])
+        ->name('personnels.updateAccount')
+        ->middleware('can:manage-accounts');
 
+    Route::patch('/personnels/{personnel}/update-roles', [PersonnelController::class, 'updateRoles'])
+    ->name('personnels.updateRoles')
+    ->middleware('can:manage-accounts');
     Route::get('/rapport/performance', [RapportController::class,'performanceRepport'])->name('rapports.performance');
     Route::get('/rapport', [RapportController::class,'repport'])->name('rapports.repports');
     Route::resource('vetements', VetementController::class);

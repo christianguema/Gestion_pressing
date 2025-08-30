@@ -138,11 +138,6 @@
             @endrole
             @role('gestionnaire')
             <li>
-                <a href="{{ route("remises.index") }}">
-                    <i class="bi bi-circle"></i><span>Remise</span>
-                </a>
-            </li>
-            <li>
                 <a href="{{route('type_facturations.index') }}">
                     <i class="bi bi-circle"></i><span>Type facturation</span>
                 </a>
@@ -152,10 +147,15 @@
                     <i class="bi bi-circle"></i><span>Type prestation</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route("remises.index") }}">
+                    <i class="bi bi-circle"></i><span>Remise</span>
+                </a>
+            </li>
             @endrole
         </ul>
     </li> <!-- End Commande nav -->
-
+    @role('personnel')
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#payement-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-cash-coin"></i><span>PAIEMENTS</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -174,7 +174,8 @@
             </li> --}}
         </ul>
     </li><!-- End payement Nav -->
-
+    @endrole
+    @role("gestionnaire")
     <li class="nav-item">
         <a class="nav-link {{ request()->routeIs('rapports.*') ? '' : 'collapsed' }}" data-bs-target="#rapport-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-file-word-fill"></i><span>RAPPORT</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -192,7 +193,7 @@
             </li>
         </ul>
     </li><!-- End Rapport Nav -->
-
+    @endrole
     <!-- End Components Nav -->
 
     <li class="nav-heading">SYSTEMES</li>

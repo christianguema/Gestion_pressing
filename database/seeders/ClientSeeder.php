@@ -14,7 +14,7 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('clients')->delete();
+        //DB::table('clients')->delete();
 
         // Récupérer le rôle "client"
         //$role = Role::findByName('client');

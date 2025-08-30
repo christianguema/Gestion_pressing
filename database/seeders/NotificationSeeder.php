@@ -13,7 +13,7 @@ class NotificationSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('notifications')->delete();
+        //DB::table('notifications')->delete();
 
         // Récupère les IDs des utilisateurs
         $userIds = DB::table('users')->pluck('id');

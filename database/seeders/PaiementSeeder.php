@@ -14,7 +14,7 @@ class PaiementSeeder extends Seeder
     public function run(): void
     {
         // Supprime les anciennes données
-        DB::table('paiements')->delete();
+        //DB::table('paiements')->delete();
 
         // Récupère les commande_id existants
         $commandeIds = DB::table('commandes')->pluck('commande_id');

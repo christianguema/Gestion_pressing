@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id('paiement_id');
             $table->integer('commande_id');
             $table->decimal('montant', 10, 2);
-            $table->string('mode_paiement');
             $table->date('date_paiement');
             $table->string('reference_transaction');
+            $table->integer('mode_paiement_id');
+            $table->foreign("mode_paiement_id")->references('mode_paiement_id')->on('mode')->cascadeOnDelete();
             $table->foreign('commande_id')->references('commande_id')->on('commandes')->cascadeOnDelete();
             $table->timestamps();
         });

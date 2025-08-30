@@ -14,7 +14,7 @@ class TypeFacturationSeeder extends Seeder
     public function run(): void
     {
         // Supprime toutes les données existantes
-        DB::table('type_facturations')->delete();
+        //DB::table('type_facturations')->delete();
 
         // Définis les données à insérer
         $typeFacturations = [

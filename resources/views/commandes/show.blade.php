@@ -57,13 +57,13 @@
                     <th>Article</th>
                     <th>Description</th>
                     <th>Quantité</th>
-                    @if(str_contains(strtolower($commande->typeFacturation->libelle ?? ''), 'kilo'))
+                    {{-- @if(str_contains(strtolower($commande->typeFacturation->libelle ?? ''), 'kilo'))
                         <th>Poids total</th>
                         <th>Montant</th>
                     @else
                         <th>Prix Unitaire</th>
                         <th>Montant</th>
-                    @endif
+                    @endif --}}
 
                 </tr>
             </thead>
@@ -73,7 +73,7 @@
                     <td>{{ $article->type }}</td>
                     <td>{{ $article->pivot->description }}</td>
                     <td>{{ $article->pivot->quantite }}</td>
-                    <td>
+                    {{-- <td>
                         @if(str_contains(strtolower($commande->typeFacturation->libelle ?? ''), 'kilo'))
                             {{ $commande->prix_unitaire_kilo ?? '-' }}
                         @else
@@ -86,7 +86,7 @@
                         @else
                             {{ ($article->pivot->prix_unitaire ?? 0) * ($article->pivot->quantite ?? 0) }}
                         @endif
-                    </td>
+                    </td> --}}
                 </tr>
                 </tr>
                 @endforeach
@@ -127,5 +127,8 @@
             </a>
         </div>
     @endif
+</div>
+<div>
+    <a href="{{ route('commandes.pendingIndex') }}" class="btn btn-secondary">Retour à la liste</a>
 </div>
 @endsection

@@ -4,21 +4,21 @@
 @section('title', 'Commandes')
 
 {{-- @php
-    $vetementsPayload = collect(); // On initialise une collection vide
+$vetementsPayload = collect(); // On initialise une collection vide
 
-    foreach ($commandes as $commande) {
-        foreach ($commande->vetements as $v) {
-            $vetementsPayload->push([
-                'type'            => $v->type,
-                'quantite'        => (int) ($v->pivot->quantite ?? 0),
-                'quantite_livree' => (int) ($v->pivot->quantite_livree ?? 0),
-                'vetement_id'     => (int) $v->vetement_id,
-            ]);
-        }
-    }
-    // dd(json_encode($vetementsPayload));
-    // Si tu veux t'assurer que les index sont réinitialisés comme avec ->values()
-    $vetementsPayload = $vetementsPayload->values();
+foreach ($commandes as $commande) {
+foreach ($commande->vetements as $v) {
+$vetementsPayload->push([
+'type' => $v->type,
+'quantite' => (int) ($v->pivot->quantite ?? 0),
+'quantite_livree' => (int) ($v->pivot->quantite_livree ?? 0),
+'vetement_id' => (int) $v->vetement_id,
+]);
+}
+}
+// dd(json_encode($vetementsPayload));
+// Si tu veux t'assurer que les index sont réinitialisés comme avec ->values()
+$vetementsPayload = $vetementsPayload->values();
 @endphp --}}
 
 
@@ -89,8 +89,9 @@
         <select name="filter" class="form-select" style="width:auto;">
             <option value="today" {{ $filter=='today' ? 'selected' : '' }}>Aujourd'hui</option>
             <option value="yesterday" {{ $filter=='yesterday' ? 'selected' : '' }}>Hier</option>
-            <option value="last_week" {{ $filter=='last_week' ? 'selected' : '' }}>Semaine passée</option>
             <option value="in_week" {{ $filter=='in_week' ? 'selected' : '' }}>Dans la semaine</option>
+            <option value="last_week" {{ $filter=='last_week' ? 'selected' : '' }}>Semaine passée</option>
+            <option value="in_week" {{ $filter=='in_month' ? 'selected' : '' }}>Dans le mois</option>
             <option value="last_month" {{ $filter=='last_month' ? 'selected' : '' }}>Mois passé</option>
         </select>
         <button type="submit" class="btn btn-outline-primary">Filtrer</button>
@@ -107,7 +108,7 @@
                             <tr>
                                 <th>Nom Client</th>
                                 @role('gestionnaire')
-                                    <th>Pressing</th>
+                                <th>Pressing</th>
                                 @endrole
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Reception</th>
                                 <th data-type="date" data-format="DD/MM/YYYY">Date Livraison</th>
@@ -121,7 +122,7 @@
                             <tr>
                                 <td>{{ $commande->client?->user->name ?? '-' }}</td>
                                 @role('gestionnaire')
-                                    <td>{{ $commande->pressing->nom }}</td>
+                                <td>{{ $commande->pressing->nom }}</td>
                                 @endrole
                                 <td>{{ $commande->date_reception ?
                                     \Carbon\Carbon::parse($commande->date_reception)->format('d/m/Y') : '-' }}
@@ -173,44 +174,46 @@
                                             </li>
 
                                             @role('personnel')
-                                                @if($commande->paiement)
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                @foreach($nextStatuses[$commande->etat] ?? [] as $s)
-                                                <li>
-                                                    <form method="POST" action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <input type="hidden" name="status" value="{{ $s }}">
-                                                        <button type="submit" class="dropdown-item">
-                                                            <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
-                                                        </button>
-                                                    </form>
-                                                </li>
-                                                @endforeach
+                                            @if($commande->paiement)
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            @foreach($nextStatuses[$commande->etat] ?? [] as $s)
+                                            <li>
+                                                <form method="POST"
+                                                    action="{{ route('commandes.changeStatus', $commande->commande_id) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="{{ $s }}">
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="bi bi-arrow-repeat"></i> Marquer comme {{ $s }}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            @endforeach
 
-                                                {{-- @if($commande->etat != "Livré")
-                                                    <li>
-                                                        <button type="button" class="dropdown-item btn-partiellement" data-bs-toggle="modal"
-                                                            data-bs-target="#livraisonPartielleModal" data-commande-id="{{ $commande->commande_id }}"
-                                                            data-vetements="{{ json_encode($vetementsPayload) }}">
-                                                            <i class="bi bi-arrow-repeat"></i> Marquer comme Partiellement
-                                                        </button>
-                                                    </li>
-                                                @endif --}}
+                                            {{-- @if($commande->etat != "Livré")
+                                            <li>
+                                                <button type="button" class="dropdown-item btn-partiellement"
+                                                    data-bs-toggle="modal" data-bs-target="#livraisonPartielleModal"
+                                                    data-commande-id="{{ $commande->commande_id }}"
+                                                    data-vetements="{{ json_encode($vetementsPayload) }}">
+                                                    <i class="bi bi-arrow-repeat"></i> Marquer comme Partiellement
+                                                </button>
+                                            </li>
+                                            @endif --}}
 
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
-                                                <li>
-                                                    {{-- telecharger la facture --}}
-                                                    <a href="{{ route('paiements.facture', $commande->commande_id) }}"
-                                                        class="dropdown-item btn-success">
-                                                        <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
-                                                    </a>
-                                                </li>
-                                                @endif
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                {{-- telecharger la facture --}}
+                                                <a href="{{ route('paiements.facture', $commande->commande_id) }}"
+                                                    class="dropdown-item btn-success">
+                                                    <i class="bi bi-file-earmark-pdf"></i> Télécharger la Facture
+                                                </a>
+                                            </li>
+                                            @endif
                                             @endrole
                                         </ul>
                                     </div>

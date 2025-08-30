@@ -13,7 +13,7 @@ class RapportPerformanceSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('rapports_performance')->delete();
+        //DB::table('rapports_performance')->delete();
 
         // Récupère les IDs des gestionnaires
         $gestionnaireIds = DB::table('gestionnaires')->pluck('gestionnaire_id');

@@ -15,7 +15,7 @@ class PersonnelSeeder extends Seeder
     public function run(): void
     {
         // Supprimer les anciennes données
-        DB::table('personnels')->delete();
+        //DB::table('personnels')->delete();
 
         // Récupérer le rôle 'personnel'
         $role = Role::where('name', 'personnel')->first();

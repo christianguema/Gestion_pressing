@@ -26,7 +26,7 @@ class VetementSeeder extends Seeder
 
         // Exemples de types de vêtements
         $types = [
-            'Chemise', 'Pantalon', 'Manteau', 'Robe', 'Jupe', 'Veste', 'T-shirt', 'Pull', 'Chandail', 'Costume'
+            'Chemise', 'Pantalon', 'Manteau', 'Robe', 'Jupe', 'Veste', 'T-shirt', 'Pull', 'Chandail', 'Costume','sous-vetement','Rideaux','Torchons'
         ];
 
         // Génère 20 vêtements aléatoires
@@ -36,7 +36,7 @@ class VetementSeeder extends Seeder
             $vetements[] = [
                 'vetement_id' => $i,
                 'type' => $types[array_rand($types)], // Choix aléatoire parmi les types
-                'prix_unitaire' => round(rand(10, 200) + rand(0, 99) / 100, 2), // Ex : 45.99
+                'prix_unitaire' => round(rand(100, 1000)), // Ex : 45.99
                 'categorie_id' => $categorieIds->random(), // Attribution aléatoire
                 'created_at' => now(),
                 'updated_at' => now(),

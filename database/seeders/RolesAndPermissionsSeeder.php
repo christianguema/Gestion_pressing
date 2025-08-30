@@ -21,6 +21,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Role::create(['name' => 'personnel']);
         Role::create(['name' => 'gestionnaire']);
 
+
         //Permissions pour les commandes
         Permission::create(['name' => 'view-commande']);
         Permission::create(['name' => 'create-commande']);
@@ -32,6 +33,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create-vetement']);
         Permission::create(['name' => 'edit-vetement']);
         Permission::create(['name' => 'delete-vetement']);
+        Permission::create(['name' => 'manage-accounts']);
 
 
         //Permissions pour les pressings
@@ -59,7 +61,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $createVetement = Permission::where('name', 'create-vetement')->first() ?? Permission::create(['name' => 'create-vetement']);
         $editVetement = Permission::where('name', 'edit-vetement')->first() ?? Permission::create(['name' => 'edit-vetement']);
         $deleteVetement = Permission::where('name', 'delete-vetement')->first() ?? Permission::create(['name' => 'delete-vetement']);
-
+        $manageAccounts = Permission::where('name', 'manage-accounts')->first() ?? Permission::create(['name' => 'manage-accounts']);
 
 
         //Users
@@ -86,6 +88,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         //Gestionnaire : commandes, vêtements, pressings
         $gestionnaire->givePermissionTo([
+            $manageAccounts,
             $viewCommande, $createCommande, $editCommande,$deleteCommande,
             $viewVetement, $createVetement, $editVetement,$deleteVetement,
             $viewPressing, $createPressing, $editPressing,$deletePressing,

@@ -14,7 +14,7 @@ class CommandeVetementSeeder extends Seeder
     public function run(): void
     {
         // Supprime toutes les données existantes
-        DB::table('commande_vetement')->delete();
+        //DB::table('commande_vetement')->delete();
 
         // Récupère des IDs existants
         $commandeIds = DB::table('commandes')->pluck('commande_id');
