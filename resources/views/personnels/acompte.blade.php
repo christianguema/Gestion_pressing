@@ -38,7 +38,7 @@
                                 <th>Poste</th>
                                 <th>Pressing</th>
                                 <th>Contact</th>
-                                <th>Statut</th>
+                                {{-- <th>Statut</th> --}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -55,11 +55,11 @@
                                 <td>{{ $personnel->poste }}</td>
                                 <td>{{ $personnel->pressing->nom }}</td>
                                 <td>{{ $personnel->user->contact }}</td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge bg-{{ $personnel->status === 'actif' ? 'success' : 'danger' }}">
                                         {{ $personnel->status }}
                                     </span>
-                                </td>
+                                </td> --}}
                                 <td>
                                     @can('manage-accounts')
                                         <div class="btn-group">

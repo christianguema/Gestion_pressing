@@ -177,15 +177,15 @@
         </a>
         <ul id="rapport-nav" class="nav-content collapse {{ request()->routeIs('rapports.*') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route("rapports.repports") }}">
+                <a href="{{ route('rapports.index') }}">
                     <i class="bi bi-circle"></i><span>Rapport de revenu</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ route('rapports.performance') }}">
+            {{-- <li>
+                <a href="{{ route('rapports.index') }}">
                     <i class="bi bi-circle"></i><span>Rapport performance</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </li><!-- End Rapport Nav -->
     @endrole

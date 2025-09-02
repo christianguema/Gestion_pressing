@@ -25,8 +25,8 @@ class Paiement extends Model
         return $this->belongsTo(Commande::class);
     }
 
-    public function mode_paiement() : BelongsTo
+    public function mode_paiement(): BelongsTo
     {
-        return $this->belongsTo(ModePaiement::class);
+        return $this->belongsTo(ModePaiement::class,"mode_paiement_id");
     }
 }

@@ -33,7 +33,7 @@
             \Carbon\Carbon::parse($commande->date_livraison)->format('d/m/Y') : '-' }}</p>
         <p><strong>État:</strong> {{ $commande->etat }}</p>
         @if($commande->paiement)
-        <p><strong>Paiement:</strong> {{ $commande->paiement->mode_paiement }} ({{ $commande->paiement->montant }})</p>
+        <p><strong>Paiement:</strong> {{ $commande->paiement->mode_paiement->nom }} ({{ $commande->paiement->montant }})</p>
         @else
         <p><strong>Paiement:</strong> Non payé</p>
         @endif

@@ -46,9 +46,9 @@ $vetementsPayload = $vetementsPayload->values();
 
 <div class="mb-3 d-flex justify-content-between align-items-center">
     @role('personnel')
-    <a href="{{ route('commandes.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Enregistrer
-    </a>
+        <a href="{{ route('commandes.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Enregistrer
+        </a>
     @endrole
     {{-- <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -68,17 +68,20 @@ $vetementsPayload = $vetementsPayload->values();
     </div> --}}
 
     <form method="GET" action="{{ route('commandes.pendingIndex') }}" class="gap-2 d-flex">
+        @role("personnel")
+            <input type="search" name="search" class="form-control" placeholder="Rechercher par N° ticket..." value="{{ request('search') }}" style="width:250px;">
+        @endrole
         @role('gestionnaire')
-        <select name="pressing_id" class="form-select" style="width:auto;" @if(Auth::user()->personnel) disabled @endif>
-            <option value="">Tous les pressings</option>
-            @foreach($pressings as $pressing)
-            <option value="{{ $pressing->pressing_id }}" {{ (request('pressing_id', $pressingId)==$pressing->
-                pressing_id) ?
-                'selected' : '' }}>
-                {{ $pressing->nom }}
-            </option>
-            @endforeach
-        </select>
+            <select name="pressing_id" class="form-select" style="width:auto;" @if(Auth::user()->personnel) disabled @endif>
+                <option value="">Tous les pressings</option>
+                @foreach($pressings as $pressing)
+                <option value="{{ $pressing->pressing_id }}" {{ (request('pressing_id', $pressingId)==$pressing->
+                    pressing_id) ?
+                    'selected' : '' }}>
+                    {{ $pressing->nom }}
+                </option>
+                @endforeach
+            </select>
         @endrole
 
         <select name="status" class="form-select" style="width:auto;">
@@ -169,7 +172,7 @@ $vetementsPayload = $vetementsPayload->values();
                                             <li>
                                                 <a href="{{ route('commandes.downloadEtiquette', $commande->commande_id) }}"
                                                     class="dropdown-item btn-warning">
-                                                    <i class="bi bi-file-earmark-pdf"></i> Etiquette
+                                                    <i class="bi bi-file-earmark-pdf"></i> Ticket
                                                 </a>
                                             </li>
 

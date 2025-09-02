@@ -49,9 +49,9 @@
 
     {{-- afficher le pied de page seulement sur le dashboard --}}
     @if (request()->is('dashboard'))
-        <footer id="footer" class="footer">
-            @include('partials.footer')
-        </footer>
+    <footer id="footer" class="footer">
+        @include('partials.footer')
+    </footer>
     @endif
 </body>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
@@ -71,5 +71,6 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/base.js') }}"></script>
 <script src="{{ asset('assets/js/charts.js') }}"></script>
-
+<script src="{{ asset('assets/js/charts2.js') }}"></script>
+<script src="{{ asset('assets/js/search.js') }}"></script>
 </html>
