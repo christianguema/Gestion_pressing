@@ -62,9 +62,7 @@
     </div>
 </form> --}}
 
-@if($vetements->isEmpty())
-<p>Aucun vêtement trouvé.</p>
-@else
+
 <table class="table table-striped datatable">
     <thead>
         <tr>
@@ -76,27 +74,34 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($vetements as $vetement)
-        <tr>
-            <td>{{$loop->iteration}}</td>
-            <td>{{ $vetement->type }}</td>
-            <td>{{ $vetement->prix_unitaire ?? 'Non défini' }}</td>
-            <td>{{ $vetement->categorie->intitule }}</td>
-            <td>
-                <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info"><i
-                        class="bi bi-eye"></i>Voir</a>
-                <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning"><i
-                        class="bi-pencil"></i> Modifier</a>
-                <button type="button" data-id="{{ $vetement->vetement_id }}" class="btn delete-btn btn-danger btn-sm"
-                    data-bs-toggle="modal" data-bs-target="#deleteVetement">
-                    <i class="bi bi-trash"></i> Supprimer
-                </button>
-            </td>
-        </tr>
-        @endforeach
+        @forelse ($vetements as $vetement)
+            <tr>
+                <td>{{$loop->iteration}}</td>
+                <td>{{ $vetement->type }}</td>
+                <td>{{ $vetement->prix_unitaire ?? 'Non défini' }}</td>
+                <td>{{ $vetement->categorie->intitule }}</td>
+                <td>
+                    <a href="{{ route('vetements.show', $vetement) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i>Voir</a>
+                    <a href="{{ route('vetements.edit', $vetement) }}" class="btn btn-sm btn-warning"><i class="bi-pencil"></i>
+                        Modifier</a>
+                    <button type="button" data-id="{{ $vetement->vetement_id }}" class="btn delete-btn btn-danger btn-sm"
+                        data-bs-toggle="modal" data-bs-target="#deleteVetement">
+                        <i class="bi bi-trash"></i> Supprimer
+                    </button>
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="7" class="text-center">Aucun vetement enregistré</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
-@endif
+
+<div class="d-flex justify-content-center">
+    {{ $vetements->withQueryString()->links() }}
+</div>
+
 
 @include('components.modals.vetement.delete')
 @endsection

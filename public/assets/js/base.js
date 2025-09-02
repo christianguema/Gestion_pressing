@@ -1,6 +1,3 @@
-
-
-
 //code pour la confirmation de la suppression d'un compte personnel
 $(document).on("click", ".delete-btn", function () {
     var id = $(this).data("id");
