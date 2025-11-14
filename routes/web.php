@@ -52,11 +52,18 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     ->middleware('can:manage-accounts');
 
     // Route pour les rapports de performance
-    Route::get('/rapports', [RapportController::class, 'index'])->name('rapports.index');
-    Route::get('/rapports/export-pdf', [RapportController::class, 'exportPdf'])->name('rapports.export.pdf');
-    Route::get('/rapports/generer', [RapportController::class, 'genererManuelForm'])->name('rapports.generer.form');
-    Route::post('/rapports/generer', [RapportController::class, 'genererManuelTraitement'])->name('rapports.generer.traiter');
-    Route::get('/rapports/pressing/{pressing}', [RapportController::class, 'rapportParPressing'])->name('rapports.par.pressing');
+    Route::prefix('rapports')->name('rapports.')->group(function () {
+        Route::get('/', [RapportController::class, 'index'])->name('index');
+        Route::get('/export-pdf', [RapportController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/generer', [RapportController::class, 'genererManuelForm'])->name('generer.form');
+        Route::post('/generer', [RapportController::class, 'genererManuelTraitement'])->name('generer.traiter');
+        Route::get('/pressing/{pressing}', [RapportController::class, 'rapportParPressing'])->name('par.pressing');
+
+        // Route optionnelle pour le nettoyage des anciens rapports (admin seulement)
+        Route::delete('/nettoyer', [RapportController::class, 'nettoyerAncienRapports'])
+              ->name('nettoyer')
+              ->middleware('can:manage-accounts'); // ou un autre middleware admin
+    });
 
 
     Route::resource('vetements', VetementController::class);

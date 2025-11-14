@@ -54,6 +54,6 @@
 
 <!-- Boutons -->
 <a href="{{ route('pressings.index') }}" class="btn btn-secondary">Retour à la liste</a>
-<a href="{{ route('pressings.edit', $pressing->pressing_id) }}" class="btn btn-warning">Modifier</a>
+{{-- <a href="{{ route('pressings.edit', $pressing->pressing_id) }}" class="btn btn-warning">Modifier</a> --}}
 
 @endsection

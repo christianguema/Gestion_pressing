@@ -79,16 +79,17 @@ class PaiementController extends Controller
             return back()->with('success', 'Paiement enregistré avec succès');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Erreur lors de l\'enregistrement du paiement '.$e->getMessage())->withInput();
+            return back()->with('error', 'Erreur lors de l\'enregistrement du paiement ' . $e->getMessage())->withInput();
         }
     }
+
 
     public function facturePaiement($commandeId)
     {
         // Logique pour générer la facture PDF du paiement
         $commande = Commande::findOrFail($commandeId);
         $paiement = $commande->paiement;
-        $num_fac = $commande->paiement->reference_transaction;
+        $num_fac = 'FAC-' . strtoupper(Random::generate(8));
         $date = $commande->paiement->date_paiement;
         $nom_press = $commande->pressing->nom;
         if (!$paiement) {

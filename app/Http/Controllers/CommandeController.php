@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CommandeTerminee;
 use App\Models\Client;
 use App\Models\Commande;
 use App\Models\CommandeVetement;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Ismaelw\LaraTeX\LaraTeX;
 
 class CommandeController extends Controller
@@ -109,8 +111,6 @@ class CommandeController extends Controller
         return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId','search'));
     }
 
-
-
     public function create()
     {
         // Logique pour afficher le formulaire de création de commande
@@ -123,8 +123,6 @@ class CommandeController extends Controller
         $remises = Remise::all();
         return view('commandes.create', compact('clients', 'pressings', 'vetements', 'typeFacturations', 'typePrestations', 'remises'));
     }
-
-
 
     private function generateTicketNumber($client_contact)
     {
@@ -298,10 +296,17 @@ class CommandeController extends Controller
             return back()->with('error', 'Transition de statut non autorisée.');
         }
 
+        if ($commande->etat === 'Terminé') {
+            $email = $commande->client->user->email;
+            if ($email) {
+                Mail::to($email)->send(new CommandeTerminee($commande));
+            }
+        }
 
         $commande->etat = $nouvelEtat;
         $commande->update();
         // Générer des étiquettes si le statut est changé
+
 
         return back()->with('success', 'Statut de la commande mis à jour.');
     }
