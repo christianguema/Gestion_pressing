@@ -50,8 +50,15 @@ Route::middleware(['auth', 'role:gestionnaire'])->prefix('gestionnaire')->group(
     Route::patch('/personnels/{personnel}/update-roles', [PersonnelController::class, 'updateRoles'])
     ->name('personnels.updateRoles')
     ->middleware('can:manage-accounts');
-    Route::get('/rapport/performance', [RapportController::class,'performanceRepport'])->name('rapports.performance');
-    Route::get('/rapport', [RapportController::class,'repport'])->name('rapports.repports');
+
+    // Route pour les rapports de performance
+    Route::get('/rapports', [RapportController::class, 'index'])->name('rapports.index');
+    Route::get('/rapports/export-pdf', [RapportController::class, 'exportPdf'])->name('rapports.export.pdf');
+    Route::get('/rapports/generer', [RapportController::class, 'genererManuelForm'])->name('rapports.generer.form');
+    Route::post('/rapports/generer', [RapportController::class, 'genererManuelTraitement'])->name('rapports.generer.traiter');
+    Route::get('/rapports/pressing/{pressing}', [RapportController::class, 'rapportParPressing'])->name('rapports.par.pressing');
+
+
     Route::resource('vetements', VetementController::class);
     Route::resource('remises', RemiseController::class);
     Route::resource('categories', CategorieController::class);

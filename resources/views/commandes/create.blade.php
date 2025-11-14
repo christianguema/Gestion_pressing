@@ -108,7 +108,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="remise"  class="form-label">Remise (optionnel)</label>
+                    <label for="remise" class="form-label">Remise (optionnel)</label>
                     <select name="remise_id" class="form-select">
                         <option value="">Aucune remise</option>
                         @foreach($remises as $remise)
@@ -158,7 +158,7 @@
 
 <script>
     let vetements = @json($vetements);
-let clients = @json($clients);
-let typePrestations = @json($typePrestations);
+    let clients = @json($clients);
+    let typePrestations = @json($typePrestations);
 </script>
 @endsection

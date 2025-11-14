@@ -11,24 +11,27 @@ class RapportsPerformance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'gestionnaire_id',
+        'pressing_id',
         'periode',
         'revenus',
         'nombre_commande',
-        // 'satisfaction_client',
     ];
 
+    public $timestamps = true;
     protected $primaryKey = 'rapports_performance_id';
 
-    public function gestionnaire(): BelongsTo
-    {
-        return $this->belongsTo(Gestionnaire::class);
-    }
+    protected $casts = [
+        'periode' => 'datetime',
+        'revenus' => 'integer',
+        'nombre_commande' => 'integer',
+    ];
+
+
 
 
     public function pressing(): BelongsTo
     {
-        return $this->belongsTo(Pressing::class);
+        return $this->belongsTo(Pressing::class, 'pressing_id', 'pressing_id');
     }
 
 }

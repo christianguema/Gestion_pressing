@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $alertes = $this->getAlertes();
 
         // Performance des employés
-        $performances = Personnel::withCount(['commandes' => function($q) {
+        $performances = Personnel::withCount(['commandes' => function ($q) {
             $q->whereMonth('created_at', Carbon::now()->month);
         }])->get();
 

@@ -26,8 +26,31 @@ class CommandeController extends Controller
         $filter = $request->get('filter', 'today');
         $status = $request->get('status', 'En_attente');
         $pressingId = $request->get('pressing_id');
+        $search = $request->get('search');
+
 
         $query = Commande::query();
+
+        if ($search) {
+            // Nettoyer la recherche
+            $searchTerm = trim($search);
+
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('numero_ticket', 'LIKE', "%{$searchTerm}%")
+                    // Recherche exacte
+                    ->orWhere('numero_ticket', '=', $searchTerm);
+            });
+            // Log plus détaillé avec la requête finale
+            $sql = str_replace(['?'], ['\'%'.$search.'%\''], $query->toSql());
+            Log::info('Recherche commande détaillée:', [
+                'terme_recherché' => $search,
+                'requête_complète' => $sql,
+                'nombre_résultats' => $query->count()
+            ]);
+            // Désactiver les autres filtres si une recherche est en cours
+            $filter = null;
+            $status = null;
+        }
 
         $user = Auth::user();
         $personnelId = $user->personnel->personnel_id ?? null;
@@ -83,7 +106,7 @@ class CommandeController extends Controller
             'En_souffrance' => ['Livré'],
         ];
 
-        return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId'));
+        return view('commandes.index', compact('commandes', 'filter', 'status', 'pressings', 'statuses', 'nextStatuses', 'pressingId','search'));
     }
 
 
@@ -197,7 +220,7 @@ class CommandeController extends Controller
                 'type_facturation_id' => $request->input('type_facturation_id'),
                 'type_prestation_id' => $request->input('type_prestation_id'),
                 'date_reception' => $request->input('date_reception'),
-                'numero_ticket'=>$numero_ticket,
+                'numero_ticket' => $numero_ticket,
                 'remise_id' => $request->input('remise_id') ? $request->input('remise_id') : null,
                 'date_livraison' => $request->input('date_livraison') ? Carbon::parse($request->input('date_livraison'))->addDays($typeFacturation->duree_moyenne) : now()->addDays(3),
                 'etat' => 'En_attente',
@@ -305,6 +328,7 @@ class CommandeController extends Controller
             'date_livraison' => $commande->date_livraison,
             'date_reception' => $commande->date_reception,
             'etat' => $commande->etat,
+            'numero_ticket' => $commande->numero_ticket,
             'vetements' => $commande->vetements,
         ];
 
